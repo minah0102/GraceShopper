@@ -8,6 +8,8 @@ async function dropTables() {
   console.log("Dropping All Tables...");
   try {
     await client.query(/*sql*/`
+      DROP TABLE IF EXISTS line_items;
+      DROP TABLE IF EXISTS category_products;
       DROP TABLE IF EXISTS reviews;
       DROP TABLE IF EXISTS cart;
       DROP TABLE IF EXISTS categories;
@@ -51,8 +53,23 @@ async function createTables() {
           
         );
       `);
+      
     await client.query(/*sql*/`
         CREATE TABLE reviews(
+          id SERIAL PRIMARY KEY,
+          
+        );
+      `);
+
+      await client.query(/*sql*/`
+        CREATE TABLE category_products(
+          id SERIAL PRIMARY KEY,
+          
+        );
+      `);
+
+      await client.query(/*sql*/`
+        CREATE TABLE line_items(
           id SERIAL PRIMARY KEY,
           
         );
