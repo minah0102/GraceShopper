@@ -45,7 +45,7 @@ async function createTables() {
           quantity INTEGER,
           imageName
         );
-      `);
+    `);
 
     await client.query(/*sql*/`
         CREATE TABLE categories(
@@ -53,35 +53,38 @@ async function createTables() {
           name TEXT UNIQUE NOT NULL
           /*name should be TEXT || VARCHAR??*/
         );
-      `);
+    `);
 
     await client.query(/*sql*/`
         CREATE TABLE cart(
           id SERIAL PRIMARY KEY,
           
         );
-      `);
-      
+    `);
+
     await client.query(/*sql*/`
         CREATE TABLE reviews(
           id SERIAL PRIMARY KEY,
           
         );
-      `);
+    `);
 
-      await client.query(/*sql*/`
-        CREATE TABLE category_products(
-          id SERIAL PRIMARY KEY,
-          
-        );
-      `);
+    await client.query(/*sql*/`
+      CREATE TABLE category_products(
+        id SERIAL PRIMARY KEY,
+        "productId" INTEGER REFERENCES products(id),
+        "categoryId" INTEGER REFERENCES categories(id),
+        UNIQUE("productId", "categoryId")
+      );
+    `);
 
-      await client.query(/*sql*/`
-        CREATE TABLE line_items(
-          id SERIAL PRIMARY KEY,
+    await client.query(/*sql*/`
+      CREATE TABLE line_items(
+        id SERIAL PRIMARY KEY,
           
-        );
-      `);
+      );
+    `);
+  
   } catch (error) {
     console.error("Error while building/creating tables!");
     throw error;
