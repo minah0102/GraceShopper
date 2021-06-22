@@ -43,7 +43,7 @@ async function createTables() {
           description TEXT UNIQUE NOT NULL,
           price NUMERIC(5, 2),
           quantity INTEGER,
-          imageName VARCHAR(255)
+          imageName VARCHAR(255) UNIQUE NOT NULL
         );
     `);
 
