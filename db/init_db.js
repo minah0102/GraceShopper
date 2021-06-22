@@ -39,7 +39,11 @@ async function createTables() {
     await client.query(/*sql*/`
         CREATE TABLE products(
           id SERIAL PRIMARY KEY,
-          
+          name TEXT UNIQUE NOT NULL,
+          description TEXT UNIQUE NOT NULL,
+          price NUMERIC(5, 2),
+          quantity INTEGER,
+          imageName
         );
       `);
 
