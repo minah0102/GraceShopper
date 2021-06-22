@@ -1,5 +1,6 @@
 // code to build and initialize DB goes here
 const client = require("./client");
+
 const {
   // other db methods 
 } = require('./init_db');
@@ -27,50 +28,50 @@ async function createTables() {
   console.log("Building/Creating Tables...");
   try {
     await client.query(/*sql*/`
-          CREATE TABLE users(
-            id SERIAL PRIMARY KEY,
-            username VARCHAR(255) UNIQUE NOT NULL,
-            email VARCHAR(255) UNIQUE NOT NULL,
-            password VARCHAR(255) NOT NULL,
-            "isAdmin" BOOLEAN DEFAULT false
-          );
+      CREATE TABLE users(
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(255) UNIQUE NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        "isAdmin" BOOLEAN DEFAULT false
+      );
     `);
 
     await client.query(/*sql*/`
-        CREATE TABLE products(
-          id SERIAL PRIMARY KEY,
-          name VARCHAR(255) UNIQUE NOT NULL,
-          description TEXT UNIQUE NOT NULL,
-          price NUMERIC(5, 2),
-          quantity INTEGER,
-          imageName VARCHAR(255)
-        );
+      CREATE TABLE products(
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) UNIQUE NOT NULL,
+        description TEXT UNIQUE NOT NULL,
+        price NUMERIC(5, 2),
+        quantity INTEGER,
+        "imageName" VARCHAR(255)
+      );
     `);
 
     await client.query(/*sql*/`
-        CREATE TABLE categories(
-          id SERIAL PRIMARY KEY,
-          name VARCHAR(255) UNIQUE NOT NULL
-        );
+      CREATE TABLE categories(
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) UNIQUE NOT NULL
+      );
     `);
 
     await client.query(/*sql*/`
-        CREATE TABLE orders(
-          id SERIAL PRIMARY KEY,
-          "isActive" BOOLEAN DEFAULT true,
-          "purchasedDate" TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-          "userId" INTEGER REFERENCES users(id)
-        );
+      CREATE TABLE orders(
+        id SERIAL PRIMARY KEY,
+        "isActive" BOOLEAN DEFAULT true,
+        "purchasedDate" TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+        "userId" INTEGER REFERENCES users(id)
+      );
     `);
 
     await client.query(/*sql*/`
-        CREATE TABLE reviews(
-          id SERIAL PRIMARY KEY,
-          review TEXT,
-          rating INTEGER,
-          "userId" INTEGER REFERENCES users(id),
-          "productId" INTEGER REFERENCES products(id),
-        );
+      CREATE TABLE reviews(
+        id SERIAL PRIMARY KEY,
+        review TEXT,
+        rating INTEGER,
+        "userId" INTEGER REFERENCES users(id),
+        "productId" INTEGER REFERENCES products(id),
+      );
     `);
 
     await client.query(/*sql*/`
