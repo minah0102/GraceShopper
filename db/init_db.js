@@ -50,8 +50,7 @@ async function createTables() {
     await client.query(/*sql*/`
         CREATE TABLE categories(
           id SERIAL PRIMARY KEY,
-          name TEXT UNIQUE NOT NULL
-          /*name should be TEXT || VARCHAR??*/
+          name VARCHAR(255) UNIQUE NOT NULL
         );
     `);
 
