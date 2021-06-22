@@ -1,6 +1,6 @@
 // code to build and initialize DB goes here
+const client = require("./client");
 const {
-  client,
   // other db methods 
 } = require('./init_db');
 
@@ -32,14 +32,14 @@ async function createTables() {
             username VARCHAR(255) UNIQUE NOT NULL,
             email VARCHAR(255) UNIQUE NOT NULL,
             password VARCHAR(255) NOT NULL,
-            isAdmin BOOLEAN DEFAULT false
+            "isAdmin" BOOLEAN DEFAULT false
           );
     `);
 
     await client.query(/*sql*/`
         CREATE TABLE products(
           id SERIAL PRIMARY KEY,
-          name TEXT UNIQUE NOT NULL,
+          name VARCHAR(255) UNIQUE NOT NULL,
           description TEXT UNIQUE NOT NULL,
           price NUMERIC(5, 2),
           quantity INTEGER,
@@ -55,16 +55,21 @@ async function createTables() {
     `);
 
     await client.query(/*sql*/`
-        CREATE TABLE cart(
+        CREATE TABLE orders(
           id SERIAL PRIMARY KEY,
-          
+          "isActive" BOOLEAN DEFAULT true,
+          "purchasedDate" TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+          "userId" INTEGER REFERENCES users(id)
         );
     `);
 
     await client.query(/*sql*/`
         CREATE TABLE reviews(
           id SERIAL PRIMARY KEY,
-          
+          review TEXT,
+          rating INTEGER,
+          "userId" INTEGER REFERENCES users(id),
+          "productId" INTEGER REFERENCES products(id),
         );
     `);
 
@@ -80,7 +85,10 @@ async function createTables() {
     await client.query(/*sql*/`
       CREATE TABLE line_items(
         id SERIAL PRIMARY KEY,
-          
+        "productId" INTEGER REFERENCES products(id),
+        "orderId" INTEGER REFERENCES orders(id),
+        price NUMERIC(5, 2),
+        quantity INTEGER
       );
     `);
   
