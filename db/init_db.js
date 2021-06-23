@@ -33,10 +33,10 @@ async function buildTables() {
       CREATE TABLE products(
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) UNIQUE NOT NULL,
-        description VARCHAR(255) UNIQUE NOT NULL,
-        price NUMERIC(5, 2),
+        description TEXT UNIQUE NOT NULL,
+        price DECIMAL,
         quantity INTEGER,
-        "imageName" VARCHAR(255)
+        "imageName" VARCHAR(255) UNIQUE NOT NULL
       );
       CREATE TABLE categories(
         id SERIAL PRIMARY KEY,
@@ -51,7 +51,7 @@ async function buildTables() {
       CREATE TABLE reviews(
         id SERIAL PRIMARY KEY,
         review VARCHAR(255),
-        rating INTEGER,
+        rating NUMERIC NOT NULL,
         "userId" INTEGER REFERENCES users(id),
         "productId" INTEGER REFERENCES products(id),
       );
@@ -65,8 +65,9 @@ async function buildTables() {
         id SERIAL PRIMARY KEY,
         "productId" INTEGER REFERENCES products(id),
         "orderId" INTEGER REFERENCES orders(id),
-        price NUMERIC(5, 2),
-        quantity INTEGER
+        price DECIMAL NOT NULL,
+        quantity INTEGER NOT NULL,
+        UNIQUE("productId", "orderId")
       );
     `);
   } catch (error) {
