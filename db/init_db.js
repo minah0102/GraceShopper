@@ -6,6 +6,8 @@ const {
 } = require("./init_db");
 
 async function buildTables() {
+  client.connect();
+
   console.log("Building/Creating Tables...");
   try {
     console.log("Dropping All Tables...");
@@ -53,7 +55,7 @@ async function buildTables() {
         review VARCHAR(255),
         rating NUMERIC NOT NULL,
         "userId" INTEGER REFERENCES users(id),
-        "productId" INTEGER REFERENCES products(id),
+        "productId" INTEGER REFERENCES products(id)
       );
       CREATE TABLE category_products(
         id SERIAL PRIMARY KEY,
@@ -85,6 +87,6 @@ async function populateInitialData() {
 }
 
 buildTables()
-  .then(populateInitialData)
+  // .then(populateInitialData)
   .catch(console.error)
   .finally(() => client.end());
