@@ -1,13 +1,13 @@
 // code to build and initialize DB goes here
 const client = require("./client");
 const {
-  // other db methods 
-} = require('./init_db');
+  
+} = require("./init_db");
 
 async function dropTables() {
   console.log("Dropping All Tables...");
   try {
-    await client.query(/*sql*/`
+    await client.query(/*sql*/ `
       DROP TABLE IF EXISTS line_items;
       DROP TABLE IF EXISTS category_products;
       DROP TABLE IF EXISTS reviews;
@@ -26,7 +26,7 @@ async function dropTables() {
 async function createTables() {
   console.log("Building/Creating Tables...");
   try {
-    await client.query(/*sql*/`
+    await client.query(/*sql*/ `
           CREATE TABLE users(
             id SERIAL PRIMARY KEY,
             username VARCHAR(255) UNIQUE NOT NULL,
@@ -36,25 +36,25 @@ async function createTables() {
           );
     `);
 
-    await client.query(/*sql*/`
+    await client.query(/*sql*/ `
         CREATE TABLE products(
           id SERIAL PRIMARY KEY,
           name VARCHAR(255) UNIQUE NOT NULL,
           description TEXT UNIQUE NOT NULL,
           price NUMERIC(5, 2),
           quantity INTEGER,
-          imageName VARCHAR(255) UNIQUE NOT NULL
+          "imageName" VARCHAR(255) UNIQUE NOT NULL
         );
     `);
 
-    await client.query(/*sql*/`
+    await client.query(/*sql*/ `
         CREATE TABLE categories(
           id SERIAL PRIMARY KEY,
           name VARCHAR(255) UNIQUE NOT NULL
         );
     `);
 
-    await client.query(/*sql*/`
+    await client.query(/*sql*/ `
         CREATE TABLE orders(
           id SERIAL PRIMARY KEY,
           "isActive" BOOLEAN DEFAULT true,
@@ -63,7 +63,7 @@ async function createTables() {
         );
     `);
 
-    await client.query(/*sql*/`
+    await client.query(/*sql*/ `
         CREATE TABLE reviews(
           id SERIAL PRIMARY KEY,
           review TEXT,
@@ -73,7 +73,7 @@ async function createTables() {
         );
     `);
 
-    await client.query(/*sql*/`
+    await client.query(/*sql*/ `
       CREATE TABLE category_products(
         id SERIAL PRIMARY KEY,
         "productId" INTEGER REFERENCES products(id),
@@ -82,7 +82,7 @@ async function createTables() {
       );
     `);
 
-    await client.query(/*sql*/`
+    await client.query(/*sql*/ `
       CREATE TABLE line_items(
         id SERIAL PRIMARY KEY,
         "productId" INTEGER REFERENCES products(id),
@@ -91,7 +91,6 @@ async function createTables() {
         quantity INTEGER
       );
     `);
-  
   } catch (error) {
     console.error("Error while building/creating tables!");
     throw error;
@@ -101,15 +100,12 @@ async function createTables() {
 async function populateInitialData() {
   try {
     // create useful starting data
-
   } catch (error) {
     throw error;
   }
 }
 
-
 buildTables()
   .then(populateInitialData)
   .catch(console.error)
   .finally(() => client.end());
-
