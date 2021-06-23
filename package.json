@@ -4,12 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "npm run client:build",
+    "client:dev": "react-scripts start",
+    "client:build": "react-scripts build",
+    "server:dev": "nodemon index.js",
+    "db:build": "node ./db/init_db",
+    "start": "node index.js",
+    "launch:db": "sudo service postgresql start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "pg": "^8.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "^4.0.3"
