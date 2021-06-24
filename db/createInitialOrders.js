@@ -4,7 +4,7 @@ const createInitialOrders = async () => {
   try {
     console.log("Creating orders");
 
-    const orderssToCreate = [
+    const ordersToCreate = [
       { userId: 1 },
       { userId: 2 },
       { userId: 3 },
@@ -17,7 +17,7 @@ const createInitialOrders = async () => {
       { userId: 10 },
     ];
 
-    const orders = await Promise.all(orderssToCreate.map(createOrder));
+    const orders = await Promise.all(ordersToCreate.map(createOrder));
 
     console.log("Finished creating orders");
     console.log(orders);

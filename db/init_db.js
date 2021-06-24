@@ -3,7 +3,8 @@ const client = require("./client");
 
 const createInitialUsers = require("./createInitialUsers");
 
-const createInitialProducts = require ("./createInitialProducts")
+const createInitialProducts = require("./createInitialProducts");
+const createInitialReviews = require("./createInitialReviews");
 
 async function buildTables() {
   client.connect();
@@ -52,8 +53,8 @@ async function buildTables() {
       );
       CREATE TABLE reviews(
         id SERIAL PRIMARY KEY,
-        review VARCHAR(255),
-        rating NUMERIC NOT NULL,
+        comment VARCHAR(255),
+        rating NUMERIC CHECK(rating >= 1 AND rating <=5),
         "userId" INTEGER REFERENCES users(id),
         "productId" INTEGER REFERENCES products(id)
       );
@@ -83,6 +84,7 @@ async function populateInitialData() {
     // create useful starting data
     await createInitialUsers();
     await createInitialProducts();
+    await createInitialReviews();
   } catch (error) {
     throw error;
   }
