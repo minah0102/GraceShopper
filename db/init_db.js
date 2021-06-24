@@ -1,9 +1,9 @@
 // code to build and initialize DB goes here
 const client = require("./client");
 
+const createInitialProducts = require("./createInitialProducts");
 const createInitialUsers = require("./createInitialUsers");
-
-const createInitialProducts = require ("./createInitialProducts")
+const createInitialOrders = require("./createInitialOrders");
 
 async function buildTables() {
   client.connect();
@@ -81,8 +81,9 @@ async function buildTables() {
 async function populateInitialData() {
   try {
     // create useful starting data
-    await createInitialUsers();
     await createInitialProducts();
+    await createInitialUsers();
+    await createInitialOrders();
   } catch (error) {
     throw error;
   }
