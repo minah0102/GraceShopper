@@ -17,7 +17,7 @@ const createInitialProducts = async () => {
       {
         name: "Yellow Collar",
         description:
-          "Lorem ipsum dolor sit amet incididunt ut labore et dolore magna aliqua.",
+          "Lorem ipsum dolor sit amet incididunt ut labore et doloe magna aliqua.",
         price: 15,
         quantity: 24,
         imageName: "cat.jpeg",
@@ -176,7 +176,7 @@ const createInitialProducts = async () => {
       {
         name: "Catnip Treats",
         description:
-          "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "eiusmod tempor incididunt ut labore et dolore mana aliqua.",
         price: 5,
         quantity: 22,
         imageName: "cat.jpeg",

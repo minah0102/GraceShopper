@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "db:build": "node ./db/init_db"
-
+    "db:build": "node db/init_db.js"
   },
   "keywords": [],
   "author": "",
