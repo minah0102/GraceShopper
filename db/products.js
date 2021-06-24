@@ -10,11 +10,17 @@ const getAllProducts = async () => {
   }
 };
 
+// inlcudes array of reviews
 const getProductById = async (id) => {
   try {
     const {
       rows: [product],
     } = await client.query(/*sql*/ `SELECT * FROM products WHERE id=$1;`, [id]);
+    const reviews = await getProductReviews(id);
+    if (reviews) {
+      product.reviews = []
+      reviews.map(review => product.reviews.push(review))
+    }
     return product;
   } catch (error) {
     console.log("Error getting products");
@@ -69,11 +75,11 @@ const getProductReviews = async (productId) => {
   try {
     const { rows: reviews } = await client.query(
       /*sql*/
-      `SELECT r.review, r.rating, users.username
+      `SELECT r.comment, r.rating, users.username
      FROM products AS p
-     INNER JOIN reviews as r 
+     JOIN reviews as r 
      ON p.id = r."productId"
-     LEFT JOIN users
+     JOIN users
      ON r."userId" = users.id
      WHERE p.id=$1;
      `,
