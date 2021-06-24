@@ -198,11 +198,7 @@ const createInitialProducts = async () => {
         imageName: "cat.jpeg",
       },
       {
-<<<<<<< HEAD
-        name: "Treats",
-=======
         name: "Tuna Treats",
->>>>>>> d97f00f6651b63afb951229a64c2c8dbbced0ba7
         description:
           "eiusmod tempor incididunt ut labor et dolore magna aua.",
         price: 5,
