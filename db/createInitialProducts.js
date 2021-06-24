@@ -2,6 +2,7 @@ const {
   createProduct
 } = require("./products");
 
+
 const createInitialProducts = async () => {
   try {
     console.log("Starting to create products");
