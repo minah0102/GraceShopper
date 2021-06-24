@@ -5,6 +5,8 @@ const {
   // other db methods
 } = require("./init_db");
 
+const createInitialProducts = require ("./createInitialProducts")
+
 async function buildTables() {
   client.connect();
 
@@ -38,7 +40,7 @@ async function buildTables() {
         description TEXT UNIQUE NOT NULL,
         price DECIMAL,
         quantity INTEGER,
-        "imageName" VARCHAR(255) UNIQUE NOT NULL
+        "imageName" VARCHAR(255) NOT NULL
       );
       CREATE TABLE categories(
         id SERIAL PRIMARY KEY,
@@ -81,12 +83,13 @@ async function buildTables() {
 async function populateInitialData() {
   try {
     // create useful starting data
+    await createInitialProducts();
   } catch (error) {
     throw error;
   }
 }
 
 buildTables()
-  // .then(populateInitialData)
+  .then(populateInitialData)
   .catch(console.error)
   .finally(() => client.end());
