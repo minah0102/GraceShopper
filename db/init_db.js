@@ -79,6 +79,13 @@ async function buildTables() {
 }
 
 async function populateInitialData() {
+  const test = {
+    name: "WOW",
+    description: "OMGGGGGG WOWWOWO",
+    price: 8,
+    quantity: 500,
+    imageName: "cat.jpeg",
+  };
   try {
     // create useful starting data
     await createInitialProducts();
