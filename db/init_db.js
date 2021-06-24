@@ -2,9 +2,9 @@
 const client = require("./client");
 
 const createInitialUsers = require("./createInitialUsers");
-
 const createInitialProducts = require("./createInitialProducts");
 const createInitialReviews = require("./createInitialReviews");
+const createInitialOrders = require("./createInitialOrders");
 
 async function buildTables() {
   client.connect();
@@ -84,6 +84,7 @@ async function populateInitialData() {
     // create useful starting data
     await createInitialUsers();
     await createInitialProducts();
+    await createInitialOrders();
     await createInitialReviews();
   } catch (error) {
     throw error;
