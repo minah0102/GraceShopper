@@ -1,6 +1,6 @@
 const client = require("./client");
 
-// returns all products 
+// returns all products
 const getAllProducts = async () => {
   try {
     const { rows: products } = await client.query(`SELECT * FROM products;`);
