@@ -27,4 +27,4 @@ const createInitialOrders = async () => {
   }
 };
 
-module.exports = { createInitialOrders };
+module.exports = createInitialOrders;
