@@ -5,7 +5,8 @@ const {
   // other db methods
 } = require("./init_db");
 
-const createInitialProducts = require ("./createInitialProducts")
+const createInitialProducts = require("./createInitialProducts");
+const createInitialOrders = require("./createInitialOrders");
 
 async function buildTables() {
   client.connect();
@@ -84,6 +85,8 @@ async function populateInitialData() {
   try {
     // create useful starting data
     await createInitialProducts();
+    await createInitialUsers();
+    await createInitialOrders();
   } catch (error) {
     throw error;
   }
