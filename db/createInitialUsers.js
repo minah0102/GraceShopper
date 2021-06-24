@@ -75,3 +75,4 @@ async function createInitialUsers() {
 }
 
 module.exports = createInitialUsers;
+
