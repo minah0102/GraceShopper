@@ -1,9 +1,10 @@
 // code to build and initialize DB goes here
 const client = require("./client");
 
-const createInitialProducts = require("./createInitialProducts");
 const createInitialUsers = require("./createInitialUsers");
-const createInitialOrders = require("./createInitialOrders");
+
+const createInitialProducts = require("./createInitialProducts");
+const createInitialReviews = require("./createInitialReviews");
 
 async function buildTables() {
   client.connect();
@@ -52,8 +53,8 @@ async function buildTables() {
       );
       CREATE TABLE reviews(
         id SERIAL PRIMARY KEY,
-        review VARCHAR(255),
-        rating NUMERIC NOT NULL,
+        comment VARCHAR(255),
+        rating NUMERIC CHECK(rating >= 1 AND rating <=5),
         "userId" INTEGER REFERENCES users(id),
         "productId" INTEGER REFERENCES products(id)
       );
@@ -81,9 +82,9 @@ async function buildTables() {
 async function populateInitialData() {
   try {
     // create useful starting data
-    await createInitialProducts();
     await createInitialUsers();
-    await createInitialOrders();
+    await createInitialProducts();
+    await createInitialReviews();
   } catch (error) {
     throw error;
   }
