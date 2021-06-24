@@ -1,9 +1,17 @@
+const {
+  createUser
+} = require("./users");
 
-export async function createInitialUsers() {
+async function createInitialUsers() {
   console.log('Starting to create users...');
   try {
 
     const usersToCreate = [
+      {
+        username: 'admin',
+        email: 'admin@gmail.com',
+        password: 'adminpassword'
+      },
       {
         username: 'albert',
         email: 'albert123@gmail.com',
@@ -65,3 +73,5 @@ export async function createInitialUsers() {
     throw error;
   }
 }
+
+module.exports = createInitialUsers;
