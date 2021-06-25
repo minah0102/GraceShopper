@@ -95,6 +95,23 @@ usersRouter.post('/register', async (req, res, next) => {
 });
 
 //DELETE /users/:userId
+usersRouter.delete('/:userId', async (req, res, next) => { 
+  try {
+    if (!req.user) {
+      return "User is not logged in. Please login to proceed."
+    }
 
+    const userId = req.user.id;
+    if (userId) {
+      const deleteCurrentUser = await deleteUser(id);
+      res.send(deleteCurrentUser);
+    } else {
+      return "Cannot delete user. Invalid user."
+    }
+  } catch (error) {
+    console.error("error deleting user");
+    next(error);
+  }
+})
 
 module.exports = {usersRouter};
