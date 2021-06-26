@@ -65,7 +65,6 @@ async function getUserById({id, username, isAdmin}) {
   } catch (error) {
     throw error;
   }
-<<<<<<< HEAD
 }
 
 //should we include isAdmin??
@@ -81,8 +80,6 @@ async function updateUser({id, email, password }) {
   } catch (error) {
     throw error;
   }
-=======
->>>>>>> 4ccebeb1e61c3389879759315618b2ac30cc107f
 }
 
 async function deleteUser(id) {

@@ -12,19 +12,19 @@ const {
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { requireUser, requireAdmin } = require('./utils');
 const { JWT_SECRET } = process.env;
 
 // GET /users/me
-usersRouter.get("/me", async (req, res, next) => {
-  const user = req.user;
+usersRouter.get("/me", requireUser, async (req, res, next) => {
   try {
-    if (!user) throw "User is not logged in!";
     const { id, username } = user;
 
     res.send({
       id, username
     });
   } catch (error) {
+    console.error("Error on user/me")
     res.status(404);
     next(error);
   }
@@ -59,7 +59,7 @@ usersRouter.post("/login", async (req, res, next) => {
       }
     }
   } catch (error) {
-    console.error("error getting user by username");
+    console.error("Error on user/login");
     throw error;
   }
 });
@@ -89,18 +89,14 @@ usersRouter.post('/register', async (req, res, next) => {
 
 		res.send({ user: newUser });
 	} catch (error) {
-		console.error("Error on registering user");
+		console.error("Error on register/user");
     next(error);
 	}
 });
 
 //PATCH /users/:userId
-usersRouter.patch('/:userId', async (req, res, next) => {
+usersRouter.patch('/:userId', requireUser, async (req, res, next) => {
   try {
-    if (!req.user) {
-      return "User is not logged in. Please login to proceed."
-    }
-
     const userId = req.user.id;
     if (userId) {
       const editUser = await updateUser(id);
@@ -115,12 +111,8 @@ usersRouter.patch('/:userId', async (req, res, next) => {
 });
 
 //DELETE /users/:userId
-usersRouter.delete('/:userId', async (req, res, next) => { 
+usersRouter.delete('/:userId', requireUser, requireAdmin, async (req, res, next) => { 
   try {
-    if (!req.user) {
-      return "User is not logged in. Please login to proceed."
-    }
-
     const userId = req.user.id;
     if (userId) {
       const deleteCurrentUser = await deleteUser(id);
