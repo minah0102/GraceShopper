@@ -38,7 +38,7 @@ productsRouter.get("/:productId", requireUser, async (req, res, next) => {
 
 productsRouter.post("/", requireAdmin, async (req, res, next) => {
   try {
-    const { name, description, price, quantity } = req.body;
+    const { name, description, price, quantity, categoryId } = req.body;
     let imageName = req.body.imageName ? imageName : "dog.jpeg";
     const product = await createProduct({
       name,
@@ -46,6 +46,7 @@ productsRouter.post("/", requireAdmin, async (req, res, next) => {
       price,
       quantity,
       imageName,
+      categoryId
     });
     res.send(product);
   } catch (error) {

@@ -6,31 +6,31 @@ const {
   getUserByUsername,
   getUser,
   getUserById,
-  deleteUser
+  deleteUser,
+  updateUser
 } = require("../db");
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { requireUser, requireAdmin } = require('./utils');
 const { JWT_SECRET } = process.env;
 
 // GET /users/me
-usersRouter.get("/me", async (req, res, next) => {
-  const user = req.user;
+usersRouter.get("/me", requireUser, async (req, res, next) => {
   try {
-    if (!user) throw "User is not logged in!";
     const { id, username } = user;
 
     res.send({
       id, username
     });
   } catch (error) {
+    console.error("Error on user/me")
     res.status(404);
     next(error);
   }
 });
 
 //POST /users/login
-
 usersRouter.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
@@ -59,13 +59,12 @@ usersRouter.post("/login", async (req, res, next) => {
       }
     }
   } catch (error) {
-    console.error("error getting user by username");
+    console.error("Error on user/login");
     throw error;
   }
 });
 
 //POST /users/register
-
 usersRouter.post('/register', async (req, res, next) => {
 	try {
 		const { username, password } = req.body;
@@ -89,18 +88,31 @@ usersRouter.post('/register', async (req, res, next) => {
 		const newUser = await createUser({ username, password });
 
 		res.send({ user: newUser });
-	} catch ({ name, message }) {
-		next({ name, message });
+	} catch (error) {
+		console.error("Error on register/user");
+    next(error);
 	}
 });
 
-//DELETE /users/:userId
-usersRouter.delete('/:userId', async (req, res, next) => { 
+//PATCH /users/:userId
+usersRouter.patch('/:userId', requireUser, async (req, res, next) => {
   try {
-    if (!req.user) {
-      return "User is not logged in. Please login to proceed."
+    const userId = req.user.id;
+    if (userId) {
+      const editUser = await updateUser(id);
+      res.send(editUser);
+    } else {
+      return "Cannot edit user. Invalid user."
     }
+  } catch (error) {
+    console.error("Error editing/patching user");
+    next(error);
+  }
+});
 
+//DELETE /users/:userId
+usersRouter.delete('/:userId', requireUser, requireAdmin, async (req, res, next) => { 
+  try {
     const userId = req.user.id;
     if (userId) {
       const deleteCurrentUser = await deleteUser(id);
@@ -112,6 +124,8 @@ usersRouter.delete('/:userId', async (req, res, next) => {
     console.error("error deleting user");
     next(error);
   }
-})
+});
 
-module.exports = {usersRouter};
+//admin => make other users admins
+
+module.exports = usersRouter;

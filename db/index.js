@@ -2,5 +2,5 @@
     ...require("./users"),
     ...require("./products"),
     ...require("./orders"),
-    // ...require("./reviews"),
+    ...require("./reviews"),
   };
