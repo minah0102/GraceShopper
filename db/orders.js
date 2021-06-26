@@ -192,6 +192,10 @@ async function updateQuantity(productId, quantity) {
       RETURNING *;
     `);
 
+    // if(updateQuantity.quantity === 0) {
+    //   return await deleteLineItems(updatedQuantity.productId);
+    // }
+
     return updatedQuantity;
   } catch (error) {
     console.log("Error in updateQuantity");
@@ -200,6 +204,25 @@ async function updateQuantity(productId, quantity) {
 }
 
 //delete line_items - remove/destory cart and when quantity = 0
+async function deleteLineItems(id) {
+  try {
+    // const {
+    //   rows: [deletedLineItem],
+    // } = await client.query(
+    //   /*sql*/ `
+    //   DELETE FROM line_items
+    //   WHERE "productId"=$1
+    //   RETURNING *;
+    // `,
+    //   [productId]
+    // );
+
+    return deletedLineItem;
+  } catch (error) {
+    console.log("Error in deleteLineItems");
+    throw error;
+  }
+}
 
 module.exports = {
   createOrder,
@@ -209,5 +232,6 @@ module.exports = {
   getCartByUserId,
   getAllOrders,
   addProductToCart,
-  updateQuantity
+  updateQuantity,
+  deleteLineItems
 };
