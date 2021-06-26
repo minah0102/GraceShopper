@@ -75,7 +75,21 @@ async function getUserById(id) {
   } catch (error) {
     throw error;
   }
+}
 
+//should we include isAdmin??
+async function updateUser({id, email, password }) {
+  try {
+    const { rows: [user]} = await client.query(`
+    UPDATE users
+    SET email = $1, password = $2
+    WHERE id = $3
+    RETURNING *;
+    `, [email, password, id]);
+    return user;
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function deleteUser(id) {
@@ -97,5 +111,6 @@ module.exports = {
   getUserByUsername,
   getUser,
   getUserById,
+  updateUser,
   deleteUser
 }
