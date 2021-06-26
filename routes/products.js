@@ -1,5 +1,6 @@
 const express = require("express");
 const productsRouter = express.Router();
+const { requireUser, requireAdmin } = require('./utils');
 
 const {
   getAllProducts,
@@ -19,7 +20,7 @@ productsRouter.get("/", async (req, res, next) => {
 });
 
 // will need to add requireUser
-productsRouter.get("/:productId", async (req, res, next) => {
+productsRouter.get("/:productId", requireUser, async (req, res, next) => {
   try {
     const { productId } = req.params;
     const product = await getProductById(productId);
@@ -35,8 +36,7 @@ productsRouter.get("/:productId", async (req, res, next) => {
   }
 });
 
-// will need to add requireAdmin
-productsRouter.post("/", async (req, res, next) => {
+productsRouter.post("/", requireAdmin, async (req, res, next) => {
   try {
     const { name, description, price, quantity } = req.body;
     let imageName = req.body.imageName ? imageName : "dog.jpeg";
@@ -54,7 +54,7 @@ productsRouter.post("/", async (req, res, next) => {
   }
 });
 
-productsRouter.delete("/:productId", async (req, res, next) => {
+productsRouter.delete("/:productId", requireAdmin, async (req, res, next) => {
   try {
     const { productId } = req.params;
     const product = await deleteProduct(productId);
