@@ -121,7 +121,7 @@ async function getAllOrders(orderId) {
   try {
     const { rows: allOrders } = await client.query(
       /*sql*/ `
-      SELECT * FROM orders WHERE id=$1
+      SELECT * FROM orders WHERE id=$1;
     `,
       [orderId]
     );
@@ -162,17 +162,20 @@ async function addProductToCart({ productId, orderId, price, quantity }) {
     //check if the product is already in the cart.
     //if I use getCartByUserId() I will not get productId
     const {
-      rows: [product],
-    } = await client.query(/*sql*/ `
-      SELECT * FROM line_items WHERE "productId"=${productId};  
-    `);
+      rows: [lineItem],
+    } = await client.query(
+      /*sql*/ `
+      SELECT * FROM line_items WHERE "productId"=$1;  
+    `,
+      [productId]
+    );
 
-    if (product) {
-      return await updateQuantity(product.productId, quantity);
+    if (lineItem) {
+      return await updateQuantity(lineItem.id, lineItem.productId, quantity);
     }
 
     const {
-      rows: [line_item],
+      rows: [newLineItem],
     } = await client.query(
       /*sql*/ `
       INSERT INTO line_items("productId", "orderId", price, quantity)
@@ -182,23 +185,26 @@ async function addProductToCart({ productId, orderId, price, quantity }) {
       [productId, orderId, price, quantity]
     );
 
-    return line_item;
+    return newLineItem;
   } catch (error) {
     console.log("Error in addProductToCart");
     throw error;
   }
 }
 
-async function updateQuantity(productId, quantity) {
+async function updateQuantity(id, productId, quantity) {
   try {
-    const { rows: updatedQuantity } = await client.query(/*sql*/ `
+    const { rows: updatedQuantity } = await client.query(
+      /*sql*/ `
       UPDATE line_items
-      SET quantity=${quantity}
-      WHERE "productId"=${productId}
+      SET quantity=$1
+      WHERE id=$2 AND "productId"=$3
       RETURNING *;
-    `);
+    `,
+      [quantity, id, productId]
+    );
 
-    if(updateQuantity.quantity === 0) {
+    if (updatedQuantity.quantity === 0) {
       return await deleteLineItems(updatedQuantity.id);
     }
 
@@ -239,5 +245,5 @@ module.exports = {
   getAllOrders,
   addProductToCart,
   updateQuantity,
-  deleteLineItems
+  deleteLineItems,
 };
