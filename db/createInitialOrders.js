@@ -4,18 +4,7 @@ const createInitialOrders = async () => {
   try {
     console.log("Creating orders");
 
-    const ordersToCreate = [
-      { userId: 1 },
-      { userId: 2 },
-      { userId: 3 },
-      { userId: 4 },
-      { userId: 5 },
-      { userId: 6 },
-      { userId: 7 },
-      { userId: 8 },
-      { userId: 9 },
-      { userId: 10 },
-    ];
+    const ordersToCreate = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     const orders = await Promise.all(ordersToCreate.map(createOrder));
 
