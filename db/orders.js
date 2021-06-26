@@ -33,6 +33,9 @@ async function removeOrder(orderId) {
       [orderId]
     );
 
+    //delete line_item using line_item id
+    //where can I grab line_item id?
+
     return removedCart;
   } catch (error) {
     console.log("Error in removeOrder");
@@ -51,6 +54,9 @@ async function destroyOrder(userId) {
     `,
       [userId]
     );
+
+    //delete line_item using line_item id
+    //where can I grab line_item id?
 
     return await createOrder(userId);
   } catch (error) {
@@ -192,9 +198,9 @@ async function updateQuantity(productId, quantity) {
       RETURNING *;
     `);
 
-    // if(updateQuantity.quantity === 0) {
-    //   return await deleteLineItems(updatedQuantity.productId);
-    // }
+    if(updateQuantity.quantity === 0) {
+      return await deleteLineItems(updatedQuantity.id);
+    }
 
     return updatedQuantity;
   } catch (error) {
@@ -206,16 +212,16 @@ async function updateQuantity(productId, quantity) {
 //delete line_items - remove/destory cart and when quantity = 0
 async function deleteLineItems(id) {
   try {
-    // const {
-    //   rows: [deletedLineItem],
-    // } = await client.query(
-    //   /*sql*/ `
-    //   DELETE FROM line_items
-    //   WHERE "productId"=$1
-    //   RETURNING *;
-    // `,
-    //   [productId]
-    // );
+    const {
+      rows: [deletedLineItem],
+    } = await client.query(
+      /*sql*/ `
+      DELETE FROM line_items
+      WHERE id=$1
+      RETURNING *;
+    `,
+      [id]
+    );
 
     return deletedLineItem;
   } catch (error) {
