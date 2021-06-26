@@ -1,8 +1,15 @@
 const client = require("./client");
 
+const {createCategoryProduct} = require('./categories')
+
 const getAllProducts = async () => {
   try {
-    const { rows: products } = await client.query(`SELECT * FROM products;`);
+    const {
+      rows: products,
+    } = await client.query(`SELECT p.*, c.name AS category
+    FROM products p
+    LEFT JOIN category_products cp ON p.id = cp."productId"
+    LEFT JOIN categories c ON c.id = cp."categoryId";`);
     return products;
   } catch (error) {
     console.log("Error getting products");
@@ -19,8 +26,8 @@ const getProductById = async (id) => {
     const reviews = await getProductReviews(id);
     if (!product) return;
     if (reviews) {
-      product.reviews = []
-      reviews.map(review => product.reviews.push(review))
+      product.reviews = [];
+      reviews.map((review) => product.reviews.push(review));
     }
     return product;
   } catch (error) {
@@ -29,12 +36,35 @@ const getProductById = async (id) => {
   }
 };
 
+const getProductsByCategory = async (category) => {
+  try {
+    const { rows: products } = await client.query(
+      `
+      SELECT p.*, c.name AS category
+      FROM products p
+      JOIN category_products cp ON p.id = cp."productId"
+      JOIN categories c ON c.id = cp."categoryId"
+      WHERE c.name=$1
+    `,
+      [category]
+    );
+    console.log("PRODUCTS WITH CATEGORIES", products);
+    return products;
+  } catch (error) {
+    console.log("Error getting products");
+    console.error(error);
+  }
+};
+
+// there will be a drop down menu to select a category when creating a new product
+// the category id will be sent in with request to createProduct
 const createProduct = async ({
   name,
   description,
   price,
   quantity,
   imageName,
+  categoryId,
 }) => {
   try {
     const {
@@ -47,12 +77,16 @@ const createProduct = async ({
     `,
       [name, description, price, quantity, imageName]
     );
+
+    const category = await createCategoryProduct({productId: product.id, categoryId})
     return product;
   } catch (error) {
     console.log("Error creating product");
     console.error(error);
   }
 };
+
+// updateProduct
 
 const deleteProduct = async (id) => {
   try {
@@ -99,4 +133,5 @@ module.exports = {
   createProduct,
   deleteProduct,
   getProductReviews,
+  getProductsByCategory,
 };
