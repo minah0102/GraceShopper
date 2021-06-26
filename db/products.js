@@ -17,6 +17,7 @@ const getProductById = async (id) => {
       rows: [product],
     } = await client.query(/*sql*/ `SELECT * FROM products WHERE id=$1;`, [id]);
     const reviews = await getProductReviews(id);
+    if (!product) return;
     if (reviews) {
       product.reviews = []
       reviews.map(review => product.reviews.push(review))
