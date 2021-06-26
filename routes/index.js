@@ -10,4 +10,7 @@ apiRouter.get("/", (req, res, next) => {
 const productsRouter = require("./products");
 apiRouter.use("/products", productsRouter);
 
+const reviewsRouter = require("./reviews");
+apiRouter.use("/reviews", reviewsRouter);
+
 module.exports = apiRouter;
