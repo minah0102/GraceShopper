@@ -14,6 +14,7 @@ const createInitialProducts = async () => {
         price: 15,
         quantity: 20,
         imageName: "cat.jpeg",
+        categoryId: 4,
       },
       {
         name: "Yellow Collar",
@@ -22,6 +23,7 @@ const createInitialProducts = async () => {
         price: 15,
         quantity: 24,
         imageName: "cat.jpeg",
+        categoryId: 4,
       },
       {
         name: "Orange Collar",
@@ -30,6 +32,7 @@ const createInitialProducts = async () => {
         price: 15,
         quantity: 30,
         imageName: "cat.jpeg",
+        categoryId: 4,
       },
       {
         name: "Green Collar",
@@ -38,6 +41,7 @@ const createInitialProducts = async () => {
         price: 10,
         quantity: 30,
         imageName: "cat.jpeg",
+        categoryId: 4,
       },
       {
         name: "Blue Collar",
@@ -46,6 +50,7 @@ const createInitialProducts = async () => {
         price: 10,
         quantity: 36,
         imageName: "cat.jpeg",
+        categoryId: 4,
       },
       {
         name: "Purple Collar",
@@ -53,6 +58,7 @@ const createInitialProducts = async () => {
           "Lorem ipsum dolor sit amet, consectetur.",
         quantity: 30,
         imageName: "cat.jpeg",
+        categoryId: 4,
       },
       {
         name: "Kitten Toy #1",
@@ -61,6 +67,7 @@ const createInitialProducts = async () => {
         price: 5,
         quantity: 42,
         imageName: "cat.jpeg",
+        categoryId: 2,
       },
       {
         name: "Kitten Toy #2",
@@ -69,6 +76,7 @@ const createInitialProducts = async () => {
         price: 5,
         quantity: 12,
         imageName: "cat.jpeg",
+        categoryId: 2,
       },
       {
         name: "Kitten Toy #3",
@@ -77,6 +85,7 @@ const createInitialProducts = async () => {
         price: 5,
         quantity: 20,
         imageName: "cat.jpeg",
+        categoryId: 2,
       },
       {
         name: "Kitten Toy #4",
@@ -85,6 +94,7 @@ const createInitialProducts = async () => {
         price: 5,
         quantity: 42,
         imageName: "cat.jpeg",
+        categoryId: 2,
       },
       {
         name: "Kitten Toy #5",
@@ -93,6 +103,7 @@ const createInitialProducts = async () => {
         price: 5,
         quantity: 10,
         imageName: "cat.jpeg",
+        categoryId: 2,
       },
       {
         name: "Kitten Food",
@@ -101,6 +112,7 @@ const createInitialProducts = async () => {
         price: 10,
         quantity: 42,
         imageName: "cat.jpeg",
+        categoryId: 1,
       },
       {
         name: "Organic Kitten Food",
@@ -109,6 +121,7 @@ const createInitialProducts = async () => {
         price: 20,
         quantity: 42,
         imageName: "cat.jpeg",
+        categoryId: 1,
       },
       {
         name: "Adult Cat Food",
@@ -117,6 +130,7 @@ const createInitialProducts = async () => {
         price: 15,
         quantity: 17,
         imageName: "cat.jpeg",
+        categoryId: 1,
       },
       {
         name: "Organic Adult Cat Food",
@@ -125,6 +139,7 @@ const createInitialProducts = async () => {
         price: 30,
         quantity: 15,
         imageName: "cat.jpeg",
+        categoryId: 1,
       },
       {
         name: "Grain Free Kitten Food",
@@ -133,6 +148,7 @@ const createInitialProducts = async () => {
         price: 20,
         quantity: 42,
         imageName: "cat.jpeg",
+        categoryId: 1,
       },
       {
         name: "Cat Tower",
@@ -141,6 +157,7 @@ const createInitialProducts = async () => {
         price: 120,
         quantity: 5,
         imageName: "cat.jpeg",
+        categoryId: 2,
       },
       {
         name: "Cat Bed",
@@ -149,6 +166,7 @@ const createInitialProducts = async () => {
         price: 20,
         quantity: 10,
         imageName: "cat.jpeg",
+        categoryId: 4,
       },
       {
         name: "Small Litter Box",
@@ -157,6 +175,7 @@ const createInitialProducts = async () => {
         price: 15,
         quantity: 54,
         imageName: "cat.jpeg",
+        categoryId: 4,
       },
       {
         name: "Large Litter Box",
@@ -165,6 +184,7 @@ const createInitialProducts = async () => {
         price: 25,
         quantity: 25,
         imageName: "cat.jpeg",
+        categoryId: 4,
       },
       {
         name: "Catnip",
@@ -173,6 +193,7 @@ const createInitialProducts = async () => {
         price: 5,
         quantity: 42,
         imageName: "cat.jpeg",
+        categoryId: 1,
       },
       {
         name: "Catnip Treats",
@@ -181,6 +202,7 @@ const createInitialProducts = async () => {
         price: 5,
         quantity: 22,
         imageName: "cat.jpeg",
+        categoryId: 1,
       },
       {
         name: "Salmon Treats",
@@ -189,6 +211,7 @@ const createInitialProducts = async () => {
         price: 5,
         quantity: 35,
         imageName: "cat.jpeg",
+        categoryId: 1,
       },
       {
         name: "Chicken Treats",
@@ -197,6 +220,7 @@ const createInitialProducts = async () => {
         price: 5,
         quantity: 26,
         imageName: "cat.jpeg",
+        categoryId: 1,
       },
       {
         name: "Tuna Treats",
@@ -205,6 +229,7 @@ const createInitialProducts = async () => {
         price: 5,
         quantity: 35,
         imageName: "cat.jpeg",
+        categoryId: 1,
       }
     ];
     const products = await Promise.all(productsToCreate.map(createProduct));
