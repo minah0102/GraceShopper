@@ -67,9 +67,9 @@ usersRouter.post("/login", async (req, res, next) => {
 //POST /users/register
 usersRouter.post('/register', async (req, res, next) => {
 	try {
-		const { username, password } = req.body;
+		const { username, password, email } = req.body;
 
-		if (!username || !password) {
+		if (!username || !password || !email) {
 			const error = new Error('Missing credentials');
 			return res.status(400).send({ data: error.message });
 		}
@@ -85,9 +85,9 @@ usersRouter.post('/register', async (req, res, next) => {
 			const error = new Error('Password must be at least 8 characters');
 			return res.status(400).send({ data: error.message });
 		}
-		const newUser = await createUser({ username, password });
-
-		res.send({ user: newUser });
+		const newUser = await createUser({ username, password, email });
+    const token = jwt.sign(newUser, JWT_SECRET);
+		res.send({ user: newUser, token });
 	} catch (error) {
 		console.error("Error on register/user");
     next(error);
