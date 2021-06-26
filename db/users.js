@@ -8,11 +8,8 @@ const hashPassword = async string => {
 };
 
 async function createUser({ username, email, password }) {
-  //make sure to hash the password before storing it to the database
-
   const hashedPassword = await hashPassword(password);
 
-  //should I RETURN id username || * ??
   try {
     const { rows: [user] } = await client.query(`
         INSERT INTO users(username, email, password)
@@ -29,7 +26,6 @@ async function createUser({ username, email, password }) {
 }
 
 async function getUser({ username, password }) {
-  //this should be able to verify the password against the hashed password
   try {
     const user = await getUserByUsername(username);
     const hashedPassword = user.password;
@@ -44,8 +40,6 @@ async function getUser({ username, password }) {
 }
 
 async function getUserByUsername(username) {
-  // getUserByUsername(username)
-  // select a user using the user's username. Return the user object.
   try {
     const { rows: [user] } = await client.query(`
     SELECT * 
@@ -55,27 +49,22 @@ async function getUserByUsername(username) {
 
     return user;
   } catch (error) {
-
     throw error;
   }
 }
 
-async function getUserById(id) {
-  //getUserById(id)
-  //select a user using the user's ID. Return the user object.
-  //do NOT return the password
+async function getUserById({id, username, isAdmin}) {
   try {
     const { rows: [user] } = await client.query(`
-    SELECT id, username
+    SELECT id, username, "isAdmin"
     FROM users
     WHERE id=$1;
-    `, [id]);
+    `, [id, username, isAdmin]);
 
     return user;
   } catch (error) {
     throw error;
   }
-
 }
 
 async function deleteUser(id) {
