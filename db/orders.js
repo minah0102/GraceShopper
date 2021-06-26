@@ -138,7 +138,7 @@ async function attachProductsToOrder(orders) {
     const orderIds = orders.map((o) => o.id).join(", ");
 
     const { rows: products } = await client.query(/*sql*/ `
-      SELECT p.id AS "productId", p.name, p.description, p."imageName", li.quantity, li.price 
+      SELECT p.id AS "productId", p.name, p.description, p."imageName", li.quantity, li.price, li."orderId"
       FROM line_items AS li
       JOIN products AS p ON p.id=li."productId"
       WHERE "orderId" IN (${orderIds});
