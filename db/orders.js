@@ -33,9 +33,6 @@ async function removeOrder(orderId) {
       [orderId]
     );
 
-    //delete line_item using line_item id
-    //where can I grab line_item id?
-
     return removedCart;
   } catch (error) {
     console.log("Error in removeOrder");
@@ -47,16 +44,16 @@ async function removeOrder(orderId) {
 //delete and create new order
 async function destroyOrder(userId) {
   try {
-    await client.query(
+    const {rows: [deletedOrder]} = await client.query(
       /*sql*/ `
       DELETE FROM orders
-      WHERE "userId"=$1;
+      WHERE "userId"=$1
+      RETURNING *;
     `,
       [userId]
     );
 
-    //delete line_item using line_item id
-    //where can I grab line_item id?
+    await deleteLineItems(deletedOrder.orderId)
 
     return await createOrder(userId);
   } catch (error) {
@@ -204,9 +201,9 @@ async function updateQuantity(id, productId, quantity) {
       [quantity, id, productId]
     );
 
-    if (updatedQuantity.quantity === 0) {
-      return await deleteLineItems(updatedQuantity.id);
-    }
+    // if (updatedQuantity.quantity === 0) {
+    //   return await deleteLineItems(updatedQuantity.id);
+    // }
 
     return updatedQuantity;
   } catch (error) {
@@ -216,7 +213,7 @@ async function updateQuantity(id, productId, quantity) {
 }
 
 //delete line_items - remove/destory cart and when quantity = 0
-async function deleteLineItems(id) {
+async function deleteLineItems(orderId) {
   try {
     const {
       rows: [deletedLineItem],
@@ -232,6 +229,15 @@ async function deleteLineItems(id) {
     return deletedLineItem;
   } catch (error) {
     console.log("Error in deleteLineItems");
+    throw error;
+  }
+}
+
+async function removeProductFromLineItems(productId){
+  try {
+    
+  } catch (error) {
+    console.log("Error in removeProductFromLineItems");
     throw error;
   }
 }

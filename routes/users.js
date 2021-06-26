@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const usersRouter = express.Router();
 
 const {
@@ -6,11 +6,11 @@ const {
   getUserByUsername,
   getUser,
   getUserById,
-  deleteUser
+  deleteUser,
 } = require("../db");
 
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 
 // GET /users/me
@@ -21,7 +21,8 @@ usersRouter.get("/me", async (req, res, next) => {
     const { id, username } = user;
 
     res.send({
-      id, username
+      id,
+      username,
     });
   } catch (error) {
     res.status(404);
@@ -66,39 +67,39 @@ usersRouter.post("/login", async (req, res, next) => {
 
 //POST /users/register
 
-usersRouter.post('/register', async (req, res, next) => {
-	try {
-		const { username, password } = req.body;
+usersRouter.post("/register", async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
 
-		if (!username || !password) {
-			const error = new Error('Missing credentials');
-			return res.status(400).send({ data: error.message });
-		}
+    if (!username || !password) {
+      const error = new Error("Missing credentials");
+      return res.status(400).send({ data: error.message });
+    }
 
-		const user = await getUserByUsername(username);
+    const user = await getUserByUsername(username);
 
-		if (user) {
-			const error = new Error('User already exists');
-			return res.status(400).send({ data: error.message });
-		}
+    if (user) {
+      const error = new Error("User already exists");
+      return res.status(400).send({ data: error.message });
+    }
 
-		if (password.length < 8) {
-			const error = new Error('Password must be at least 8 characters');
-			return res.status(400).send({ data: error.message });
-		}
-		const newUser = await createUser({ username, password });
+    if (password.length < 8) {
+      const error = new Error("Password must be at least 8 characters");
+      return res.status(400).send({ data: error.message });
+    }
+    const newUser = await createUser({ username, password });
 
-		res.send({ user: newUser });
-	} catch ({ name, message }) {
-		next({ name, message });
-	}
+    res.send({ user: newUser });
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
 });
 
 //DELETE /users/:userId
-usersRouter.delete('/:userId', async (req, res, next) => { 
+usersRouter.delete("/:userId", async (req, res, next) => {
   try {
     if (!req.user) {
-      return "User is not logged in. Please login to proceed."
+      return "User is not logged in. Please login to proceed.";
     }
 
     const userId = req.user.id;
@@ -106,12 +107,12 @@ usersRouter.delete('/:userId', async (req, res, next) => {
       const deleteCurrentUser = await deleteUser(id);
       res.send(deleteCurrentUser);
     } else {
-      return "Cannot delete user. Invalid user."
+      return "Cannot delete user. Invalid user.";
     }
   } catch (error) {
     console.error("error deleting user");
     next(error);
   }
-})
+});
 
-module.exports = {usersRouter};
+module.exports = usersRouter;
