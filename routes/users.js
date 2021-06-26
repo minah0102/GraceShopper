@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const usersRouter = express.Router();
 
 const {
@@ -21,8 +21,7 @@ usersRouter.get("/me", requireUser, async (req, res, next) => {
     const { id, username } = user;
 
     res.send({
-      id,
-      username,
+      id, username
     });
   } catch (error) {
     console.error("Error on user/me")
@@ -66,40 +65,44 @@ usersRouter.post("/login", async (req, res, next) => {
 });
 
 //POST /users/register
+usersRouter.post('/register', async (req, res, next) => {
+	try {
+		const { username, password, email } = req.body;
 
-usersRouter.post("/register", async (req, res, next) => {
-  try {
-    const { username, password, email } = req.body;
+		if (!username || !password || !email) {
+			const error = new Error('Missing credentials');
+			return res.status(400).send({ data: error.message });
+		}
 
-    if (!username || !password || !email) {
-      const error = new Error("Missing credentials");
-      return res.status(400).send({ data: error.message });
-    }
+		const user = await getUserByUsername(username);
 
-    const user = await getUserByUsername(username);
+		if (user) {
+			const error = new Error('User already exists');
+			return res.status(400).send({ data: error.message });
+		}
 
-    if (user) {
-      const error = new Error("User already exists");
-      return res.status(400).send({ data: error.message });
-    }
-
-    if (password.length < 8) {
-      const error = new Error("Password must be at least 8 characters");
-      return res.status(400).send({ data: error.message });
-    }
-    const newUser = await createUser({ username, password, email });
-
-    res.send({ user: newUser });
-  } catch ({ name, message }) {
-    next({ name, message });
-  }
+		if (password.length < 8) {
+			const error = new Error('Password must be at least 8 characters');
+			return res.status(400).send({ data: error.message });
+		}
+		const newUser = await createUser({ username, password, email });
+    const token = jwt.sign(newUser, JWT_SECRET);
+		res.send({ user: newUser, token });
+	} catch (error) {
+		console.error("Error on register/user");
+    next(error);
+	}
 });
 
-//DELETE /users/:userId
-usersRouter.delete("/:userId", async (req, res, next) => {
+//PATCH /users/:userId
+usersRouter.patch('/:userId', requireUser, async (req, res, next) => {
   try {
-    if (!req.user) {
-      return "User is not logged in. Please login to proceed.";
+    const userId = req.user.id;
+    if (userId) {
+      const editUser = await updateUser(id);
+      res.send(editUser);
+    } else {
+      return "Cannot edit user. Invalid user."
     }
   } catch (error) {
     console.error("Error editing/patching user");
@@ -115,12 +118,14 @@ usersRouter.delete('/:userId', requireUser, requireAdmin, async (req, res, next)
       const deleteCurrentUser = await deleteUser(id);
       res.send(deleteCurrentUser);
     } else {
-      return "Cannot delete user. Invalid user.";
+      return "Cannot delete user. Invalid user."
     }
   } catch (error) {
     console.error("error deleting user");
     next(error);
   }
 });
+
+//admin => make other users admins
 
 module.exports = usersRouter;
