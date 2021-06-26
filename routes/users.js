@@ -114,4 +114,4 @@ usersRouter.delete('/:userId', async (req, res, next) => {
   }
 })
 
-module.exports = {usersRouter};
+module.exports = usersRouter;
