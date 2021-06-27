@@ -189,16 +189,16 @@ async function addProductToCart({ productId, orderId, price, quantity }) {
   }
 }
 
-async function updateQuantity(id, productId, quantity) {
+async function updateQuantity(orderId, productId, quantity) {
   try {
     const { rows: updatedQuantity } = await client.query(
       /*sql*/ `
       UPDATE line_items
       SET quantity=$1
-      WHERE id=$2 AND "productId"=$3
+      WHERE "orderId"=$2 AND "productId"=$3
       RETURNING *;
     `,
-      [quantity, id, productId]
+      [quantity, orderId, productId]
     );
 
     // if (updatedQuantity.quantity === 0) {

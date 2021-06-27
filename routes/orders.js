@@ -51,8 +51,8 @@ ordersRouter.patch(
   async (req, res, next) => {
     try {
       const { productId } = req.params;
-      const { id, quantity } = req.body;
-      const updated = await updateQuantity(id, productId, quantity);
+      const { orderId, quantity } = req.body;
+      const updated = await updateQuantity(orderId, productId, quantity);
 
       res.send(updated);
     } catch (error) {
