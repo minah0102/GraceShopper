@@ -15,14 +15,24 @@ const express = require("express");
 const reviewsRouter = express.Router();
 
 const { createReview, updateReview, deleteReview } = require("../db/reviews");
-const { requireUser, requireAdmin } = require("./utils");
+const { requireUser } = require("./utils");
+const { getHistory } = require("../db/orders");
+
+reviewsRouter.use((req, res, next) => {
+  console.log("reviewsRouter is use");
+  next();
+});
 
 reviewsRouter.post("/:productId", requireUser, async (req, res, next) => {
-  const { comment, rating } = req.body;
+  console.log("HITTING IT");
+  const { comment, rating, userId } = req.body;
   const { productId } = req.params;
-  const { userId } = req.user.id;
-
+  const token = req.user.token;
+  console.log(token)
+  // // const { user } = req;
+  // const pastOrders = await getHistory()
   try {
+    // userId = user.id;
     const newReview = await createReview({
       comment,
       rating,
@@ -34,12 +44,6 @@ reviewsRouter.post("/:productId", requireUser, async (req, res, next) => {
     console.log("postReview", error);
     next(error);
   }
-
-  //  else {
-  //   next({
-  //     error: "User doesn't match the author",
-  //     message: "You can't perform this action",
-  //   });
 });
 
 module.exports = reviewsRouter;
