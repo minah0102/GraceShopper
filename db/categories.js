@@ -1,5 +1,17 @@
 const client = require("./client");
 
+const getAllCategories = async () => {
+  try {
+    const {
+      rows: categories
+    } = await client.query(`SELECT * FROM categories`)
+    return categories
+  } catch (error) {
+    console.log("Error getting categories");
+    console.error(error);
+  }
+}
+
 const createCategory = async ({ name }) => {
   try {
     const {
@@ -39,6 +51,7 @@ const createCategoryProduct = async ({ productId, categoryId }) => {
 };
 
 module.exports = {
+  getAllCategories,
   createCategoryProduct,
   createCategory,
 };

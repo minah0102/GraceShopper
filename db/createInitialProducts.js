@@ -55,7 +55,7 @@ const createInitialProducts = async () => {
       {
         name: "Purple Collar",
         description:
-          "Lorem ipsum dolor sit amet, consectetur.",
+          "Lorem ipsum dolor sit amet, consctetur.",
         quantity: 30,
         imageName: "cat.jpeg",
         categoryId: 4,
