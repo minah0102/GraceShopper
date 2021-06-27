@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const usersRouter = express.Router();
 
 const {
@@ -21,7 +21,8 @@ usersRouter.get("/me", requireUser, async (req, res, next) => {
     const { id, username } = user;
 
     res.send({
-      id, username
+      id,
+      username,
     });
   } catch (error) {
     console.error("Error on user/me")
@@ -74,12 +75,12 @@ usersRouter.post('/register', async (req, res, next) => {
 			return res.status(400).send({ data: error.message });
 		}
 
-		const user = await getUserByUsername(username);
+    const user = await getUserByUsername(username);
 
-		if (user) {
-			const error = new Error('User already exists');
-			return res.status(400).send({ data: error.message });
-		}
+    if (user) {
+      const error = new Error("User already exists");
+      return res.status(400).send({ data: error.message });
+    }
 
 		if (password.length < 8) {
 			const error = new Error('Password must be at least 8 characters');
@@ -118,7 +119,7 @@ usersRouter.delete('/:userId', requireUser, requireAdmin, async (req, res, next)
       const deleteCurrentUser = await deleteUser(id);
       res.send(deleteCurrentUser);
     } else {
-      return "Cannot delete user. Invalid user."
+      return "Cannot delete user. Invalid user.";
     }
   } catch (error) {
     console.error("error deleting user");
