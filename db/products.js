@@ -1,6 +1,6 @@
 const client = require("./client");
 
-const {createCategoryProduct} = require('./categories')
+const { createCategoryProduct } = require("./categories");
 
 const getAllProducts = async () => {
   try {
@@ -78,7 +78,10 @@ const createProduct = async ({
       [name, description, price, quantity, imageName]
     );
 
-    const category = await createCategoryProduct({productId: product.id, categoryId})
+    const category = await createCategoryProduct({
+      productId: product.id,
+      categoryId,
+    });
     return product;
   } catch (error) {
     console.log("Error creating product");
