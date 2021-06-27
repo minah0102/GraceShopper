@@ -2,6 +2,9 @@ const apiRouter = require("express").Router();
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 
+const {getUserById} = require("../db")
+
+
 apiRouter.get("/", (req, res, next) => {
   res.send({
     message: "API is working",
@@ -44,5 +47,8 @@ apiRouter.use("/reviews", reviewsRouter);
 
 const usersRouter = require("./users");
 apiRouter.use("/users", usersRouter);
+
+const reviewsRouter = require("./reviews");
+apiRouter.use("/reviews", reviewsRouter);
 
 module.exports = apiRouter;
