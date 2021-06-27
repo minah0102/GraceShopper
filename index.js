@@ -1,5 +1,5 @@
 // express server
-
+require("dotenv").config();
 const express = require("express");
 const server = express();
 
@@ -8,8 +8,6 @@ server.use(morgan("dev"));
 
 const bodyParser = require("body-parser");
 server.use(bodyParser.json());
-
-require("dotenv").config();
 
 // static files
 const path = require("path");
