@@ -14,34 +14,86 @@
 const express = require("express");
 const reviewsRouter = express.Router();
 
-const { createReview, updateReview, deleteReview } = require("../db/reviews");
-const { requireUser } = require("./utils");
+const {
+  createReview,
+  updateReview,
+  deleteReview,
+  getReviewById,
+} = require("../db/reviews");
+const { requireUser, requireAdmin } = require("./utils");
 const { getHistory } = require("../db/orders");
+const { getUserById } = require("../db/users");
 
 reviewsRouter.use((req, res, next) => {
-  console.log("reviewsRouter is use");
+  console.log("reviewsRouter is used");
   next();
 });
 
 reviewsRouter.post("/:productId", requireUser, async (req, res, next) => {
   console.log("HITTING IT");
-  const { comment, rating, userId } = req.body;
+  const { comment, rating } = req.body;
   const { productId } = req.params;
-  const token = req.user.token;
-  console.log(token)
-  // // const { user } = req;
-  // const pastOrders = await getHistory()
+  const { userId } = req.user;
+  const { user } = await getUserById(userId);
+  // const token = req.user.token;
+  // console.log(token);
+  // const { userId } = req.user;
+  // const pastOrders = await getHistory(userId);
+  // const product = pastOrders.product.iinclude()
+
   try {
     // userId = user.id;
     const newReview = await createReview({
-      comment,
-      rating,
-      userId,
-      productId,
+      comment: comment,
+      rating: rating,
+      userId: user.id,
+      productId: productId,
     });
     res.send(newReview);
   } catch (error) {
     console.log("postReview", error);
+    next(error);
+  }
+});
+
+reviewsRouter.patch("/:reviewId", requireUser, async (req, res, next) => {
+  const { reviewId } = req.params;
+  const { user } = req;
+  const { comment, rating } = req.body;
+  const updatingFields = {};
+  const reviewToUpdate = await getReviewById(reviewId);
+  if (comment) {
+    updatingFields.comment = comment;
+  }
+  if (rating) {
+    updatingFields.rating = rating;
+  }
+  if (user.id === reviewToUpdate.userId) {
+    try {
+      const updatedReview = await updateReview(reviewId, updatingFields);
+      res.send(updatedReview);
+    } catch (error) {
+      console.log("updateReview", error);
+      next(error);
+    }
+  } else {
+    next(error);
+  }
+});
+
+reviewsRouter.delete("/:reviewId", requireUser, async (req, res, next) => {
+  const { reviewId } = req.params;
+  const { user } = req;
+  const reviewToDelete = await getReviewById(reviewId);
+  if (user.id === reviewToDelete.userId) {
+    try {
+      const deletedReview = await deleteReview(reviewId);
+      res.send(deletedReview);
+    } catch (error) {
+      console.log("deleteReview", error);
+      next(error);
+    }
+  } else {
     next(error);
   }
 });
