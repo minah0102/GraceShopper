@@ -41,8 +41,14 @@ apiRouter.use(attachUser);
 const productsRouter = require("./products");
 apiRouter.use("/products", productsRouter);
 
+const categoriesRouter = require("./categories");
+apiRouter.use("/categories", categoriesRouter);
+
 const usersRouter = require("./users");
 apiRouter.use("/users", usersRouter);
+
+const ordersRouter = require("./orders");
+apiRouter.use("/orders", ordersRouter);
 
 const reviewsRouter = require("./reviews");
 apiRouter.use("/reviews", reviewsRouter);
