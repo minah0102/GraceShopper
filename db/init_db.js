@@ -5,6 +5,10 @@ const createInitialUsers = require("./createInitialUsers");
 const createInitialProducts = require("./createInitialProducts");
 const createInitialReviews = require("./createInitialReviews");
 const createInitialOrders = require("./createInitialOrders");
+const {
+  createInitialCategoryProducts,
+  createInitialCategories,
+} = require("./createInitialCategories.js");
 
 async function buildTables() {
   client.connect();
@@ -83,8 +87,9 @@ async function populateInitialData() {
   try {
     // create useful starting data
     await createInitialUsers();
-    await createInitialProducts();
+    await createInitialCategories();
     await createInitialOrders();
+    await createInitialProducts();
     await createInitialReviews();
   } catch (error) {
     throw error;
