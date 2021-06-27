@@ -1,1 +1,9 @@
- "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsInVzZXJuYW1lIjoiYW5uYTkzIiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNjI0NzQ1MDcyfQ.ZCFZzpmvtYFPn7TIjmlfISYfKzwiuTlDmsoJqgke_oY"
+{
+    "user": {
+        "id": 12,
+        "username": "anna93",
+        "email": "anna@anna.com",
+        "isAdmin": false
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoiYW5uYTkzIiwiZW1haWwiOiJhbm5hQGFubmEuY29tIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTYyNDc2MjYxN30.a1hsXyTVe0RjMgZM0VdkCBpIzSHl2WF0DgIbwDd24gs"
+}

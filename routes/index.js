@@ -2,8 +2,8 @@ const apiRouter = require("express").Router();
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 
-const {getUserById} = require("../db")
 
+apiRouter.use(attachUser);
 
 apiRouter.get("/", (req, res, next) => {
   res.send({
@@ -34,7 +34,7 @@ async function attachUser(req, res, next) {
   }
 }
 
-apiRouter.use(attachUser);
+
 
 // ROUTES
 
@@ -48,7 +48,5 @@ apiRouter.use("/reviews", reviewsRouter);
 const usersRouter = require("./users");
 apiRouter.use("/users", usersRouter);
 
-const reviewsRouter = require("./reviews");
-apiRouter.use("/reviews", reviewsRouter);
 
 module.exports = apiRouter;
