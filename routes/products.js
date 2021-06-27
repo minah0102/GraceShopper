@@ -9,6 +9,8 @@ const {
   deleteProduct,
 } = require("../db/products");
 
+const { deleteCategoryProduct } = require("../db/categories");
+
 productsRouter.get("/", async (req, res, next) => {
   try {
     const products = await getAllProducts();
@@ -58,6 +60,7 @@ productsRouter.post("/", requireAdmin, async (req, res, next) => {
 productsRouter.delete("/:productId", requireAdmin, async (req, res, next) => {
   try {
     const { productId } = req.params;
+    const categoryProduct = await deleteCategoryProduct(productId);
     const product = await deleteProduct(productId);
     if (!product)
       res.send({

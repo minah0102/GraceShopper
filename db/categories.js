@@ -1,5 +1,15 @@
 const client = require("./client");
 
+const getAllCategories = async () => {
+  try {
+    const { rows: categories } = await client.query(`SELECT * FROM categories`);
+    return categories;
+  } catch (error) {
+    console.log("Error getting categories");
+    console.error(error);
+  }
+};
+
 const createCategory = async ({ name }) => {
   try {
     const {
@@ -38,7 +48,24 @@ const createCategoryProduct = async ({ productId, categoryId }) => {
   }
 };
 
+const deleteCategoryProduct = async (productId) => {
+  try {
+    const { rows: deletedCategoryProduct } = await client.query(
+      /*sql*/ `
+        DELETE FROM category_products WHERE "productId"=$1
+    `,
+      [productId]
+    );
+    return deletedCategoryProduct;
+  } catch (error) {
+    console.log("Error deleting category product");
+    console.error(error);
+  }
+};
+
 module.exports = {
+  getAllCategories,
   createCategoryProduct,
   createCategory,
+  deleteCategoryProduct
 };
