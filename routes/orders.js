@@ -5,8 +5,9 @@ const { requireUser } = require("./utils");
 const {
   getHistory,
   getAllOrders,
-  getCartByUserId,
+  getOrderByUserId,
   updateQuantity,
+  createOrder,
 } = require("../db/orders");
 
 ordersRouter.get("/history", requireUser, async (req, res, next) => {
@@ -36,7 +37,7 @@ ordersRouter.get("/:orderId", requireUser, async (req, res, next) => {
 ordersRouter.get("/cart", requireUser, async (req, res, next) => {
   try {
     const { id: userId } = req.user;
-    const cart = await getCartByUserId(userId);
+    const cart = await getOrderByUserId(userId);
 
     res.send(cart);
   } catch (error) {
@@ -61,5 +62,23 @@ ordersRouter.patch(
     }
   }
 );
+
+ordersRouter.post("/", requireUser, async (req, res, next) => {
+  try {
+    const { id: userId } = req.user;
+    const cart = await createOrder(userId);
+
+    res.send(cart);
+  } catch (error) {
+    console.log("Error in POST orders");
+    next(error);
+  }
+});
+
+ordersRouter.post();
+
+ordersRouter.delete();
+
+ordersRouter.delete();
 
 module.exports = ordersRouter;
