@@ -22,7 +22,6 @@ const {
 } = require("../db/reviews");
 const { requireUser, requireAdmin } = require("./utils");
 const { getHistory } = require("../db/orders");
-const { getUserById } = require("../db/users");
 
 reviewsRouter.use((req, res, next) => {
   console.log("reviewsRouter is used");
@@ -33,21 +32,17 @@ reviewsRouter.post("/:productId", requireUser, async (req, res, next) => {
   console.log("HITTING IT");
   const { comment, rating } = req.body;
   const { productId } = req.params;
-  const { userId } = req.user;
-  const { user } = await getUserById(userId);
-  // const token = req.user.token;
-  // console.log(token);
-  // const { userId } = req.user;
+  const { id: userId } = req.user;
+ 
   // const pastOrders = await getHistory(userId);
-  // const product = pastOrders.product.iinclude()
+  // const product = pastOrders.product.include()
 
   try {
-    // userId = user.id;
     const newReview = await createReview({
-      comment: comment,
-      rating: rating,
-      userId: user.id,
-      productId: productId,
+      comment,
+      rating,
+      userId,
+      productId
     });
     res.send(newReview);
   } catch (error) {

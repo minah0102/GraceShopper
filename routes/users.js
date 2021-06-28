@@ -5,7 +5,6 @@ const {
   createUser,
   getUserByUsername,
   getUser,
-  getUserById,
   deleteUser,
   updateUser
 } = require("../db");

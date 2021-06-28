@@ -12,7 +12,9 @@ apiRouter.get("/", (req, res, next) => {
 });
 
 async function attachUser(req, res, next) {
+  console.log("ATTACH USER")
   try {
+    console.log("ATTACH USER TRY")
     const auth = req.header("Authorization");
     const prefix = "Bearer ";
     if (!auth) {
@@ -30,11 +32,12 @@ async function attachUser(req, res, next) {
       }
     }
   } catch (error) {
+    console.log("ATTACH USER CATCH")
     console.error(error);
   }
 }
 
-// apiRouter.use(attachUser);
+apiRouter.use(attachUser);
 
 // ROUTES
 
