@@ -11,7 +11,7 @@ async function createUser({ username, email, password }) {
   const hashedPassword = await hashPassword(password);
 
   try {
-    const { rows: [user] } = await client.query(`
+    const { rows: [user] } = await client.query(/*sql*/`
         INSERT INTO users(username, email, password)
         VALUES ($1, $2, $3)
         RETURNING *;
@@ -41,7 +41,7 @@ async function getUser({ username, password }) {
 
 async function getUserByUsername(username) {
   try {
-    const { rows: [user] } = await client.query(`
+    const { rows: [user] } = await client.query(/*sql*/`
     SELECT * 
     FROM users
     WHERE username=$1;
@@ -55,7 +55,7 @@ async function getUserByUsername(username) {
 
 async function getUserById({id, username, isAdmin}) {
   try {
-    const { rows: [user] } = await client.query(`
+    const { rows: [user] } = await client.query(/*sql*/`
     SELECT id, username, "isAdmin"
     FROM users
     WHERE id=$1;
@@ -70,7 +70,7 @@ async function getUserById({id, username, isAdmin}) {
 //should we include isAdmin??
 async function updateUser({id, email, password }) {
   try {
-    const { rows: [user]} = await client.query(`
+    const { rows: [user]} = await client.query(/*sql*/`
     UPDATE users
     SET email = $1, password = $2
     WHERE id = $3
@@ -82,9 +82,23 @@ async function updateUser({id, email, password }) {
   }
 }
 
+async function makeAdmin({isAdmin, id}) {
+  try {
+    const { rows: [user] } = await client.query(/*sql*/`
+    UPDATE users
+    SET "isAdmin" = true
+    WHERE id = $1
+    RETURNING *;
+    `, [isAdmin, id]);
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function deleteUser(id) {
   try {
-    const { rows: [user] } = await client.query(`
+    const { rows: [user] } = await client.query(/*sql*/`
     DELETE FROM users
     WHERE id = $1
     `, [id]);
@@ -102,5 +116,6 @@ module.exports = {
   getUser,
   getUserById,
   updateUser,
+  makeAdmin,
   deleteUser
 }
