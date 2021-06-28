@@ -8,6 +8,9 @@ const {
   getOrderByUserId,
   updateQuantity,
   createOrder,
+  destroyOrder,
+  removeProductFromCart,
+  addProductToCart,
 } = require("../db/orders");
 
 ordersRouter.get("/history", requireUser, async (req, res, next) => {
@@ -75,10 +78,42 @@ ordersRouter.post("/", requireUser, async (req, res, next) => {
   }
 });
 
-ordersRouter.post();
+ordersRouter.post("/:productId", requireUser, async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const { id: orderId, price, quantity } = req.body;
+    const added = await addProductToCart(productId, orderId, price, quantity);
 
-ordersRouter.delete();
+    res.send(added);
+  } catch (error) {
+    console.log("Error in POST orders/:productId");
+    next(error);
+  }
+});
 
-ordersRouter.delete();
+ordersRouter.delete("/", requireUser, async (req, res, next) => {
+  try {
+    const { id: userId } = req.user;
+    const deletedOrder = await destroyOrder(userId);
+
+    res.send(deletedOrder);
+  } catch (error) {
+    console.log("Error in DELETE orders");
+    next(error);
+  }
+});
+
+ordersRouter.delete("/:productId", requireUser, async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const { id: orderId } = req.body;
+    const deletedProduct = await removeProductFromCart(orderId, productId);
+
+    res.send(deletedProduct);
+  } catch (error) {
+    console.log("Error in DELETE orders/:productId");
+    next(error);
+  }
+});
 
 module.exports = ordersRouter;

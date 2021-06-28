@@ -55,7 +55,7 @@ async function destroyOrder(userId) {
       [userId]
     );
 
-    await deleteLineItems(deletedOrder.orderId);
+    await deleteProducts(deletedOrder.orderId);
 
     return await createOrder(userId);
   } catch (error) {
