@@ -63,22 +63,6 @@ const createCategoryProduct = async ({ productId, categoryId }) => {
   }
 };
 
-<<<<<<< HEAD
-const deleteCategoryProduct = async (productId) => {
-  try {
-    const { rows: deletedCategoryProduct } = await client.query(
-      /*sql*/ `
-        DELETE FROM category_products WHERE "productId"=$1
-    `,
-      [productId]
-    );
-    return deletedCategoryProduct;
-  } catch (error) {
-    console.log("Error deleting category product");
-    console.error(error);
-  }
-};
-=======
 const deleteCategoryProduct = async ({productId, categoryId}) => {
   try {
     const {
@@ -92,15 +76,11 @@ const deleteCategoryProduct = async ({productId, categoryId}) => {
     console.error(error);
   }
 }
->>>>>>> 0a3f79b707b0c5b0dff2437921bf0c0d2f680f9c
 
 module.exports = {
   getAllCategories,
   createCategory,
-<<<<<<< HEAD
-=======
   deleteCategory,
   createCategoryProduct,
->>>>>>> 0a3f79b707b0c5b0dff2437921bf0c0d2f680f9c
   deleteCategoryProduct
 };
