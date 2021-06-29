@@ -4,7 +4,7 @@ const { requireUser } = require("./utils");
 
 const {
   getHistory,
-  getAllOrders,
+  getOrderById,
   getOrderByUserId,
   updateQuantity,
   createOrder,
@@ -25,18 +25,6 @@ ordersRouter.get("/history", requireUser, async (req, res, next) => {
   }
 });
 
-ordersRouter.get("/:orderId", requireUser, async (req, res, next) => {
-  try {
-    const { orderId } = req.params;
-    const allOrders = await getAllOrders(orderId);
-
-    res.send(allOrders);
-  } catch (error) {
-    console.log("Error in GET orders/:orderId");
-    next(error);
-  }
-});
-
 ordersRouter.get("/cart", requireUser, async (req, res, next) => {
   try {
     const { id: userId } = req.user;
@@ -45,6 +33,18 @@ ordersRouter.get("/cart", requireUser, async (req, res, next) => {
     res.send(cart);
   } catch (error) {
     console.log("Error in GET orders/cart");
+    next(error);
+  }
+});
+
+ordersRouter.get("/:orderId", requireUser, async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+    const allOrders = await getOrderById(orderId);
+
+    res.send(allOrders);
+  } catch (error) {
+    console.log("Error in GET orders/:orderId");
     next(error);
   }
 });

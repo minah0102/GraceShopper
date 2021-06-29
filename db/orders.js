@@ -44,22 +44,22 @@ async function removeOrder(orderId) {
 //delete and create new order
 async function destroyOrder(userId) {
   try {
-    const {
-      rows: [deletedOrder],
-    } = await client.query(
+    const cart = await getOrderByUserId(userId);
+
+    await deleteProducts(cart.id);
+
+    await client.query(
       /*sql*/ `
       DELETE FROM orders
-      WHERE "userId"=$1
+      WHERE "userId"=$1 AND "isActive"=true
       RETURNING *;
     `,
       [userId]
     );
 
-    await deleteProducts(deletedOrder.orderId);
-
     return await createOrder(userId);
   } catch (error) {
-    console.log("Error in deleteOrder");
+    console.log("Error in destroyOrder");
     throw error;
   }
 }
@@ -117,18 +117,18 @@ async function getHistory(userId) {
                         - join with line-items
                         - join with product
 */
-async function getAllOrders(orderId) {
+async function getOrderById(orderId) {
   try {
-    const { rows: allOrders } = await client.query(
+    const { rows: order } = await client.query(
       /*sql*/ `
       SELECT * FROM orders WHERE id=$1;
     `,
       [orderId]
     );
 
-    return await attachProductsToOrder(allOrders);
+    return await attachProductsToOrder(order);
   } catch (error) {
-    console.log("Error in getAllOrders");
+    console.log("Error in getOrder");
     throw error;
   }
 }
@@ -148,7 +148,7 @@ async function attachProductsToOrder(orders) {
       order.products = products.filter(
         (product) => product.orderId === order.id
       );
-    }); //matching products for orderId 3 and 11
+    }); //matching products with orderId 3 and 11
 
     return orders;
   } catch (error) {
@@ -157,7 +157,7 @@ async function attachProductsToOrder(orders) {
   }
 }
 
-async function addProductToCart({productId, orderId, price, quantity}) {
+async function addProductToCart({ productId, orderId, price, quantity }) {
   try {
     //check if the product is already in the cart.
     //if I use getOrderByUserId() I will not get productId
@@ -171,11 +171,7 @@ async function addProductToCart({productId, orderId, price, quantity}) {
     );
 
     if (lineItem) {
-      return await updateQuantity(
-        lineItem.orderId,
-        lineItem.productId,
-        quantity
-      );
+      return await updateQuantity({ orderId, productId, quantity });
     }
 
     const {
@@ -196,10 +192,10 @@ async function addProductToCart({productId, orderId, price, quantity}) {
   }
 }
 
-async function updateQuantity({orderId, productId, quantity}) {
+async function updateQuantity({ orderId, productId, quantity }) {
   try {
     const {
-      rows: [updatedQuantity],
+      rows: [updated],
     } = await client.query(
       /*sql*/ `
       UPDATE line_items
@@ -209,15 +205,12 @@ async function updateQuantity({orderId, productId, quantity}) {
     `,
       [quantity, orderId, productId]
     );
-
-    if (updatedQuantity.quantity === 0) {
-      return await removeProductFromCart(
-        updatedQuantity.orderId,
-        updatedQuantity.productId
-      );
+    console.log("show me update quantity!!!", updated.orderId);
+    if (updated.quantity === 0) {
+      return await removeProductFromCart({ orderId, productId });
     }
 
-    return updatedQuantity;
+    return updated;
   } catch (error) {
     console.log("Error in updateQuantity");
     throw error;
@@ -243,7 +236,7 @@ async function deleteProducts(orderId) {
   }
 }
 
-async function removeProductFromCart({orderId, productId}) {
+async function removeProductFromCart({ orderId, productId }) {
   try {
     const {
       rows: [removedProduct],
@@ -269,9 +262,9 @@ module.exports = {
   removeOrder,
   destroyOrder,
   getOrderByUserId,
-  getAllOrders,
+  getOrderById,
   addProductToCart,
   updateQuantity,
   deleteProducts,
-  removeProductFromCart
+  removeProductFromCart,
 };
