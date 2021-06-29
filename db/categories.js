@@ -70,7 +70,7 @@ const deleteCategoryProduct = async ({productId, categoryId}) => {
     const {
       rows: categoryProduct
     } = await client.query(/*sql*/`
-      DELETE FROM category_products WHERE "productId"=$1 AND "categoryId"=$2 RETURNING *
+      DELETE FROM category_products WHERE "productId"=$1 AND "categoryId"=$2 RETURNING *;
     `, [productId, categoryId])
     return categoryProduct;
   } catch (error) {
