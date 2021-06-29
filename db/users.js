@@ -53,13 +53,13 @@ async function getUserByUsername(username) {
   }
 }
 
-async function getUserById({id, username, isAdmin}) {
+async function getUserById(id) {
   try {
     const { rows: [user] } = await client.query(/*sql*/`
     SELECT id, username, "isAdmin"
     FROM users
     WHERE id=$1;
-    `, [id, username, isAdmin]);
+    `, [id]);
 
     return user;
   } catch (error) {
