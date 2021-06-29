@@ -37,6 +37,7 @@ const getProductById = async (id) => {
 };
 
 const getProductsByCategory = async (category) => {
+  category = category.toLowerCase();
   try {
     const { rows: products } = await client.query(
       `

@@ -14,7 +14,7 @@
 const express = require("express");
 const reviewsRouter = express.Router();
 
-const { createReview, updateReview, deleteReview } = require("../db/reviews");
+const { createReview, updateReview, deleteReview, getReviewById } = require("../db/reviews");
 const { requireUser, requireAdmin } = require("./utils");
 
 reviewsRouter.post("/:productId", requireUser, async (req, res, next) => {
@@ -27,19 +27,57 @@ reviewsRouter.post("/:productId", requireUser, async (req, res, next) => {
       comment,
       rating,
       userId,
-      productId,
+      productId
     });
     res.send(newReview);
   } catch (error) {
     console.log("postReview", error);
     next(error);
   }
-
-  //  else {
-  //   next({
-  //     error: "User doesn't match the author",
-  //     message: "You can't perform this action",
-  //   });
 });
+
+
+reviewsRouter.patch("/:reviewId", requireUser, async (req, res, next) => {
+  const { reviewId } = req.params;
+  const { user } = req;
+  const { comment, rating } = req.body;
+  const updatingFields = {};
+  const reviewToUpdate = await getReviewById(reviewId);
+  if (comment) {
+    updatingFields.comment = comment;
+  }
+  if (rating) {
+    updatingFields.rating = rating;
+  }
+  if (user.id === reviewToUpdate.userId) {
+    try {
+      const updatedReview = await updateReview(reviewId, updatingFields);
+      res.send(updatedReview);
+    } catch (error) {
+      console.log("updateReview", error);
+      next(error);
+    }
+  } else {
+    next(error);
+  }
+});
+
+reviewsRouter.delete("/:reviewId", requireUser, async (req, res, next) => {
+  const { reviewId } = req.params;
+  const { user } = req;
+  const reviewToDelete = await getReviewById(reviewId);
+  if (user.id === reviewToDelete.userId) {
+    try {
+      const deletedReview = await deleteReview(reviewId);
+      res.send(deletedReview);
+    } catch (error) {
+      console.log("deleteReview", error);
+      next(error);
+    }
+  } else {
+    next(error);
+  }
+});
+
 
 module.exports = reviewsRouter;

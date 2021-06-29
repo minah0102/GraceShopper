@@ -11,6 +11,7 @@ const getAllCategories = async () => {
 };
 
 const createCategory = async ({ name }) => {
+  name = name.toLowerCase();
   try {
     const {
       rows: [category],
@@ -28,6 +29,20 @@ const createCategory = async ({ name }) => {
     console.error(error);
   }
 };
+
+const deleteCategory = async (categoryId) => {
+  try {
+    const {
+      rows: category
+    } = await client.query(/*sql*/`
+      DELETE FROM categories WHERE id=$1
+    `, [categoryId])
+    return category;
+  } catch (error) {
+    console.log("Error deleting category");
+    console.error(error);
+  }
+}
 
 const createCategoryProduct = async ({ productId, categoryId }) => {
   try {
@@ -48,6 +63,7 @@ const createCategoryProduct = async ({ productId, categoryId }) => {
   }
 };
 
+<<<<<<< HEAD
 const deleteCategoryProduct = async (productId) => {
   try {
     const { rows: deletedCategoryProduct } = await client.query(
@@ -62,10 +78,29 @@ const deleteCategoryProduct = async (productId) => {
     console.error(error);
   }
 };
+=======
+const deleteCategoryProduct = async ({productId, categoryId}) => {
+  try {
+    const {
+      rows: categoryProduct
+    } = await client.query(/*sql*/`
+      DELETE FROM category_products WHERE "productId"=$1 AND "categoryId"=$2 RETURNING *;
+    `, [productId, categoryId])
+    return categoryProduct;
+  } catch (error) {
+    console.log("Error deleting categoryProduct");
+    console.error(error);
+  }
+}
+>>>>>>> 0a3f79b707b0c5b0dff2437921bf0c0d2f680f9c
 
 module.exports = {
   getAllCategories,
-  createCategoryProduct,
   createCategory,
+<<<<<<< HEAD
+=======
+  deleteCategory,
+  createCategoryProduct,
+>>>>>>> 0a3f79b707b0c5b0dff2437921bf0c0d2f680f9c
   deleteCategoryProduct
 };
