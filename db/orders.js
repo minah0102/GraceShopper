@@ -205,7 +205,7 @@ async function updateQuantity({ orderId, productId, quantity }) {
     `,
       [quantity, orderId, productId]
     );
-    console.log("show me update quantity!!!", updated.orderId);
+ 
     if (updated.quantity === 0) {
       return await removeProductFromCart({ orderId, productId });
     }

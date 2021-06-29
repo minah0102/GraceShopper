@@ -40,9 +40,9 @@ ordersRouter.get("/cart", requireUser, async (req, res, next) => {
 ordersRouter.get("/:orderId", requireUser, async (req, res, next) => {
   try {
     const { orderId } = req.params;
-    const allOrders = await getOrderById(orderId);
+    const order = await getOrderById(orderId);
 
-    res.send(allOrders);
+    res.send(order);
   } catch (error) {
     console.log("Error in GET orders/:orderId");
     next(error);
