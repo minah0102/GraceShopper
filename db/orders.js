@@ -128,7 +128,7 @@ async function getOrderById(orderId) {
 
     return await attachProductsToOrder(order);
   } catch (error) {
-    console.log("Error in getOrder");
+    console.log("Error in getOrderById");
     throw error;
   }
 }
