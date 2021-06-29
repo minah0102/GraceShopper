@@ -7,6 +7,7 @@ const {
   getProductById,
   createProduct,
   deleteProduct,
+  getProductsByCategory,
 } = require("../db/products");
 
 productsRouter.get("/", async (req, res, next) => {
@@ -19,8 +20,7 @@ productsRouter.get("/", async (req, res, next) => {
   }
 });
 
-// will need to add requireUser
-productsRouter.get("/:productId", requireUser, async (req, res, next) => {
+productsRouter.get("/:productId", async (req, res, next) => {
   try {
     const { productId } = req.params;
     const product = await getProductById(productId);
@@ -32,6 +32,17 @@ productsRouter.get("/:productId", requireUser, async (req, res, next) => {
     res.send(product);
   } catch (error) {
     console.error("GET /products/:productId error");
+    next(error);
+  }
+});
+
+productsRouter.get("/category/:categoryName", async (req, res, next) => {
+  try {
+    const {categoryName} = req.params
+    const products = await getProductsByCategory(categoryName);
+    res.send(products);
+  } catch (error) {
+    console.error("GET /products/:category error");
     next(error);
   }
 });

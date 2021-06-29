@@ -7,7 +7,8 @@ const {
   getUser,
   getUserById,
   deleteUser,
-  updateUser
+  updateUser,
+  makeAdmin
 } = require("../db");
 
 const bcrypt = require('bcrypt');
@@ -128,5 +129,18 @@ usersRouter.delete('/:userId', requireUser, requireAdmin, async (req, res, next)
 });
 
 //admin => make other users admins
+usersRouter.patch('/:userId', requireAdmin, async (req, res, next) => {
+  try {
+    if (req.user.isAdmin === true) {
+      const makeUserAdmin = await makeAdmin();
+      res.send(makeUserAdmin);
+    } else {
+      return "Cannot make user admin."
+    }
+  } catch (error) {
+    console.error("Error on making another admin");
+    next(error);
+  }
+});
 
 module.exports = usersRouter;
