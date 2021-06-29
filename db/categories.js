@@ -13,6 +13,7 @@ const getAllCategories = async () => {
 }
 
 const createCategory = async ({ name }) => {
+  name = name.toLowerCase();
   try {
     const {
       rows: [category],
@@ -30,6 +31,20 @@ const createCategory = async ({ name }) => {
     console.error(error);
   }
 };
+
+const deleteCategory = async (categoryId) => {
+  try {
+    const {
+      rows: category
+    } = await client.query(/*sql*/`
+      DELETE FROM categories WHERE id=$1
+    `, [categoryId])
+    return category;
+  } catch (error) {
+    console.log("Error deleting category");
+    console.error(error);
+  }
+}
 
 const createCategoryProduct = async ({ productId, categoryId }) => {
   try {
@@ -50,8 +65,24 @@ const createCategoryProduct = async ({ productId, categoryId }) => {
   }
 };
 
+const deleteCategoryProduct = async ({productId, categoryId}) => {
+  try {
+    const {
+      rows: categoryProduct
+    } = await client.query(/*sql*/`
+      DELETE FROM category_products WHERE "productId"=$1 AND "categoryId"=$2 RETURNING *
+    `, [productId, categoryId])
+    return categoryProduct;
+  } catch (error) {
+    console.log("Error deleting categoryProduct");
+    console.error(error);
+  }
+}
+
 module.exports = {
   getAllCategories,
-  createCategoryProduct,
   createCategory,
+  deleteCategory,
+  createCategoryProduct,
+  deleteCategoryProduct
 };
