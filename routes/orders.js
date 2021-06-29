@@ -56,7 +56,7 @@ ordersRouter.patch(
     try {
       const { productId } = req.params;
       const { orderId, quantity } = req.body;
-      const updated = await updateQuantity(orderId, productId, quantity);
+      const updated = await updateQuantity({ orderId, productId, quantity });
 
       res.send(updated);
     } catch (error) {
@@ -81,8 +81,13 @@ ordersRouter.post("/", requireUser, async (req, res, next) => {
 ordersRouter.post("/:productId", requireUser, async (req, res, next) => {
   try {
     const { productId } = req.params;
-    const { id: orderId, price, quantity } = req.body;
-    const added = await addProductToCart(productId, orderId, price, quantity);
+    const { orderId, price, quantity } = req.body;
+    const added = await addProductToCart({
+      productId,
+      orderId,
+      price,
+      quantity,
+    });
 
     res.send(added);
   } catch (error) {
@@ -106,8 +111,8 @@ ordersRouter.delete("/", requireUser, async (req, res, next) => {
 ordersRouter.delete("/:productId", requireUser, async (req, res, next) => {
   try {
     const { productId } = req.params;
-    const { id: orderId } = req.body;
-    const deletedProduct = await removeProductFromCart(orderId, productId);
+    const { orderId } = req.body;
+    const deletedProduct = await removeProductFromCart({ orderId, productId });
 
     res.send(deletedProduct);
   } catch (error) {
