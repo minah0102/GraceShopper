@@ -18,6 +18,24 @@ const createReview = async ({ comment, rating, userId, productId }) => {
   }
 };
 
+
+const getReviewById = async (reviewId) => {
+  try {
+    const {
+      rows: [review],
+    } = client.query(
+      `
+    SELECT * FROM reviews
+    WHERE id=$1;
+    `,
+      [reviewId]
+    );
+    return review;
+  } catch (error) {
+    console.log("getReviewDB", error);
+  }
+};
+
 const updateReview = async (reviewId, fields = {}) => {
   const updatingFields = Object.keys(fields).map((key, index) => {
     `"${key}"=$${index + 1}`.join(", ");
@@ -33,6 +51,7 @@ const updateReview = async (reviewId, fields = {}) => {
         `,
         [Object.values(fields)]
       );
+      return await getReviewById(reviewId);
     }
   } catch (error) {
     console.log("updateReviewDB", error);
@@ -58,8 +77,10 @@ const deleteReview = async (reviewId) => {
 };
 
 
+
 module.exports = {
   createReview,
   updateReview,
   deleteReview,
+  getReviewById
 };
