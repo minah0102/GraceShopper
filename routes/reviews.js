@@ -14,20 +14,26 @@
 const express = require("express");
 const reviewsRouter = express.Router();
 
-const { createReview, updateReview, deleteReview, getReviewById } = require("../db/reviews");
-const { requireUser, requireAdmin } = require("./utils");
+const {
+  createReview,
+  updateReview,
+  deleteReview,
+  getReviewById,
+} = require("../db/reviews");
+const { requireUser } = require("./utils");
+// const { getHistory } = require("../db/orders");
 
 reviewsRouter.post("/:productId", requireUser, async (req, res, next) => {
   const { comment, rating } = req.body;
   const { productId } = req.params;
-  const { userId } = req.user.id;
+  const userId = req.user.id;
 
   try {
     const newReview = await createReview({
       comment,
       rating,
       userId,
-      productId
+      productId,
     });
     res.send(newReview);
   } catch (error) {
@@ -35,7 +41,6 @@ reviewsRouter.post("/:productId", requireUser, async (req, res, next) => {
     next(error);
   }
 });
-
 
 reviewsRouter.patch("/:reviewId", requireUser, async (req, res, next) => {
   const { reviewId } = req.params;
@@ -66,7 +71,8 @@ reviewsRouter.delete("/:reviewId", requireUser, async (req, res, next) => {
   const { reviewId } = req.params;
   const { user } = req;
   const reviewToDelete = await getReviewById(reviewId);
-  if (user.id === reviewToDelete.userId) {
+  console.log("DELETING REVIEW", reviewToDelete);
+  if (user.id === reviewToDelete.userId || user.isAdmin === true) {
     try {
       const deletedReview = await deleteReview(reviewId);
       res.send(deletedReview);
@@ -78,6 +84,5 @@ reviewsRouter.delete("/:reviewId", requireUser, async (req, res, next) => {
     next(error);
   }
 });
-
 
 module.exports = reviewsRouter;
