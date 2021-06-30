@@ -21,7 +21,7 @@ const {
   getReviewById,
 } = require("../db/reviews");
 const { requireUser } = require("./utils");
-// const { getHistory } = require("../db/orders");
+const { getHistory } = require("../db/orders");
 
 reviewsRouter.post("/:productId", requireUser, async (req, res, next) => {
   const { comment, rating } = req.body;
