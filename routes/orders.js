@@ -58,6 +58,7 @@ ordersRouter.patch("/:orderId", async (req, res, next) => {
     res.send(inactive);
   } catch (error) {
     console.log("Error in PATCH orders/:orderId");
+    next(error);
   }
 });
 

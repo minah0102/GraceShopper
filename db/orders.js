@@ -106,11 +106,8 @@ async function getHistory(userId) {
     `,
       [userId]
     );
-    console.log("show me history", history);
 
-    if (history === []) return history;
-
-    console.log("don't get here plz!!!");
+    if (history.length === 0) return history;
 
     return await attachProductsToOrder(history);
   } catch (error) {
