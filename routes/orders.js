@@ -11,6 +11,7 @@ const {
   destroyOrder,
   removeProductFromCart,
   addProductToCart,
+  removeOrder,
 } = require("../db/orders");
 
 ordersRouter.get("/history", requireUser, async (req, res, next) => {
@@ -45,6 +46,18 @@ ordersRouter.get("/:orderId", requireUser, async (req, res, next) => {
     res.send(order);
   } catch (error) {
     console.log("Error in GET orders/:orderId");
+    next(error);
+  }
+});
+
+ordersRouter.patch("/:orderId", async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+    const inactive = await removeOrder(orderId);
+
+    res.send(inactive);
+  } catch (error) {
+    console.log("Error in PATCH orders/:orderId");
     next(error);
   }
 });

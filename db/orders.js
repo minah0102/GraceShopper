@@ -46,7 +46,9 @@ async function destroyOrder(userId) {
   try {
     const cart = await getOrderByUserId(userId);
 
-    await deleteProducts(cart.id);
+    if (!cart) {
+      await deleteProducts(cart.id);
+    }
 
     await client.query(
       /*sql*/ `
@@ -104,6 +106,8 @@ async function getHistory(userId) {
     `,
       [userId]
     );
+
+    if (history.length === 0) return history;
 
     return await attachProductsToOrder(history);
   } catch (error) {
@@ -205,7 +209,7 @@ async function updateQuantity({ orderId, productId, quantity }) {
     `,
       [quantity, orderId, productId]
     );
- 
+
     if (updated.quantity === 0) {
       return await removeProductFromCart({ orderId, productId });
     }
