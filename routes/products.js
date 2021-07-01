@@ -6,9 +6,11 @@ const {
   getAllProducts,
   getProductById,
   createProduct,
+  updateProduct,
   deleteProduct,
   getProductsByCategory,
 } = require("../db/products");
+const { deleteCategoryProduct } = require("../db/categories");
 
 productsRouter.get("/", async (req, res, next) => {
   try {
@@ -66,9 +68,27 @@ productsRouter.post("/", requireAdmin, async (req, res, next) => {
   }
 });
 
+productsRouter.patch('/:productId', async (req, res, next) => {
+  const {productId} = req.params;
+  const {name, description, price, quantity} = req.body;
+  const fields = {};
+  if (name) fields.name = name;
+  if (description) fields.description = description;
+  if (price) fields.price = price;
+  if (quantity) fields.quantity = quantity;
+  try {
+    const updatedProduct = await updateProduct(productId, fields);
+    res.send(updatedProduct);
+  } catch (error) {
+    console.log("PATCH /:productId", error);
+    next(error);
+  }
+})
+
 productsRouter.delete("/:productId", requireAdmin, async (req, res, next) => {
   try {
     const { productId } = req.params;
+    const categoryProduct = await deleteCategoryProduct(productId);
     const product = await deleteProduct(productId);
     if (!product)
       res.send({
