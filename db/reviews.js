@@ -18,12 +18,11 @@ const createReview = async ({ comment, rating, userId, productId }) => {
   }
 };
 
-
 const getReviewById = async (reviewId) => {
   try {
     const {
       rows: [review],
-    } = client.query(
+    } = await client.query(
       `
     SELECT * FROM reviews
     WHERE id=$1;
@@ -37,9 +36,9 @@ const getReviewById = async (reviewId) => {
 };
 
 const updateReview = async (reviewId, fields = {}) => {
-  const updatingFields = Object.keys(fields).map((key, index) => {
-    `"${key}"=$${index + 1}`.join(", ");
-  });
+  const updatingFields = Object.keys(fields)
+    .map((key, index) => `"${key}"=$${index + 1}`)
+    .join(", ");
   try {
     if (updatingFields.length > 0) {
       await client.query(
@@ -49,7 +48,7 @@ const updateReview = async (reviewId, fields = {}) => {
         WHERE id=${reviewId}
         RETURNING *;
         `,
-        [Object.values(fields)]
+        Object.values(fields) /*ask a question about bind message when []*/
       );
       return await getReviewById(reviewId);
     }
@@ -65,7 +64,7 @@ const deleteReview = async (reviewId) => {
     } = await client.query(
       `
   DELETE from reviews
-  WHERE id=1
+  WHERE id=$1
   RETURNING *;
   `,
       [reviewId]
@@ -76,11 +75,9 @@ const deleteReview = async (reviewId) => {
   }
 };
 
-
-
 module.exports = {
   createReview,
   updateReview,
   deleteReview,
-  getReviewById
+  getReviewById,
 };

@@ -18,7 +18,7 @@ async function createOrder(userId) {
     console.log("Error in createOrder");
     throw error;
   }
-}
+} //needs userId to create a cart for an authenticated user.
 
 async function removeOrder(orderId) {
   try {
@@ -44,20 +44,24 @@ async function removeOrder(orderId) {
 //delete and create new order
 async function destroyOrder(userId) {
   try {
-    const {rows: [deletedOrder]} = await client.query(
+    const cart = await getOrderByUserId(userId);
+
+    if (!cart) {
+      await deleteProducts(cart.id);
+    }
+
+    await client.query(
       /*sql*/ `
       DELETE FROM orders
-      WHERE "userId"=$1
+      WHERE "userId"=$1 AND "isActive"=true
       RETURNING *;
     `,
       [userId]
     );
 
-    await deleteLineItems(deletedOrder.orderId)
-
     return await createOrder(userId);
   } catch (error) {
-    console.log("Error in deleteOrder");
+    console.log("Error in destroyOrder");
     throw error;
   }
 }
@@ -68,7 +72,7 @@ GET /orders/cart
 - if active order, send that order
 - if no active order, create a new order
 */
-async function getCartByUserId(userId) {
+async function getOrderByUserId(userId) {
   try {
     const {
       rows: [cart],
@@ -92,6 +96,7 @@ async function getCartByUserId(userId) {
 }
 
 //GET orders/history - get all inactive orders for user
+//see my order history so I can remember my previously purchased items and their prices at the time of purchase.
 async function getHistory(userId) {
   try {
     const { rows: history } = await client.query(
@@ -101,6 +106,8 @@ async function getHistory(userId) {
     `,
       [userId]
     );
+
+    if (history.length === 0) return history;
 
     return await attachProductsToOrder(history);
   } catch (error) {
@@ -114,38 +121,38 @@ async function getHistory(userId) {
                         - join with line-items
                         - join with product
 */
-async function getAllOrders(orderId) {
+async function getOrderById(orderId) {
   try {
-    const { rows: allOrders } = await client.query(
+    const { rows: order } = await client.query(
       /*sql*/ `
       SELECT * FROM orders WHERE id=$1;
     `,
       [orderId]
     );
 
-    return await attachProductsToOrder(allOrders);
+    return await attachProductsToOrder(order);
   } catch (error) {
-    console.log("Error in getAllOrders");
+    console.log("Error in getOrderById");
     throw error;
   }
 }
 
 async function attachProductsToOrder(orders) {
   try {
-    const orderIds = orders.map((o) => o.id).join(", ");
+    const orderIds = orders.map((o) => o.id).join(", "); //3, 11
 
     const { rows: products } = await client.query(/*sql*/ `
       SELECT p.id AS "productId", p.name, p.description, p."imageName", li.quantity, li.price, li."orderId"
       FROM line_items AS li
       JOIN products AS p ON p.id=li."productId"
       WHERE "orderId" IN (${orderIds});
-    `);
+    `); //products for orderId 3, 11
 
     orders.forEach((order) => {
       order.products = products.filter(
         (product) => product.orderId === order.id
       );
-    });
+    }); //matching products with orderId 3 and 11
 
     return orders;
   } catch (error) {
@@ -157,18 +164,18 @@ async function attachProductsToOrder(orders) {
 async function addProductToCart({ productId, orderId, price, quantity }) {
   try {
     //check if the product is already in the cart.
-    //if I use getCartByUserId() I will not get productId
+    //if I use getOrderByUserId() I will not get productId
     const {
       rows: [lineItem],
     } = await client.query(
       /*sql*/ `
-      SELECT * FROM line_items WHERE "productId"=$1;  
+      SELECT * FROM line_items WHERE "productId"=$1 AND "orderId"=$2;  
     `,
-      [productId]
+      [productId, orderId]
     );
 
     if (lineItem) {
-      return await updateQuantity(lineItem.id, lineItem.productId, quantity);
+      return await updateQuantity({ orderId, productId, quantity });
     }
 
     const {
@@ -189,23 +196,25 @@ async function addProductToCart({ productId, orderId, price, quantity }) {
   }
 }
 
-async function updateQuantity(id, productId, quantity) {
+async function updateQuantity({ orderId, productId, quantity }) {
   try {
-    const { rows: updatedQuantity } = await client.query(
+    const {
+      rows: [updated],
+    } = await client.query(
       /*sql*/ `
       UPDATE line_items
       SET quantity=$1
-      WHERE id=$2 AND "productId"=$3
+      WHERE "orderId"=$2 AND "productId"=$3
       RETURNING *;
     `,
-      [quantity, id, productId]
+      [quantity, orderId, productId]
     );
 
-    // if (updatedQuantity.quantity === 0) {
-    //   return await deleteLineItems(updatedQuantity.id);
-    // }
+    if (updated.quantity === 0) {
+      return await removeProductFromCart({ orderId, productId });
+    }
 
-    return updatedQuantity;
+    return updated;
   } catch (error) {
     console.log("Error in updateQuantity");
     throw error;
@@ -213,31 +222,40 @@ async function updateQuantity(id, productId, quantity) {
 }
 
 //delete line_items - remove/destory cart and when quantity = 0
-async function deleteLineItems(orderId) {
+async function deleteProducts(orderId) {
   try {
-    const {
-      rows: [deletedLineItem],
-    } = await client.query(
+    const { rows: deletedProducts } = await client.query(
       /*sql*/ `
       DELETE FROM line_items
-      WHERE id=$1
+      WHERE "orderId"=$1
       RETURNING *;
     `,
-      [id]
+      [orderId]
     );
 
-    return deletedLineItem;
+    return deletedProducts;
   } catch (error) {
     console.log("Error in deleteLineItems");
     throw error;
   }
 }
 
-async function removeProductFromLineItems(productId){
+async function removeProductFromCart({ orderId, productId }) {
   try {
-    
+    const {
+      rows: [removedProduct],
+    } = await client.query(
+      /*sql*/ `
+    DELETE FROM line_items
+    WHERE "orderId"=$1 AND "productId"=$2
+    RETURNING *;
+    `,
+      [orderId, productId]
+    );
+
+    return removedProduct;
   } catch (error) {
-    console.log("Error in removeProductFromLineItems");
+    console.log("Error in removeProductFromCart");
     throw error;
   }
 }
@@ -247,9 +265,10 @@ module.exports = {
   getHistory,
   removeOrder,
   destroyOrder,
-  getCartByUserId,
-  getAllOrders,
+  getOrderByUserId,
+  getOrderById,
   addProductToCart,
   updateQuantity,
-  deleteLineItems,
+  deleteProducts,
+  removeProductFromCart,
 };

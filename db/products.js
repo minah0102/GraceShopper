@@ -120,7 +120,7 @@ const deleteProduct = async (id) => {
       rows: [product],
     } = await client.query(
       /*sql*/ `
-      DELETE FROM products WHERE id=$1 RETURNING *
+      DELETE FROM products WHERE id=$1 RETURNING *;
     `,
       [id]
     );
