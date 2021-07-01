@@ -35,7 +35,7 @@ const deleteCategory = async (categoryId) => {
     const {
       rows: category
     } = await client.query(/*sql*/`
-      DELETE FROM categories WHERE id=$1;
+      DELETE FROM categories WHERE id=$1 RETURNING *;
     `, [categoryId])
     return category;
   } catch (error) {
