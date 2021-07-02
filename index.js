@@ -42,5 +42,3 @@ server.listen(PORT, async () => {
     console.error("Database is closed for repairs!\n", error);
   }
 });
-
-require("bootstrap");
