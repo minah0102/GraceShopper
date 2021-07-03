@@ -1,21 +1,8 @@
 import React from "react";
-import { Form } from "react-bootstrap";
-const Login = () => {
-  const handleLogin = () => {
+import { Form, Button } from "react-bootstrap";
 
-  }
+const Login = () => {
   return (
-    <div className="login">
-      {/* <form onClick={handleLogin}>
-        <input
-          type="text"
-          placeholder="username"
-        />
-        <input type="password"
-          placeholder="password"
-        />
-        <button>Login</button>
-        </form> */}
       <Form>
         <Form.Group controlId="formLoginEmail">
           <Form.Label>Email address</Form.Label>
@@ -31,14 +18,13 @@ const Login = () => {
         </Form.Group>
 
         <Form.Group controlId="formLoginCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
+          <Form.Check type="checkbox" label="Remember me" />
         </Form.Group>
 
         <Button variant="primary" type="submit">
           Submit
         </Button>
       </Form>
-    </div>
   );
 }
 
