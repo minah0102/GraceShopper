@@ -4,7 +4,6 @@ const usersRouter = express.Router();
 const {
   createUser,
   getUserByUsername,
-  getUser,
   getUserById,
   deleteUser,
   updateUser,
@@ -15,6 +14,17 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { requireUser, requireAdmin } = require('./utils');
 const { JWT_SECRET } = process.env;
+
+// GET /users
+usersRouter.get("/", requireAdmin, async (req, res, next) => {
+  try {
+    const users = await getUserById();
+    res.send(users);
+  } catch (error) {
+    console.error("Error getting all users");
+    next(error);
+  }
+});
 
 // GET /users/me
 usersRouter.get("/me", requireUser, async (req, res, next) => {
