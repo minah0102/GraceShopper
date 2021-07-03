@@ -48,7 +48,7 @@ const updateReview = async (reviewId, fields = {}) => {
         WHERE id=${reviewId}
         RETURNING *;
         `,
-        Object.values(fields) /*ask a question about bind message when []*/
+        Object.values(fields)/*ask a question about bind message when []*/
       );
       return await getReviewById(reviewId);
     }
