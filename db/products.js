@@ -1,6 +1,6 @@
 const client = require("./client");
 
-const {createCategoryProduct} = require('./categories')
+const { createCategoryProduct } = require("./categories");
 
 const getAllProducts = async () => {
   try {
@@ -79,7 +79,10 @@ const createProduct = async ({
       [name, description, price, quantity, imageName]
     );
 
-    const category = await createCategoryProduct({productId: product.id, categoryId})
+    const category = await createCategoryProduct({
+      productId: product.id,
+      categoryId,
+    });
     return product;
   } catch (error) {
     console.log("Error creating product");
@@ -88,6 +91,28 @@ const createProduct = async ({
 };
 
 // updateProduct
+
+const updateProduct = async (productId, fields = {}) => {
+  const updatingFields = Object.keys(fields).map((key, index) => {
+    return `"${key}"=$${index+1}`
+  }).join(", ");
+  try {
+    if (updatingFields.length > 0) {
+      const {rows: updatedProduct} = await client.query(
+        `
+        UPDATE products
+        SET ${updatingFields}
+        WHERE id=${productId}
+        RETURNING *;
+        `,
+        Object.values(fields)
+      );
+      return updatedProduct;
+    }
+  } catch (error) {
+    console.log("updateProduct", error);
+  }
+};
 
 const deleteProduct = async (id) => {
   try {
@@ -111,7 +136,7 @@ const getProductReviews = async (productId) => {
   try {
     const { rows: reviews } = await client.query(
       /*sql*/
-      `SELECT r.comment, r.rating, users.username
+      `SELECT r.id, r.comment, r.rating, users.username
      FROM products AS p
      JOIN reviews as r 
      ON p.id = r."productId"
@@ -132,6 +157,7 @@ module.exports = {
   getAllProducts,
   getProductById,
   createProduct,
+  updateProduct,
   deleteProduct,
   getProductReviews,
   getProductsByCategory,

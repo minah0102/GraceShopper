@@ -28,7 +28,8 @@ async function removeOrder(orderId) {
       /*sql*/ `
       UPDATE orders
       SET "isActive"=false
-      WHERE id=$1;
+      WHERE id=$1
+      RETURNING *;
     `,
       [orderId]
     );
@@ -46,9 +47,7 @@ async function destroyOrder(userId) {
   try {
     const cart = await getOrderByUserId(userId);
 
-    if (!cart) {
-      await deleteProducts(cart.id);
-    }
+    await deleteProducts(cart.id);
 
     await client.query(
       /*sql*/ `
@@ -241,7 +240,7 @@ async function deleteProducts(orderId) {
 }
 
 async function removeProductFromCart({ orderId, productId }) {
-  try {
+  try { console.log("show me orderId, productId", orderId, productId);
     const {
       rows: [removedProduct],
     } = await client.query(

@@ -2,15 +2,13 @@ const client = require("./client");
 
 const getAllCategories = async () => {
   try {
-    const {
-      rows: categories
-    } = await client.query(`SELECT * FROM categories`)
-    return categories
+    const { rows: categories } = await client.query(`SELECT * FROM categories;`);
+    return categories;
   } catch (error) {
     console.log("Error getting categories");
     console.error(error);
   }
-}
+};
 
 const createCategory = async ({ name }) => {
   name = name.toLowerCase();
@@ -37,7 +35,7 @@ const deleteCategory = async (categoryId) => {
     const {
       rows: category
     } = await client.query(/*sql*/`
-      DELETE FROM categories WHERE id=$1
+      DELETE FROM categories WHERE id=$1 RETURNING *;
     `, [categoryId])
     return category;
   } catch (error) {
