@@ -7,8 +7,8 @@ import { Header, Checkout } from "./components";
 
 const App = () => {
   return (
-    <div id="app">
-      <Router>
+    <Router>
+      <div id="app">
         <Header />
         <main>
           <Switch>
@@ -17,8 +17,8 @@ const App = () => {
             </Route>
           </Switch>
         </main>
-      </Router>
-    </div>
+      </div>
+    </Router>
   );
 };
 
