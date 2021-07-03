@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Nav, Container } from "react-bootstrap-v5";
+import { Navbar, Nav, Container } from "react-bootstrap";
 
 const Header = () => {
   return (

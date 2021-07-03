@@ -1,4 +1,4 @@
-const { createOrder } = require("./index");
+const { createOrder, addProductToCart } = require("./index");
 
 const createInitialOrders = async () => {
   try {
@@ -15,5 +15,23 @@ const createInitialOrders = async () => {
     console.dir(error);
   }
 };
+//addProductToCart({ productId, orderId, price, quantity })
+const createInitialLineItems = async () => {
+  try {
+    console.log("Creating line items");
 
-module.exports = createInitialOrders;
+    const lineItemsToCreate = [{}];
+
+    const lineItems = await Promise.all(
+      lineItemsToCreate.map(addProductToCart)
+    );
+
+    console.log("Finished creating line items");
+    console.log(lineItems);
+  } catch (error) {
+    console.log("Trouble creating new line items");
+    console.dir(error);
+  }
+};
+
+module.exports = { createInitialOrders, createInitialLineItems };
