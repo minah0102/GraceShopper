@@ -3,7 +3,7 @@ import React from "react";
 import { render } from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { Header, Checkout } from "./components";
+import { Header, Register, Login, Checkout } from "./components";
 
 const App = () => {
   return (
@@ -12,9 +12,18 @@ const App = () => {
         <Header />
         <main>
           <Switch>
+          <Route path="/register">
+              <Register />
+            </Route>
+
+          <Route path="/login">
+              <Login />
+            </Route>
+
             <Route path="/cart">
               <Checkout />
             </Route>
+
           </Switch>
         </main>
       </div>

@@ -11,8 +11,14 @@ const Header = () => {
           <Navbar.Toggle aria-controls="main-nav" />
           <Navbar.Collapse id="main-nav" className="justify-content-end">
             <Nav>
-              <Nav.Link href="#">Sign up</Nav.Link>
-              <Nav.Link href="#">Log in</Nav.Link>
+              <LinkContainer to="/register">
+                <Nav.Link>Sign up</Nav.Link>
+              </LinkContainer>
+
+              <LinkContainer to="/login">
+                <Nav.Link>Log in</Nav.Link>
+              </LinkContainer>
+
               <LinkContainer to="/cart">
                 <Nav.Link>Cart</Nav.Link>
               </LinkContainer>
