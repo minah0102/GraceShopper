@@ -4,7 +4,10 @@ const client = require("./client");
 const createInitialUsers = require("./createInitialUsers");
 const createInitialProducts = require("./createInitialProducts");
 const createInitialReviews = require("./createInitialReviews");
-const createInitialOrders = require("./createInitialOrders");
+const {
+  createInitialOrders,
+  createInitialLineItems,
+} = require("./createInitialOrders");
 const {
   createInitialCategoryProducts,
   createInitialCategories,
@@ -91,6 +94,7 @@ async function populateInitialData() {
     await createInitialOrders();
     await createInitialProducts();
     await createInitialReviews();
+    await createInitialLineItems();
   } catch (error) {
     throw error;
   }
