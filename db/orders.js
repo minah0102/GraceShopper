@@ -141,7 +141,7 @@ async function attachProductsToOrder(orders) {
     const orderIds = orders.map((o) => o.id).join(", "); //3, 11
 
     const { rows: products } = await client.query(/*sql*/ `
-      SELECT p.id AS "productId", p.name, p.description, p."imageName", li.quantity, li.price, li."orderId"
+      SELECT p.id AS "productId", p.name, p.description, p."imageName", li.quantity, li.price, li."orderId", li.id as "lineItemId"
       FROM line_items AS li
       JOIN products AS p ON p.id=li."productId"
       WHERE "orderId" IN (${orderIds});
@@ -172,9 +172,9 @@ async function addProductToCart({ productId, orderId, price, quantity }) {
     `,
       [productId, orderId]
     );
-
+    
     if (lineItem) {
-      return await updateQuantity({ orderId, productId, quantity });
+      return await updateQuantity(lineItem.id, { quantity });
     }
 
     const {
@@ -195,7 +195,7 @@ async function addProductToCart({ productId, orderId, price, quantity }) {
   }
 }
 
-async function updateQuantity({ orderId, productId, quantity }) {
+async function updateQuantity(lineItemId, { quantity }) {
   try {
     const {
       rows: [updated],
@@ -203,14 +203,14 @@ async function updateQuantity({ orderId, productId, quantity }) {
       /*sql*/ `
       UPDATE line_items
       SET quantity=$1
-      WHERE "orderId"=$2 AND "productId"=$3
+      WHERE id=$2
       RETURNING *;
     `,
-      [quantity, orderId, productId]
+      [quantity, lineItemId]
     );
 
     if (updated.quantity === 0) {
-      return await removeProductFromCart({ orderId, productId });
+      return await removeProductFromCart(lineItemId);
     }
 
     return updated;
@@ -239,17 +239,17 @@ async function deleteProducts(orderId) {
   }
 }
 
-async function removeProductFromCart({ orderId, productId }) {
-  try { console.log("show me orderId, productId", orderId, productId);
+async function removeProductFromCart(lineItemId) {
+  try {
     const {
       rows: [removedProduct],
     } = await client.query(
       /*sql*/ `
     DELETE FROM line_items
-    WHERE "orderId"=$1 AND "productId"=$2
+    WHERE id=$1
     RETURNING *;
     `,
-      [orderId, productId]
+      [lineItemId]
     );
 
     return removedProduct;
