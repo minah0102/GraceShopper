@@ -62,7 +62,7 @@ ordersRouter.patch("/:orderId", async (req, res, next) => {
   }
 });
 //needs to add requireUser
-ordersRouter.patch("/:lineItemId", async (req, res, next) => {
+ordersRouter.patch("/:lineItemId/quantity", async (req, res, next) => {
   try {
     const { lineItemId } = req.params;
     const { quantity } = req.body;
@@ -70,7 +70,7 @@ ordersRouter.patch("/:lineItemId", async (req, res, next) => {
 
     res.send(updated);
   } catch (error) {
-    console.log("Error in PATCH orders/:productId/quantity");
+    console.log("Error in PATCH orders/:lineItemId/quantity");
     next(error);
   }
 });
@@ -124,7 +124,7 @@ ordersRouter.delete("/:lineItemId", requireUser, async (req, res, next) => {
 
     res.send(deletedProduct);
   } catch (error) {
-    console.log("Error in DELETE orders/:productId");
+    console.log("Error in DELETE orders/:lineItemId");
     next(error);
   }
 });
