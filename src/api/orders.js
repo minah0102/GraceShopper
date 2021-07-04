@@ -25,3 +25,14 @@ export async function patchQuantity(lineItemId, quantity) {
     throw error;
   }
 }
+
+export async function deleteProductFromCart(lineItemId) {
+  try {
+    const { data } = await axios.delete(`${URL}/orders/${lineItemId}`);
+
+    return data;
+  } catch (error) {
+    console.log("Error in api/deleteProductFromCart");
+    throw error;
+  }
+}
