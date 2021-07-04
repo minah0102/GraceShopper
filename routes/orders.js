@@ -116,8 +116,8 @@ ordersRouter.delete("/", requireUser, async (req, res, next) => {
     next(error);
   }
 });
-
-ordersRouter.delete("/:lineItemId", requireUser, async (req, res, next) => {
+//needs to add requireUser
+ordersRouter.delete("/:lineItemId", async (req, res, next) => {
   try {
     const { lineItemId } = req.params;
     const deletedProduct = await removeProductFromCart(lineItemId);
