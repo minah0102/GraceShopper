@@ -20,7 +20,16 @@ const createInitialLineItems = async () => {
   try {
     console.log("Creating line items");
 
-    const lineItemsToCreate = [{}];
+    const lineItemsToCreate = [
+      { productId: 2, orderId: 5, price: 15, quantity: 2 },
+      { productId: 4, orderId: 5, price: 10, quantity: 3 },
+      { productId: 2, orderId: 6, price: 15, quantity: 2 },
+      { productId: 3, orderId: 6, price: 15, quantity: 1 },
+      { productId: 5, orderId: 7, price: 10, quantity: 5 },
+      { productId: 7, orderId: 7, price: 5, quantity: 2 },
+      { productId: 5, orderId: 9, price: 10, quantity: 2 },
+      { productId: 4, orderId: 9, price: 10, quantity: 3 },
+    ];
 
     const lineItems = await Promise.all(
       lineItemsToCreate.map(addProductToCart)
