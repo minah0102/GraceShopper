@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Row, Col, ListGroup, Form, Button, Card } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  ListGroup,
+  Form,
+  Button,
+  Card,
+  CloseButton,
+} from "react-bootstrap";
 import { patchQuantity } from "../api";
 
 const Cart = ({ myOrder, setMyOrder }) => {
@@ -40,12 +48,15 @@ const Cart = ({ myOrder, setMyOrder }) => {
               return (
                 <ListGroup.Item key={p.id}>
                   <Row>
+                  <CloseButton />
                     <Col xs={3}>{p.imageName}</Col>
-                    <Col xs={7}>
+                    <Col>
                       {p.name}
-                      <span style={{ color: "red" }}>${p.price}</span>
+                      <span style={{ color: "red" }}>
+                        ${Number.parseInt(p.price).toFixed(2)}
+                      </span>
                     </Col>
-                    <Col xs={2}>
+                    <Col xs={3}>
                       <Form.Control
                         as="select"
                         defaultValue={p.quantity}
