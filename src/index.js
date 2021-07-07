@@ -1,32 +1,41 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { Header, Register, Login, Checkout, ReviewForm } from "./components";
+import { Header, Register, Login, Cart, ReviewForm } from "./components";
+import {Container} from "react-bootstrap"
+import { getOrder } from "./api";
 
 const App = () => {
+  const [myOrder, setMyOrder] = useState({});
+
+  useEffect(() => {
+    getOrder(5)
+      .then((r) =>{ 
+        setMyOrder(r)
+      })
+      .catch((e) => console.error(e));
+  }, []);
+
   return (
     <Router>
       <div id="app">
         <Header />
-        <main>
+        <Container>
           <Switch>
-          <Route path="/register">
+            <Route path="/register">
               <Register />
             </Route>
-
-          <Route path="/login">
+            <Route path="/login">
               <Login />
             </Route>
-
             <Route path="/cart">
-              <Checkout />
+              <Cart {...{ myOrder, setMyOrder }} />
             </Route>
-
           </Switch>
           <ReviewForm/>
-        </main>
+        </Container>
       </div>
     </Router>
   );
