@@ -3,9 +3,8 @@ import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import { Header, Register, Login, Cart, ReviewForm } from "./components";
 import {Container} from "react-bootstrap"
-
-import { Header, Register, Login, Cart } from "./components";
 import { getOrder } from "./api";
 
 const App = () => {
@@ -28,15 +27,14 @@ const App = () => {
             <Route path="/register">
               <Register />
             </Route>
-
             <Route path="/login">
               <Login />
             </Route>
-
             <Route path="/cart">
               <Cart {...{ myOrder, setMyOrder }} />
             </Route>
           </Switch>
+          <ReviewForm/>
         </Container>
       </div>
     </Router>
