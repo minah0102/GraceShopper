@@ -37,13 +37,13 @@ ordersRouter.get("/cart", requireUser, async (req, res, next) => {
     next(error);
   }
 });
-
-ordersRouter.get("/:orderId", requireUser, async (req, res, next) => {
+//needs to add requireUser
+ordersRouter.get("/:orderId", async (req, res, next) => {
   try {
     const { orderId } = req.params;
     const order = await getOrderById(orderId);
 
-    res.send(order);
+    res.send(order[0]);
   } catch (error) {
     console.log("Error in GET orders/:orderId");
     next(error);
@@ -61,23 +61,19 @@ ordersRouter.patch("/:orderId", async (req, res, next) => {
     next(error);
   }
 });
+//needs to add requireUser
+ordersRouter.patch("/:lineItemId/quantity", async (req, res, next) => {
+  try {
+    const { lineItemId } = req.params;
+    const { quantity } = req.body;
+    const updated = await updateQuantity(lineItemId, { quantity });
 
-ordersRouter.patch(
-  "/:productId/quantity",
-  requireUser,
-  async (req, res, next) => {
-    try {
-      const { productId } = req.params;
-      const { orderId, quantity } = req.body;
-      const updated = await updateQuantity({ orderId, productId, quantity });
-
-      res.send(updated);
-    } catch (error) {
-      console.log("Error in PATCH orders/:productId/quantity");
-      next(error);
-    }
+    res.send(updated);
+  } catch (error) {
+    console.log("Error in PATCH orders/:lineItemId/quantity");
+    next(error);
   }
-);
+});
 
 // ordersRouter.post("/", requireUser, async (req, res, next) => {
 //   try {
@@ -120,16 +116,15 @@ ordersRouter.delete("/", requireUser, async (req, res, next) => {
     next(error);
   }
 });
-
-ordersRouter.delete("/:productId", requireUser, async (req, res, next) => {
+//needs to add requireUser
+ordersRouter.delete("/:lineItemId", async (req, res, next) => {
   try {
-    const { productId } = req.params;
-    const { orderId } = req.body;
-    const deletedProduct = await removeProductFromCart({ orderId, productId });
+    const { lineItemId } = req.params;
+    const deletedProduct = await removeProductFromCart(lineItemId);
 
     res.send(deletedProduct);
   } catch (error) {
-    console.log("Error in DELETE orders/:productId");
+    console.log("Error in DELETE orders/:lineItemId");
     next(error);
   }
 });
