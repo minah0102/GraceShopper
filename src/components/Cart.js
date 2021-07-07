@@ -73,7 +73,7 @@ const Cart = ({ myOrder, setMyOrder }) => {
                   <ListGroup.Item key={p.id}>
                     <Row>
                       <CloseButton onClick={() => handleDelete(p.lineItemId)} />
-                      <Col xs={3}>{p.imageName}</Col>
+                      <Col xs={3}><img src={`/images/${imageName}`}/></Col>
                       <Col>
                         {p.name}
                         <span style={{ color: "red" }}>

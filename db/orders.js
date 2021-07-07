@@ -160,7 +160,7 @@ async function attachProductsToOrder(orders) {
   }
 }
 
-async function addProductToCart({ productId, orderId, price, quantity }) {
+async function addProductToCart({ orderId, productId, price, quantity }) {
   try {
     //check if the product is already in the cart.
     //if I use getOrderByUserId() I will not get productId
@@ -172,7 +172,7 @@ async function addProductToCart({ productId, orderId, price, quantity }) {
     `,
       [productId, orderId]
     );
-    
+
     if (lineItem) {
       return await updateQuantity(lineItem.id, { quantity });
     }

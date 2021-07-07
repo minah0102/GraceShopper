@@ -1,6 +1,9 @@
 import axios from "axios";
 
 const URL = `http://localhost:3000/api`;
+// const config = {
+//   headers: { Authorization: `Bearer ${token}` }
+// };
 
 export async function getOrder(orderId) {
   try {
@@ -33,6 +36,17 @@ export async function deleteProductFromCart(lineItemId) {
     return data;
   } catch (error) {
     console.log("Error in api/deleteProductFromCart");
+    throw error;
+  }
+}
+
+export async function postProductToCart(orderId, productId) {
+  try {
+    const { data } = await axios.post(`${URL}/orders/${orderId}/${productId}`);
+
+    return data;
+  } catch (error) {
+    console.log("Error in api/postProductToCart");
     throw error;
   }
 }
