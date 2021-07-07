@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { Header, Register, Login, ReviewForm } from "./components";
+import { Header, Register, Login, ReviewForm, Cart } from "./components";
 import {Container} from "react-bootstrap"
 
 import { getOrder } from "./api";
