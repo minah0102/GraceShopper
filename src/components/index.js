@@ -9,3 +9,4 @@ export { default as Cart } from "./Cart";
 export { default as Confirm } from "./Confirm";
 export { default as StarRating } from "./StarRating";
 export { default as Donate } from "./Donate"
+export { default as LoggedInPage } from "./LoggedInPage";

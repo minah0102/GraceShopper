@@ -1,9 +1,17 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 
+const mystyle = {
+  padding: "1rem",
+  margin: "1rem",
+  display: "flex",
+  justifyContent: "center"
+};
+
 const Login = () => {
   return (
-      <Form>
+    <div style={mystyle}>
+      <Form style={{width: "30rem"}}>
         <Form.Group controlId="formLoginEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" />
@@ -25,6 +33,7 @@ const Login = () => {
           Submit
         </Button>
       </Form>
+      </div>
   );
 }
 
