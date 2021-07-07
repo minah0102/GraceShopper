@@ -3,9 +3,17 @@ import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import {Container} from "react-bootstrap"
+import {
+  Header,
+  Register,
+  Login,
+  ReviewForm,
+  Cart,
+  Donate,
+  Products
+} from "./components";
+import { Container } from "react-bootstrap";
 
-import { Header, Register, Login, Cart } from "./components";
 import { getOrder } from "./api";
 
 const App = () => {
@@ -13,8 +21,8 @@ const App = () => {
 
   useEffect(() => {
     getOrder(5)
-      .then((r) =>{ 
-        setMyOrder(r)
+      .then((r) => {
+        setMyOrder(r);
       })
       .catch((e) => console.error(e));
   }, []);
@@ -24,19 +32,19 @@ const App = () => {
       <div id="app">
         <Header />
         <Container>
+          <Donate />
           <Switch>
             <Route path="/register">
               <Register />
             </Route>
-
             <Route path="/login">
               <Login />
             </Route>
-
             <Route path="/cart">
               <Cart {...{ myOrder, setMyOrder }} />
             </Route>
           </Switch>
+          <ReviewForm />
         </Container>
       </div>
     </Router>
