@@ -28,7 +28,6 @@ const Product = () => {
   for (let i = 1; selectQuantity.length < quantity; i++) {
     selectQuantity.push(i);
   }
-  console.log(selectQuantity);
 
   return (
     <Container>

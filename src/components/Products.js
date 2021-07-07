@@ -10,7 +10,6 @@ const Products = () => {
   useEffect(async () => {
     const allProducts = await fetchAllProducts();
     setProducts(allProducts);
-    console.log(allProducts);
   }, []);
 
   return (
