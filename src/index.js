@@ -36,11 +36,9 @@ const App = () => {
             <Route path="/register">
               <Register />
             </Route>
-
             <Route path="/login">
               <Login />
             </Route>
-
             <Route path="/cart">
               <Cart {...{ myOrder, setMyOrder }} />
             </Route>
