@@ -43,6 +43,9 @@ const App = () => {
             <Route path="/cart">
               <Cart {...{ myOrder, setMyOrder }} />
             </Route>
+            <Route exact path="/products">
+              <Products/>
+            </Route>
           </Switch>
           <ReviewForm />
         </Container>
