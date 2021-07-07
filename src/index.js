@@ -10,6 +10,7 @@ import {
   ReviewForm,
   Cart,
   Donate,
+  Products
 } from "./components";
 import { Container } from "react-bootstrap";
 
