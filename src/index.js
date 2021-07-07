@@ -3,7 +3,7 @@ import React from "react";
 import { render } from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { Header, Register, Login, Checkout } from "./components";
+import { Header, Register, Login, Checkout, ReviewForm } from "./components";
 
 const App = () => {
   return (
@@ -25,6 +25,7 @@ const App = () => {
             </Route>
 
           </Switch>
+          <ReviewForm/>
         </main>
       </div>
     </Router>
