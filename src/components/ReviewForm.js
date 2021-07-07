@@ -4,7 +4,6 @@ import StarRating from "./StarRating";
 import { createReview } from "../api/Reviews/reviews";
 
 const ReviewForm = ({ productReviews, setProductReviews }) => {
-  const [rating, setRating] = useState(null);
   const [comment, setComment] = useState("");
   console.log(comment);
 
