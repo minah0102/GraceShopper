@@ -29,9 +29,9 @@ const App = () => {
   return (
     <Router>
       <div id="app">
-        <Donate/>
         <Header />
         <Container>
+          <Donate />
           <Switch>
             <Route path="/register">
               <Register />

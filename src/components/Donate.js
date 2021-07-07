@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button, Image } from "react-bootstrap";
 const Donate = () => {
   const [show, setShow] = useState(true);
+  console.log(show)
   const handleClose = () => setShow(false);
   const openTab = () => {
     window.open(
