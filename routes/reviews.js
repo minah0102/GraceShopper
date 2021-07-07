@@ -21,24 +21,35 @@ const {
   getReviewById,
 } = require("../db/reviews");
 const { requireUser } = require("./utils");
-// const { getHistory } = require("../db/orders");
+const { getHistory } = require("../db/orders");
 
 reviewsRouter.post("/:productId", requireUser, async (req, res, next) => {
   const { comment, rating } = req.body;
   const { productId } = req.params;
   const userId = req.user.id;
 
-  try {
-    const newReview = await createReview({
-      comment,
-      rating,
-      userId,
-      productId,
+  const pastOrders = await getHistory(userId);
+  const products = pastOrders.map((order) => {
+    return order.products.filter((product) => {
+      return product.productId === productId;
     });
-    res.send(newReview);
-  } catch (error) {
-    console.log("postReview", error);
-    next(error);
+  });
+  console.log(products);
+  if (products.length > 0) {
+    try {
+      const newReview = await createReview({
+        comment,
+        rating,
+        userId,
+        productId,
+      });
+      res.send(newReview);
+    } catch (error) {
+      console.log("postReview", error);
+      next(error);
+    }
+  } else {
+    console.error("You did not purchase this product and can not leave a review");
   }
 });
 

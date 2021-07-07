@@ -11,7 +11,11 @@ server.use(bodyParser.json());
 
 // static files
 const path = require("path");
+
+server.use("/images", express.static(path.join(__dirname, "images")));
+
 server.use(express.static(path.join(__dirname, "build")));
+
 
 // API
 server.use("/api", require("./routes"));
