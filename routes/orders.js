@@ -37,8 +37,8 @@ ordersRouter.get("/cart", requireUser, async (req, res, next) => {
     next(error);
   }
 });
-//needs to add requireUser
-ordersRouter.get("/:orderId", async (req, res, next) => {
+
+ordersRouter.get("/:orderId", requireUser, async (req, res, next) => {
   try {
     const { orderId } = req.params;
     const order = await getOrderById(orderId);
@@ -50,7 +50,7 @@ ordersRouter.get("/:orderId", async (req, res, next) => {
   }
 });
 
-ordersRouter.patch("/:orderId", async (req, res, next) => {
+ordersRouter.patch("/:orderId", requireUser, async (req, res, next) => {
   try {
     const { orderId } = req.params;
     const inactive = await removeOrder(orderId);
@@ -61,19 +61,23 @@ ordersRouter.patch("/:orderId", async (req, res, next) => {
     next(error);
   }
 });
-//needs to add requireUser
-ordersRouter.patch("/:lineItemId/quantity", async (req, res, next) => {
-  try {
-    const { lineItemId } = req.params;
-    const { quantity } = req.body;
-    const updated = await updateQuantity(lineItemId, { quantity });
 
-    res.send(updated);
-  } catch (error) {
-    console.log("Error in PATCH orders/:lineItemId/quantity");
-    next(error);
+ordersRouter.patch(
+  "/:lineItemId/quantity",
+  requireUser,
+  async (req, res, next) => {
+    try {
+      const { lineItemId } = req.params;
+      const { quantity } = req.body;
+      const updated = await updateQuantity(lineItemId, { quantity });
+
+      res.send(updated);
+    } catch (error) {
+      console.log("Error in PATCH orders/:lineItemId/quantity");
+      next(error);
+    }
   }
-});
+);
 
 // ordersRouter.post("/", requireUser, async (req, res, next) => {
 //   try {
@@ -116,8 +120,8 @@ ordersRouter.delete("/", requireUser, async (req, res, next) => {
     next(error);
   }
 });
-//needs to add requireUser
-ordersRouter.delete("/:lineItemId", async (req, res, next) => {
+
+ordersRouter.delete("/:lineItemId", requireUser, async (req, res, next) => {
   try {
     const { lineItemId } = req.params;
     const deletedProduct = await removeProductFromCart(lineItemId);
