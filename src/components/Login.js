@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
+import { UserContext } from "./MainAuth"
 import { Form, Button } from "react-bootstrap";
+import { loginUser } from "../api/users";
+
 
 const mystyle = {
   padding: "1rem",
@@ -8,32 +12,82 @@ const mystyle = {
   justifyContent: "center"
 };
 
-const Login = () => {
+const Login = ({ setUser, setFormtype }) => {
+  // const [user, setUser] = useState(null);
+  const [usernameInput, setUsernameInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const usernameChangeHandler = (e) => {
+    e.preventDefault();
+    setUsernameInput(e.target.value);
+  };
+
+  const passwordChangeHandler = (e) => {
+    e.preventDefault();
+    setPasswordInput(e.target.value);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    loginUser(usernameInput, passwordInput).then((result) => {
+      const { user, error } = result;
+      setIsLoading(false);
+      if (error) {
+        setError(error);
+      }
+      if (user) {
+        //setUser(user);
+      }
+    });
+  };
+
   return (
     <div style={mystyle}>
-      <Form style={{width: "30rem"}}>
-        <Form.Group controlId="formLoginEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
+      <Form
+        style={{ width: "30rem" }}
+      >
+        <h2>Please Login</h2>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <Form.Group controlId="formLoginUsername">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type="username"
+            placeholder="Enter username"
+            value={usernameInput}
+            onChange={usernameChangeHandler}
+          />
         </Form.Group>
 
         <Form.Group controlId="formLoginPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Enter Password" />
+          <Form.Control
+            type="password"
+            placeholder="Enter Password"
+            value={passwordInput}
+            onChange={passwordChangeHandler}
+          />
         </Form.Group>
 
         <Form.Group controlId="formLoginCheckbox">
           <Form.Check type="checkbox" label="Remember me" />
         </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
+        <Link to="/authenticated">
+          <Button
+            variant="primary"
+            type="submit"
+            onClick={submitHandler}
+            disabled={isLoading}
+          >
+            Submit
+          </Button>
+        </Link>
       </Form>
-      </div>
+    </div>
   );
 }
 
