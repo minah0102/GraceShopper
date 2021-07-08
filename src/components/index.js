@@ -10,3 +10,5 @@ export { default as Cart } from "./Cart";
 export { default as Donate } from "./Donate"
 export { default as LoggedInPage } from "./LoggedInPage";
 export { default as MainAuth } from "./MainAuth";
+export { default as Reviews} from "./Reviews";
+export { default as SingleReview} from "./SingleReview";

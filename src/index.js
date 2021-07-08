@@ -34,7 +34,7 @@ const App = () => {
       <div id="app">
         <Header />
         <Container>
-          <Donate />
+          {/* <Donate /> */}
           <Switch>
             <Route path="/register">
               <Register />
