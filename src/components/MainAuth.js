@@ -11,22 +11,27 @@ const MainAuth = () => {
 
   useEffect(() => {
     const token = getToken();
-    const headers = token ? {Authorization: `Bearer ${token}`,} : {};
+    const headers = token
+      ? {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        }
+      : {};
 
     fetch("/api/users/me", {
       headers,
     })
-    .then((d) => d.json())
-    .then((u) => {
-      if (u.user) setUser(u.user);
-    });
+      .then((d) => d.json())
+      .then((u) => {
+        if (u) setUser(u); 
+      });
   }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
       {user ? <LoggedInPage /> : <Login />}
     </UserContext.Provider>
-  )
-}
+  );
+};
 
 export default MainAuth;

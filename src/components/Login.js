@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { UserContext } from "./MainAuth"
 import { Form, Button } from "react-bootstrap";
 import { loginUser } from "../api/users";
@@ -13,6 +13,7 @@ const mystyle = {
 };
 
 const Login = ({ setUser, setFormtype }) => {
+  const history = useHistory();
   // const [user, setUser] = useState(null);
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
@@ -40,7 +41,8 @@ const Login = ({ setUser, setFormtype }) => {
         setError(error);
       }
       if (user) {
-        //setUser(user);
+        // setUser(user);
+        history.push("/authenticated");
       }
     });
   };
@@ -76,7 +78,7 @@ const Login = ({ setUser, setFormtype }) => {
           <Form.Check type="checkbox" label="Remember me" />
         </Form.Group>
 
-        <Link to="/authenticated">
+        {/* <Link to="/authenticated"> */}
           <Button
             variant="primary"
             type="submit"
@@ -85,7 +87,7 @@ const Login = ({ setUser, setFormtype }) => {
           >
             Submit
           </Button>
-        </Link>
+        {/* </Link> */}
       </Form>
     </div>
   );

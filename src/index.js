@@ -11,20 +11,22 @@ import {
   Cart,
   Donate,
   Products,
+  Checkout,
   MainAuth,
   LoggedInPage
 } from "./components";
 import { Container } from "react-bootstrap";
 
-import { getOrder } from "./api";
+import { getOrderByUser } from "./api";
 
 const App = () => {
   const [myOrder, setMyOrder] = useState({});
 
   useEffect(() => {
-    getOrder(5)
+    getOrderByUser()
       .then((r) => {
         setMyOrder(r);
+        console.log("getOrderByUSer", r);
       })
       .catch((e) => console.error(e));
   }, []);
@@ -46,8 +48,9 @@ const App = () => {
               <Cart {...{ myOrder, setMyOrder }} />
             </Route>
             <Route exact path="/products">
-              <Products/>
+              <Products />
             </Route>
+            <Route path="/checkout"><Checkout myOrder={myOrder}/></Route>
             <Route path="/authenticated">
               <MainAuth />
             </Route>

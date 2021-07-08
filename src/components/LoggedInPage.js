@@ -1,15 +1,16 @@
-import React, {useContext } from "react";
+import React, { useContext } from "react";
 import { UserContext } from "./MainAuth";
 import RecentOrders from "./RecentOrders";
 import Profile from "./Profile";
+import { Button } from "react-bootstrap";
 
 const LoggedInPage = () => {
-  const {user, setUser} = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const handleLogout = () => {
     localStorage.clear();
     setUser(null);
-  }
+  };
 
   return (
     <div>
@@ -18,7 +19,7 @@ const LoggedInPage = () => {
       <RecentOrders />
       <Profile />
     </div>
-  )
-}
+  );
+};
 
 export default LoggedInPage;

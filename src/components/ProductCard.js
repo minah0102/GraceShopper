@@ -1,10 +1,17 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 import "../css/ProductCard.css";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { addProductToCart } from "../api";
 
 const ProductCard = ({ product }) => {
   const { id, name, price, imageName } = product;
+
+  const handleAddToCart = async () => {
+    const added = await addProductToCart(orderId, productId, price, quantity);
+
+    console.log("added", added);
+  };
 
   return (
     <Link to={`products/${id}`}>
@@ -13,7 +20,9 @@ const ProductCard = ({ product }) => {
         <Card.Body>
           <Card.Title>{name}</Card.Title>
           <Card.Text>${price}</Card.Text>
-          <Button variant="primary">Add To Cart</Button>
+          <Button variant="primary" onClick={handleAddToCart}>
+            Add To Cart
+          </Button>
         </Card.Body>
       </Card>
     </Link>
