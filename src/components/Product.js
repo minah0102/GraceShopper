@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Image, Button, Form } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Image,
+  Button,
+  Form,
+  Accordion,
+  Card,
+} from "react-bootstrap";
 import { fetchProductById } from "../api/products";
 import "../css/ProductCard.css";
 
 import { useParams } from "react-router-dom";
+import { Reviews } from "./index.js";
 
 const Product = () => {
   const [currentProduct, setCurrentProduct] = useState({});
@@ -15,14 +25,19 @@ const Product = () => {
     setCurrentProduct(product);
   }, []);
 
-  const {
-    name,
-    description,
-    imageName,
-    price,
-    reviews,
-    quantity,
-  } = currentProduct;
+  const { name, description, imageName, price, reviews, quantity } =
+    currentProduct;
+
+  const productReviews = currentProduct.reviews;
+  console.log(productReviews);
+  const ratings = productReviews.map((review) => {
+    const { rating } = review;
+    return rating;
+  });
+  console.log(ratings);
+  const r = (acc, value) => acc + value;
+  const averageRating = ratings.reduce(r) / ratings.length;
+  console.log(averageRating);
 
   let selectQuantity = [];
   for (let i = 1; selectQuantity.length < quantity; i++) {
@@ -58,6 +73,23 @@ const Product = () => {
             <div className="product__price">${price}</div>
           </Row>
         </Col>
+      </Row>
+      <Row>
+        <Accordion>
+          <Card>
+            <Card.Header>
+              <h5>Average rating: {averageRating}</h5>
+              <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                Click to see reviews
+              </Accordion.Toggle>
+            </Card.Header>
+            <Accordion.Collapse eventKey="0">
+              <Card.Body>
+                <Reviews currentProduct={currentProduct} />
+              </Card.Body>
+            </Accordion.Collapse>
+          </Card>
+        </Accordion>
       </Row>
     </Container>
   );

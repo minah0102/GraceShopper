@@ -12,6 +12,8 @@ import {
   Donate,
   Products,
   Checkout,
+  MainAuth,
+  LoggedInPage
 } from "./components";
 import { Container } from "react-bootstrap";
 
@@ -23,7 +25,7 @@ const App = () => {
   useEffect(() => {
     getOrderByUser()
       .then((r) => {
-        // setMyOrder(r);
+        setMyOrder(r);
         console.log("getOrderByUSer", r);
       })
       .catch((e) => console.error(e));
@@ -34,7 +36,7 @@ const App = () => {
       <div id="app">
         <Header />
         <Container>
-          <Donate />
+          {/* <Donate /> */}
           <Switch>
             <Route path="/register">
               <Register />
@@ -49,6 +51,9 @@ const App = () => {
               <Products />
             </Route>
             <Route path="/checkout"><Checkout myOrder={myOrder}/></Route>
+            <Route path="/authenticated">
+              <MainAuth />
+            </Route>
           </Switch>
           <ReviewForm />
         </Container>

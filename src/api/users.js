@@ -1,19 +1,20 @@
 import axios from "axios";
-import { loginUser } from "./users";
+//import { loginUser } from "./users";
 import { setToken } from "./token";
 
-// const URL = `http://localhost:3000/api`;
+const URL = `http://localhost:3000/api`;
 
-// export async function getUser(userId) {
-//   try {
-//     const { data } = await axios.get(`${URL}/users/${userId}`);
+//for admins
+export async function getUser(userId) {
+  try {
+    const { data } = await axios.get(`${URL}/users/${userId}`);
 
-//     return data;
-//   } catch (error) {
-//     console.log("Error in api/getUser");
-//     throw error;
-//   }
-// }
+    return data;
+  } catch (error) {
+    console.log("Error in api/getUser");
+    throw error;
+  }
+}
 
 // export async function registerUser() {
 //   try {
@@ -51,7 +52,7 @@ export const loginUser = (username, password) => {
   });
 };
 
-export const registerUser = (username, password) => {
+export const registerUser = (username, email, password) => {
   return fetch("/api/users/register", {
     method: "POST",
     body: JSON.stringify({
