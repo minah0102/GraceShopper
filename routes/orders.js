@@ -91,27 +91,23 @@ ordersRouter.patch(
 //   }
 // });
 
-ordersRouter.post(
-  "/:orderId/:productId",
-  requireUser,
-  async (req, res, next) => {
-    try {
-      const { orderId, productId } = req.params;
-      const { price, quantity } = req.body;
-      const added = await addProductToCart({
-        productId,
-        orderId,
-        price,
-        quantity,
-      });
+ordersRouter.post("/:orderId", requireUser, async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+    const { productId, price, quantity } = req.body;
+    const added = await addProductToCart({
+      productId,
+      orderId,
+      price,
+      quantity,
+    });
 
-      res.send(added);
-    } catch (error) {
-      console.log("Error in POST orders/:productId");
-      next(error);
-    }
+    res.send(added);
+  } catch (error) {
+    console.log("Error in POST orders/:productId");
+    next(error);
   }
-);
+});
 
 ordersRouter.delete("/", requireUser, async (req, res, next) => {
   try {
