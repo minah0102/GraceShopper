@@ -26,11 +26,11 @@ async function removeOrder(orderId) {
       rows: [removedCart],
     } = await client.query(
       /*sql*/ `
-      UPDATE orders
-      SET "isActive"=false
-      WHERE id=$1
-      RETURNING *;
-    `,
+        UPDATE orders
+        SET "isActive"=false, "purchasedDate"=CURRENT_TIMESTAMP
+        WHERE id=$1
+        RETURNING *;
+      `,
       [orderId]
     );
 
@@ -74,7 +74,7 @@ GET /orders/cart
 async function getOrderByUserId(userId) {
   try {
     const {
-      rows: [cart],
+      rows: cart,
     } = await client.query(
       /*sql*/ `
       SELECT * FROM orders
@@ -87,7 +87,7 @@ async function getOrderByUserId(userId) {
       return await createOrder(userId);
     }
 
-    return cart;
+    return await attachProductsToOrder(cart);
   } catch (error) {
     console.log("Error in getOrderByUserId");
     throw error;

@@ -4,9 +4,12 @@ import { getToken } from "./token";
 const URL = `http://localhost:3000/api`;
 // const token = getToken();
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcm5hbWUiOiJqb29oYSIsImVtYWlsIjoiam9vaGE1NjdAZ21haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTYyNTcwMDMyNH0.Mqnp49iZ93_XDeS8KRkockDSEuM6VMdWO3jvugPWaTg";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJqb29oYSIsImVtYWlsIjoiam9vaGE1NjdAZ21haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTYyNTc3NzIyOX0.f1S0n_z6OfXKRodZMEXmK56WzSxHh3eruhxP_lUpkGM";
 const config = {
-  headers: { Authorization: `Bearer ${token}` },
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
 };
 
 export async function getOrder(orderId) {
@@ -16,6 +19,17 @@ export async function getOrder(orderId) {
     return data;
   } catch (error) {
     console.log("Error in api/getOrder");
+    throw error;
+  }
+}
+
+export async function getOrderByUser() {
+  try {
+    const { data } = await axios.get(`${URL}/orders/cart`, config);
+
+    return data;
+  } catch (error) {
+    console.log("Error in api/getOrderByUser");
     throw error;
   }
 }
@@ -59,6 +73,17 @@ export async function addProductToCart(orderId, productId, price, quantity) {
     return data;
   } catch (error) {
     console.log("Error in api/postProductToCart");
+    throw error;
+  }
+}
+
+export async function patchInactive(orderId) {
+  try {
+    const { data } = await axios.patch(`${URL}/orders/${orderId}`, config);
+
+    return data;
+  } catch (error) {
+    console.log("Error in api/patchInactive");
     throw error;
   }
 }

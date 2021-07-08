@@ -27,11 +27,12 @@ ordersRouter.get("/history", requireUser, async (req, res, next) => {
 });
 
 ordersRouter.get("/cart", requireUser, async (req, res, next) => {
-  try {
+  try { 
     const { id: userId } = req.user;
+    console.log("show me user", req.user);
     const cart = await getOrderByUserId(userId);
 
-    res.send(cart);
+    res.send(cart[0]);
   } catch (error) {
     console.log("Error in GET orders/cart");
     next(error);
