@@ -9,7 +9,7 @@ const Profile = () => {
           width={171}
           height={180}
           alt="171x180"
-          src="cat.js/171x180"
+          src={`/images/${imageName}`}
         />
       </Figure>
       

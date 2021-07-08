@@ -10,7 +10,9 @@ import {
   ReviewForm,
   Cart,
   Donate,
-  Products
+  Products,
+  MainAuth,
+  LoggedInPage
 } from "./components";
 import { Container } from "react-bootstrap";
 
@@ -45,6 +47,9 @@ const App = () => {
             </Route>
             <Route exact path="/products">
               <Products/>
+            </Route>
+            <Route path="/authenticated">
+              <MainAuth />
             </Route>
           </Switch>
           <ReviewForm />
