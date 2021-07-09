@@ -10,7 +10,10 @@ import {
   ReviewForm,
   Cart,
   Donate,
-  Products
+  Products,
+  Product,
+  ProductNav,
+  CategoryProducts
 } from "./components";
 import { Container } from "react-bootstrap";
 
@@ -31,6 +34,7 @@ const App = () => {
     <Router>
       <div id="app">
         <Header />
+        <ProductNav />
         <Container>
           <Donate />
           <Switch>
@@ -44,8 +48,14 @@ const App = () => {
               <Cart {...{ myOrder, setMyOrder }} />
             </Route>
             <Route exact path="/products">
-              <Products/>
+              <Products />
             </Route>
+            <Route exact path="/products/:id">
+              <Product />
+            </Route>
+            <Route path="/products/category/:name">
+              <CategoryProducts/>
+          </Route>
           </Switch>
           <ReviewForm />
         </Container>
@@ -53,5 +63,6 @@ const App = () => {
     </Router>
   );
 };
+
 
 render(<App />, document.getElementById("main"));
