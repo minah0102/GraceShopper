@@ -10,6 +10,6 @@ export { default as Checkout } from "./Checkout";
 export { default as StarRating } from "./StarRating";
 export { default as Donate } from "./Donate"
 export { default as LoggedInPage } from "./LoggedInPage";
-export { default as MainAuth } from "./MainAuth";
 export { default as Reviews} from "./Reviews";
 export { default as SingleReview} from "./SingleReview";
+export { default as Home} from "./Home";

@@ -1,35 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { UserContext } from "./MainAuth";
+import { UserContext } from "..";
 
 const Header = () => {
   const history = useHistory();
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useContext(UserContext);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setUser(null);
+    return history.push("/");
+  };
 
   return (
     <>
       <Navbar expand="md">
         <Container>
-          <h2>Catnip Corp.</h2>
+          <Nav.Link onClick={() => history.push("/")}>
+            <h2 style={{color: "black"}}>Catnip Corp.</h2>
+          </Nav.Link>
           <Navbar.Toggle aria-controls="main-nav" />
           <Navbar.Collapse id="main-nav" className="justify-content-end">
             <Nav>
-              <Nav.Link onClick={() => history.push("/register")}>
-                Sign up
-              </Nav.Link>
+              {user ? (
+                <Nav.Link onClick={() => history.push("/authenticated")}>
+                  Account
+                </Nav.Link>
+              ) : (
+                <Nav.Link onClick={() => history.push("/register")}>
+                  Sign up
+                </Nav.Link>
+              )}
 
-              <UserContext.Provider value={{ user, setUser }}>
-                {user ? (
-                  <Nav.Link onClick={() => history.push("/home")}>
-                    Logout
-                  </Nav.Link>
-                ) : (
-                  <Nav.Link onClick={() => history.push("/login")}>
-                    Log in
-                  </Nav.Link>
-                )}
-              </UserContext.Provider>
+              {user ? (
+                <Nav.Link onClick={handleLogout}>
+                  Logout
+                </Nav.Link>
+              ) : (
+                <Nav.Link onClick={() => history.push("/login")}>
+                  Log in
+                </Nav.Link>
+              )}
 
               <Nav.Link onClick={() => history.push("/cart")}>Cart</Nav.Link>
             </Nav>
