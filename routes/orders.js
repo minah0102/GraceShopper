@@ -29,7 +29,6 @@ ordersRouter.get("/history", requireUser, async (req, res, next) => {
 ordersRouter.get("/cart", requireUser, async (req, res, next) => {
   try { 
     const { id: userId } = req.user;
-    console.log("show me user", req.user);
     const cart = await getOrderByUserId(userId);
 
     res.send(cart[0]);
@@ -56,7 +55,7 @@ ordersRouter.patch("/:orderId", requireUser, async (req, res, next) => {
     const { orderId } = req.params;
     const inactive = await removeOrder(orderId);
 
-    res.send(inactive);
+    res.send(inactive[0]);
   } catch (error) {
     console.log("Error in PATCH orders/:orderId");
     next(error);

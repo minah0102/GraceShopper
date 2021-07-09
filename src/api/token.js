@@ -11,3 +11,17 @@ export const setToken = (token) => {
   localStorage.setItem("token", token);
   return token;
 };
+
+export const getUsername = () => {
+  const username = localStorage.getItem("username");
+  if (username) {
+    return username;
+  } else {
+    return null;
+  }
+}
+
+export const setUsername = (username) => {
+  localStorage.setItem("username", username);
+  return username;
+}

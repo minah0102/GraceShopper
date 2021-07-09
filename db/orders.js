@@ -18,7 +18,7 @@ async function createOrder(userId) {
     console.log("Error in createOrder");
     throw error;
   }
-} //needs userId to create a cart for an authenticated user.
+}
 
 async function removeOrder(orderId) {
   try {
@@ -34,7 +34,9 @@ async function removeOrder(orderId) {
       [orderId]
     );
 
-    return removedCart;
+    const newOrder = await createOrder(removedCart.userId);
+
+    return attachProductsToOrder([newOrder]);
   } catch (error) {
     console.log("Error in removeOrder");
     throw error;
@@ -73,9 +75,7 @@ GET /orders/cart
 */
 async function getOrderByUserId(userId) {
   try {
-    const {
-      rows: cart,
-    } = await client.query(
+    const { rows: cart } = await client.query(
       /*sql*/ `
       SELECT * FROM orders
       WHERE "userId"=$1 AND "isActive"=true;
@@ -83,7 +83,7 @@ async function getOrderByUserId(userId) {
       [userId]
     );
 
-    if (!cart) {
+    if (cart.length === 0) {
       return await createOrder(userId);
     }
 
