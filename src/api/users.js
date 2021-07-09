@@ -1,6 +1,6 @@
 import axios from "axios";
 //import { loginUser } from "./users";
-import { setToken } from "./token";
+import { setToken, setUsername } from "./token";
 
 const URL = `http://localhost:3000/api`;
 
@@ -45,8 +45,9 @@ export const loginUser = (username, password) => {
   .then((d) => d.json())
   .then((r) => {
     const { user, token, error } = r;
-    if (token) {
+    if (token && user) {
       setToken(token);
+      setUsername(user.username);
     }
     return { user, error };
   });
@@ -67,8 +68,9 @@ export const registerUser = (username, email, password) => {
   .then((d) => d.json())
   .then((r) => {
     const { user, token, error } = r;
-    if (token) {
+    if (token && user) {
       setToken(token);
+      setUsername(user.username);
     }
     return { user, error };
   });
