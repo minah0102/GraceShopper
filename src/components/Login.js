@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { UserContext } from "./MainAuth"
+import { UserContext } from "..";
 import { Form, Button } from "react-bootstrap";
 import { loginUser } from "../api/users";
 
@@ -12,9 +12,10 @@ const mystyle = {
   justifyContent: "center"
 };
 
-const Login = ({ setUser, setFormtype }) => {
+const Login = () => {
   const history = useHistory();
-  // const [user, setUser] = useState(null);
+  const { user, setUser } = useContext(UserContext);
+
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +42,7 @@ const Login = ({ setUser, setFormtype }) => {
         setError(error);
       }
       if (user) {
-        // setUser(user);
+        setUser(user);
         history.push("/authenticated");
       }
     });
@@ -77,8 +78,6 @@ const Login = ({ setUser, setFormtype }) => {
         <Form.Group controlId="formLoginCheckbox">
           <Form.Check type="checkbox" label="Remember me" />
         </Form.Group>
-
-        {/* <Link to="/authenticated"> */}
           <Button
             variant="primary"
             type="submit"
@@ -87,7 +86,6 @@ const Login = ({ setUser, setFormtype }) => {
           >
             Submit
           </Button>
-        {/* </Link> */}
       </Form>
     </div>
   );

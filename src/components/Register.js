@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { UserContext } from "..";
 import { Form, Button } from "react-bootstrap";
 import { registerUser } from "../api/users";
 
@@ -9,7 +11,10 @@ const mystyle = {
   justifyContent: "center"
 };
 
-const Register = ({ setUser, setFormType }) => {
+const Register = () => {
+  const history = useHistory();
+  const { user, setUser } = useContext(UserContext);
+
   const [usernameInput, setUsernameInput] = useState("");
   const [emailInput, setEmailInput] = useState("")
   const [passwordInput, setPasswordInput] = useState("");
@@ -35,6 +40,7 @@ const Register = ({ setUser, setFormType }) => {
       }
       if (user) {
         setUser(user);
+        history.push("/login");
       }
     });
   };
