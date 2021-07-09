@@ -1,5 +1,7 @@
 export { default as Header } from "./Header";
+export { default as ProductNav } from "./ProductNav";
 export { default as Products } from "./Products";
+export { default as CategoryProducts } from "./CategoryProducts";
 export { default as ProductCard } from "./ProductCard";
 export { default as Product } from "./Product";
 export { default as ReviewForm } from "./ReviewForm";
