@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import {
   Header,
+  Home,
   Register,
   Login,
   ReviewForm,
@@ -13,19 +14,45 @@ import {
   Products,
   Product,
   ProductNav,
-  CategoryProducts
+  CategoryProducts,
+  Checkout,
+  LoggedInPage
 } from "./components";
 import { Container } from "react-bootstrap";
 
-import { getOrder } from "./api";
+import { getOrderByUser } from "./api";
+
+import { getToken } from "./api/token";
+
+export const UserContext = React.createContext();
 
 const App = () => {
+  const [user, setUser] = useState(null);
   const [myOrder, setMyOrder] = useState({});
 
   useEffect(() => {
-    getOrder(5)
+    const token = getToken();
+    const headers = token
+      ? {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      }
+      : {};
+
+    fetch("/api/users/me", {
+      headers,
+    })
+      .then((d) => d.json())
+      .then((u) => {
+        if (u) setUser(u);
+      });
+  }, []);
+
+  useEffect(() => {
+    getOrderByUser()
       .then((r) => {
         setMyOrder(r);
+        console.log("getOrderByUSer", r);
       })
       .catch((e) => console.error(e));
   }, []);
@@ -33,32 +60,40 @@ const App = () => {
   return (
     <Router>
       <div id="app">
-        <Header />
-        <ProductNav />
-        <Container>
-          <Donate />
-          <Switch>
-            <Route path="/register">
-              <Register />
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/cart">
-              <Cart {...{ myOrder, setMyOrder }} />
-            </Route>
-            <Route exact path="/products">
-              <Products />
-            </Route>
-            <Route exact path="/products/:id">
+        <UserContext.Provider value={{ user, setUser }}>
+          <Header />
+          <Container>
+            {/* <Donate /> */}
+            <Switch>
+            <Route exact path="/">
+                <Home />
+              </Route>
+              <Route path="/register">
+                <Register />
+              </Route>
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route path="/cart">
+                <Cart {...{ myOrder, setMyOrder }} />
+              </Route>
+              <Route exact path="/products">
+                <Products />
+              </Route>
+              <Route exact path="/products/:id">
               <Product />
             </Route>
             <Route path="/products/category/:name">
               <CategoryProducts/>
           </Route>
-          </Switch>
-          <ReviewForm />
-        </Container>
+              <Route path="/checkout"><Checkout myOrder={myOrder} /></Route>
+              <Route path="/authenticated">
+                {user ? <LoggedInPage /> : <Login />}
+              </Route>
+            </Switch>
+            <ReviewForm />
+          </Container>
+        </UserContext.Provider>
       </div>
     </Router>
   );
