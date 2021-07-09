@@ -5,11 +5,12 @@ import { UserContext } from "..";
 
 const Header = () => {
   const history = useHistory();
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, currentUsername, setCurrentUsername } = useContext(UserContext);
 
   const handleLogout = () => {
     localStorage.clear();
     setUser(null);
+    setCurrentUsername(null);
     return history.push("/");
   };
 
@@ -18,12 +19,12 @@ const Header = () => {
       <Navbar expand="md">
         <Container>
           <Nav.Link onClick={() => history.push("/")}>
-            <h2 style={{color: "black"}}>Catnip Corp.</h2>
+            <h2 style={{ color: "black" }}>Catnip Corp.</h2>
           </Nav.Link>
           <Navbar.Toggle aria-controls="main-nav" />
           <Navbar.Collapse id="main-nav" className="justify-content-end">
             <Nav>
-              {user ? (
+              {currentUsername ? (
                 <Nav.Link onClick={() => history.push("/authenticated")}>
                   Account
                 </Nav.Link>
@@ -33,10 +34,8 @@ const Header = () => {
                 </Nav.Link>
               )}
 
-              {user ? (
-                <Nav.Link onClick={handleLogout}>
-                  Logout
-                </Nav.Link>
+              {currentUsername ? (
+                <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               ) : (
                 <Nav.Link onClick={() => history.push("/login")}>
                   Log in

@@ -10,21 +10,8 @@ const config = {
   },
 };
 
-// export async function getOrder(orderId) {
-//   try {
-//     const { data } = await axios.get(`${URL}/orders/${orderId}`, config);
-
-//     return data;
-//   } catch (error) {
-//     console.log("Error in api/getOrder");
-//     throw error;
-//   }
-// }
-
 export async function getOrderByUser() {
   try {
-    if(!token) return null;
-
     const { data } = await axios.get(`${URL}/orders/cart`, config);
 
     return data;
@@ -79,9 +66,16 @@ export async function addProductToCart(orderId, productId, price, quantity) {
 
 export async function patchInactive(orderId) {
   try {
-    const { data } = await axios.patch(`${URL}/orders/${orderId}`, config);
+    const response = await fetch(`${URL}/orders/${orderId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
     console.log("Error in api/patchInactive");
     throw error;

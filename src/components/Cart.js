@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Row,
   Col,
@@ -8,19 +8,15 @@ import {
   Card,
   CloseButton,
 } from "react-bootstrap";
-import { patchQuantity, deleteProductFromCart, patchInactive } from "../api";
+import { patchQuantity, deleteProductFromCart } from "../api";
 import { useHistory } from "react-router-dom";
+import { UserContext } from "..";
 
-const Cart = ({ myOrder, setMyOrder }) => {
+const Cart = () => {
+  const { myOrder, setMyOrder, currentUsername, total, setTotal } =
+    useContext(UserContext);
   const history = useHistory();
   const [quantity, setQuantity] = useState();
-  const [total, setTotal] = useState(() => {
-    if (myOrder !== null) {
-      return myOrder.products.reduce((acc, p) => {
-        return acc + p.quantity * p.price;
-      }, 0);
-    }
-  });
 
   const handleUpdateQuantity = async (lineItemId) => {
     const updated = await patchQuantity(lineItemId, quantity);
@@ -66,15 +62,16 @@ const Cart = ({ myOrder, setMyOrder }) => {
   };
 
   const handleCheckout = async () => {
-    const inactive = await patchInactive(myOrder.id);
-    console.log("show me inactive", inactive);
+    // const inactive = await patchInactive(myOrder.id);
+    // console.log("show me inactive!!!", inactive);
+    // setMyOrder(inactive); //set in checkout
     history.push("/checkout");
   };
 
   return (
     <>
       <h2>Your shopping cart</h2>
-      {myOrder !== null ? (
+      {currentUsername ? (
         <Row>
           <Col md={8}>
             {myOrder && (
@@ -141,10 +138,15 @@ const Cart = ({ myOrder, setMyOrder }) => {
                 <Card.Title
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  Total:{" "}
+                  Total:
                   <span style={{ color: "red" }}>${total.toFixed(2)}</span>
                 </Card.Title>
-                <Button variant="primary" block onClick={handleCheckout}>
+                <Button
+                  variant="primary"
+                  block
+                  onClick={handleCheckout}
+                  disabled={myOrder.products.length === 0 ? true : false}
+                >
                   Checkout
                 </Button>
               </Card.Body>
@@ -152,7 +154,26 @@ const Cart = ({ myOrder, setMyOrder }) => {
           </Col>
         </Row>
       ) : (
-        <p>Login required!</p>
+        <Row>
+          <Col md={8}>
+            <p>Login required!</p>
+          </Col>
+          <Col md={4}>
+            <Card>
+              <Card.Body>
+                <Card.Title
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  Total:
+                  <span style={{ color: "red" }}>${total.toFixed(2)}</span>
+                </Card.Title>
+                <Button variant="primary" disabled={true} block>
+                  Checkout
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       )}
     </>
   );
