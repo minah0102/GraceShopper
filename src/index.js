@@ -13,7 +13,7 @@ import {
   Products,
   Checkout,
   MainAuth,
-  LoggedInPage
+  LoggedInPage,
 } from "./components";
 import { Container } from "react-bootstrap";
 
@@ -21,15 +21,16 @@ import { getOrderByUser } from "./api";
 
 const App = () => {
   const [myOrder, setMyOrder] = useState({});
+  const [currentUser, setCurrentUSer] = useState();
 
   useEffect(() => {
     getOrderByUser()
       .then((r) => {
+        console.log("show me r!!", r);
         setMyOrder(r);
-        console.log("getOrderByUSer", r);
       })
       .catch((e) => console.error(e));
-  }, []);
+  }, []); 
 
   return (
     <Router>
@@ -47,10 +48,12 @@ const App = () => {
             <Route path="/cart">
               <Cart {...{ myOrder, setMyOrder }} />
             </Route>
-            <Route exact path="/products">
-              <Products />
+            {/* <Route exact path="/products">
+              <Products myOrder={myOrder}/>
+            </Route> */}
+            <Route path="/checkout">
+              <Checkout myOrder={myOrder} />
             </Route>
-            <Route path="/checkout"><Checkout myOrder={myOrder}/></Route>
             <Route path="/authenticated">
               <MainAuth />
             </Route>

@@ -2,9 +2,7 @@ import axios from "axios";
 import { getToken } from "./token";
 
 const URL = `http://localhost:3000/api`;
-// const token = getToken();
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJqb29oYSIsImVtYWlsIjoiam9vaGE1NjdAZ21haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTYyNTc3NzIyOX0.f1S0n_z6OfXKRodZMEXmK56WzSxHh3eruhxP_lUpkGM";
+const token = getToken();
 const config = {
   headers: {
     "Content-Type": "application/json",
@@ -12,19 +10,21 @@ const config = {
   },
 };
 
-export async function getOrder(orderId) {
-  try {
-    const { data } = await axios.get(`${URL}/orders/${orderId}`, config);
+// export async function getOrder(orderId) {
+//   try {
+//     const { data } = await axios.get(`${URL}/orders/${orderId}`, config);
 
-    return data;
-  } catch (error) {
-    console.log("Error in api/getOrder");
-    throw error;
-  }
-}
+//     return data;
+//   } catch (error) {
+//     console.log("Error in api/getOrder");
+//     throw error;
+//   }
+// }
 
 export async function getOrderByUser() {
   try {
+    if(!token) return null;
+
     const { data } = await axios.get(`${URL}/orders/cart`, config);
 
     return data;
