@@ -47,24 +47,28 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    getOrderByUser()
-      .then((r) => {
-        setMyOrder(r);
-        setTotal(() => {
-          return r.products.reduce((acc, p) => {
-            return acc + p.quantity * p.price;
-          }, 0);
-        });
-      })
-      .catch((e) => console.error(e));
+    if (currentUsername) {
+      getOrderByUser()
+        .then((r) => {
+          setMyOrder(r);
+          setTotal(() => {
+            return r.products.reduce((acc, p) => {
+              return acc + p.quantity * p.price;
+            }, 0);
+          });
+        })
+        .catch((e) => console.error(e));
+    }
   }, [currentUsername]);
 
   useEffect(() => {
-    getOrderHistory()
-      .then((r) => {
-        setHistory(r);
-      })
-      .catch((e) => console.error(e));
+    if (currentUsername) {
+      getOrderHistory()
+        .then((r) => {
+          setHistory(r);
+        })
+        .catch((e) => console.error(e));
+    }
   }, [currentUsername]);
 
   return (
