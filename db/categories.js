@@ -63,13 +63,27 @@ const createCategoryProduct = async ({ productId, categoryId }) => {
   }
 };
 
-const deleteCategoryProduct = async ({productId, categoryId}) => {
+// const deleteCategoryProduct = async ({productId, categoryId}) => {
+//   try {
+//     const {
+//       rows: categoryProduct
+//     } = await client.query(/*sql*/`
+//       DELETE FROM category_products WHERE "productId"=$1 AND "categoryId"=$2 RETURNING *;
+//     `, [productId, categoryId])
+//     return categoryProduct;
+//   } catch (error) {
+//     console.log("Error deleting categoryProduct");
+//     console.error(error);
+//   }
+// }
+
+const deleteCategoryProduct = async (productId) => {
   try {
     const {
       rows: categoryProduct
     } = await client.query(/*sql*/`
-      DELETE FROM category_products WHERE "productId"=$1 AND "categoryId"=$2 RETURNING *;
-    `, [productId, categoryId])
+      DELETE FROM category_products WHERE "productId"=$1 RETURNING *;
+    `, [productId])
     return categoryProduct;
   } catch (error) {
     console.log("Error deleting categoryProduct");

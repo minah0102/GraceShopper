@@ -13,11 +13,14 @@ import {
   Donate,
   Product,
   Products,
+  Product,
   ProductNav,
   CategoryProducts,
   Checkout,
   LoggedInPage,
+  AdminProductPage,
 } from "./components";
+
 import { Container } from "react-bootstrap";
 
 import { getOrderByUser, getOrderHistory } from "./api";
@@ -111,8 +114,11 @@ const App = () => {
               <Route path="/products/category/:name">
                 <CategoryProducts />
               </Route>
+              <Route path="/admin/products">
+                <AdminProductPage />
+              </Route>
               <Route path="/checkout">
-                <Checkout />
+                <Checkout myOrder={myOrder} />
               </Route>
               <Route path="/authenticated">
                 {currentUsername ? <LoggedInPage /> : <Login />}
