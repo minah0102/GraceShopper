@@ -10,7 +10,8 @@ async function createInitialUsers() {
       {
         username: 'admin',
         email: 'admin@gmail.com',
-        password: 'adminpassword'
+        password: 'adminpassword',
+        isAdmin: true,
       },
       {
         username: 'albert',

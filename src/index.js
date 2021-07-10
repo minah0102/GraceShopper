@@ -23,16 +23,19 @@ import { Container } from "react-bootstrap";
 import { getOrderByUser, getOrderHistory } from "./api";
 
 import { getToken, getUsername } from "./api/token";
+import { getUser } from "./api/users";
 
 export const UserContext = React.createContext();
 
 const App = () => {
+  // const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState(null);
   const [myOrder, setMyOrder] = useState(null);
   const [currentUsername, setCurrentUsername] = useState(getUsername());
   const [total, setTotal] = useState(0);
   const [history, setHistory] = useState([]);
 
+  console.log("User Info", user);
   // useEffect(() => {
   //   const token = getToken();
   //   const headers = token
