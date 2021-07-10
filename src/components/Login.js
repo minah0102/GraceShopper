@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import { UserContext } from "..";
 import { Form, Button } from "react-bootstrap";
 import { loginUser } from "../api/users";
-import { getOrderByUser } from "../api";
 
 const mystyle = {
   padding: "1rem",
@@ -44,23 +43,9 @@ const Login = () => {
       if (user) {
         setUser(user);
         setCurrentUsername(user.username);
-        handleMyOrder();
         history.push("/authenticated");
       }
     });
-  };
-
-  const handleMyOrder = () => {
-    getOrderByUser()
-      .then((r) => {
-        setMyOrder(r);
-        setTotal(() => {
-          return r.products.reduce((acc, p) => {
-            return acc + p.quantity * p.price;
-          }, 0);
-        });
-      })
-      .catch((e) => console.error(e));
   };
 
   return (
