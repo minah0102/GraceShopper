@@ -18,3 +18,5 @@ export { default as LoggedInPage } from "./LoggedInPage";
 export { default as Reviews} from "./Reviews";
 export { default as SingleReview} from "./SingleReview";
 export { default as Home} from "./Home";
+export { default as AdminUserInfoPage} from "./AdminUserInfoPage";
+export { default as Admin} from "./Admin";

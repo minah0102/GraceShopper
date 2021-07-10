@@ -11,14 +11,15 @@ import {
   ReviewForm,
   Cart,
   Donate,
-  Product,
   Products,
   Product,
   ProductNav,
   CategoryProducts,
   Checkout,
   LoggedInPage,
+  Admin,
   AdminProductPage,
+  AdminUserInfoPage,
 } from "./components";
 
 import { Container } from "react-bootstrap";
@@ -31,7 +32,6 @@ import { getTokenConfig } from "./api/token";
 export const UserContext = React.createContext();
 
 const App = () => {
-  // const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState(null);
   const [myOrder, setMyOrder] = useState(null);
   const [currentUsername, setCurrentUsername] = useState("");
@@ -123,6 +123,9 @@ const App = () => {
               </Route>
               <Route path="/authenticated">
                 {currentUsername ? <LoggedInPage /> : <Login />}
+              </Route>
+              <Route path="/admin">
+                <Admin />
               </Route>
             </Switch>
             <ReviewForm />
