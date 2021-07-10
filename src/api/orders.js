@@ -21,6 +21,17 @@ export async function getOrderByUser() {
   }
 }
 
+export async function getOrderHistory() {
+  try {
+    const { data } = await axios.get(`${URL}/orders/history`, config);
+
+    return data;
+  } catch (error) {
+    console.log("Error in api/getOrderHistory");
+    throw error;
+  }
+}
+
 export async function patchQuantity(lineItemId, quantity) {
   try {
     const { data } = await axios.patch(

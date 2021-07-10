@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { ProductCard, Product } from "./index";
 import { fetchAllProducts } from "../api/products";
 import { Container, Row } from "react-bootstrap";
-import { BrowserRouter as Router, Route } from "react-router-dom";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -12,19 +11,13 @@ const Products = () => {
     setProducts(allProducts);
   }, []);
 
+  console.log("products", products);
   return (
     <Container>
       <Row>
-        <Router>
-          <Route exact path="/products">
-            {products.map((product) => (
-              <ProductCard product={product} />
-            ))}
-          </Route>
-          <Route path="/products/:id">
-            <Product />
-          </Route>
-        </Router>
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       </Row>
     </Container>
   );

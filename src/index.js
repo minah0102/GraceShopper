@@ -11,13 +11,16 @@ import {
   ReviewForm,
   Cart,
   Donate,
+  Product,
   Products,
+  ProductNav,
+  CategoryProducts,
   Checkout,
   LoggedInPage,
 } from "./components";
 import { Container } from "react-bootstrap";
 
-import { getOrderByUser } from "./api";
+import { getOrderByUser, getOrderHistory } from "./api";
 
 import { getToken, getUsername } from "./api/token";
 
@@ -28,6 +31,7 @@ const App = () => {
   const [myOrder, setMyOrder] = useState(null);
   const [currentUsername, setCurrentUsername] = useState(getUsername());
   const [total, setTotal] = useState(0);
+  const [history, setHistory] = useState([]);
 
   // useEffect(() => {
   //   const token = getToken();
@@ -50,18 +54,30 @@ const App = () => {
   // }, []);
 
   useEffect(() => {
-    if (currentUsername) {
-      getOrderByUser()
-        .then((r) => {
-          setMyOrder(r);
-          setTotal(() => {
-            return r.products.reduce((acc, p) => {
-              return acc + p.quantity * p.price;
-            }, 0);
-          });
-        })
-        .catch((e) => console.error(e));
-    }
+    // if (currentUsername) {
+    getOrderByUser()
+      .then((r) => {
+        console.log("show me r", r);
+        setMyOrder(r);
+        setTotal(() => {
+          return r.products.reduce((acc, p) => {
+            return acc + p.quantity * p.price;
+          }, 0);
+        });
+      })
+      .catch((e) => console.error(e));
+    // }
+  }, [currentUsername]);
+
+  useEffect(() => {
+    // if (currentUsername) {
+    getOrderHistory()
+      .then((r) => {
+        console.log("show me history", r);
+        setHistory(r);
+      })
+      .catch((e) => console.error(e));
+    // }
   }, [currentUsername]);
 
   return (
@@ -80,6 +96,7 @@ const App = () => {
           }}
         >
           <Header />
+          <ProductNav />
           <Container>
             {/* <Donate /> */}
             <Switch>
@@ -97,6 +114,12 @@ const App = () => {
               </Route>
               <Route exact path="/products">
                 <Products />
+              </Route>
+              <Route exact path="/products/:id">
+                <Product />
+              </Route>
+              <Route path="/products/category/:name">
+                <CategoryProducts />
               </Route>
               <Route path="/checkout">
                 <Checkout />

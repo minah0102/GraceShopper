@@ -14,7 +14,7 @@ const ProductCard = ({ product, myOrder }) => {
   };
 
   return (
-    <Link to={`products/${id}`}>
+    <Link to={`/products/${id}`}>
       <Card className="product__card" style={{ width: "18rem" }}>
         <Card.Img variant="top" src={`/images/${imageName}`} />
         <Card.Body>

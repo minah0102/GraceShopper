@@ -11,10 +11,8 @@ const Checkout = () => {
   }, 0);
 
   useEffect(async () => {
-    const inactive = await patchInactive(myOrder.id);
-    console.log("show me inactive!!!", inactive);
-    setMyOrder(inactive); //set in checkout
-  }, []);
+    setTotal(0);
+  }, []); //maybe I need to use get history.
 
   return (
     <>

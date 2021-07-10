@@ -44,6 +44,7 @@ const Login = () => {
       if (user) {
         setUser(user);
         setCurrentUsername(user.username);
+        console.log("show me ueser.username", user.username);
         history.push("/authenticated");
       }
     });
