@@ -9,8 +9,8 @@ import {
   Button,
   Container,
 } from "react-bootstrap";
-
 import { fetchCategories } from "../api/products";
+import "../css/Product.css";
 
 const ProductNav = () => {
   const [categories, setCategories] = useState([]);
@@ -28,12 +28,12 @@ const ProductNav = () => {
           <Nav className="mr-auto">
             <Nav.Link href="/products">All Products</Nav.Link>
             {categories.map((category) => {
-              let { name } = category;
+              let { id, name } = category;
               name = name.charAt(0).toUpperCase() + name.slice(1);
               return (
-                <Nav.Link>
-                  <Link to={`/products/category/${name.toLowerCase()}`}>{name}</Link>
-                </Nav.Link>
+                <Link key={id} to={`/products/category/${name.toLowerCase()}`} className="category__link">
+                  {name}
+                </Link>
               );
             })}
           </Nav>

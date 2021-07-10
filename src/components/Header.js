@@ -1,27 +1,19 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "..";
 
 const Header = () => {
   const history = useHistory();
-  const {
-    user,
-    setUser,
-    currentUsername,
-    setCurrentUsername,
-    setTotal,
-    setMyOrder,
-  } = useContext(UserContext);
+  const { setUser, currentUsername, setCurrentUsername, setTotal, setMyOrder } =
+    useContext(UserContext);
 
   const handleLogout = () => {
     localStorage.clear();
     setUser(null);
-    setCurrentUsername(null);
+    setCurrentUsername("");
     setTotal(0);
-    setMyOrder(null);
-    console.log("show me user after logout", user);
-    return history.push("/");
+    history.push("/");
   };
 
   return (
