@@ -1,5 +1,6 @@
 export const getToken = () => {
   const token = localStorage.getItem("token");
+  // debugger;
   if (token) {
     return token;
   } else {
@@ -19,9 +20,22 @@ export const getUsername = () => {
   } else {
     return null;
   }
-}
+};
 
 export const setUsername = (username) => {
   localStorage.setItem("username", username);
   return username;
+};
+
+export function getTokenConfig() {
+  const token = getToken();
+  const headers = token
+    ? {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      }
+    : {};
+  const config = { headers };
+
+  return { token, config };
 }

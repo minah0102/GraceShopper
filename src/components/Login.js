@@ -3,13 +3,13 @@ import { useHistory } from "react-router-dom";
 import { UserContext } from "..";
 import { Form, Button } from "react-bootstrap";
 import { loginUser } from "../api/users";
-
+import { getOrderByUser } from "../api";
 
 const mystyle = {
   padding: "1rem",
   margin: "1rem",
   display: "flex",
-  justifyContent: "center"
+  justifyContent: "center",
 };
 
 const Login = () => {
@@ -44,17 +44,30 @@ const Login = () => {
       if (user) {
         setUser(user);
         setCurrentUsername(user.username);
-        console.log("show me ueser.username", user.username);
+        handleMyOrder();
         history.push("/authenticated");
       }
     });
   };
 
+  const handleMyOrder = () => {
+    console.log("show me inside handleMyOrder");
+    getOrderByUser()
+      .then((r) => {
+        console.log("show me rrrr inside handleMyOrder", r);
+        setMyOrder(r);
+        setTotal(() => {
+          return r.products.reduce((acc, p) => {
+            return acc + p.quantity * p.price;
+          }, 0);
+        });
+      })
+      .catch((e) => console.error(e));
+  };
+
   return (
     <div style={mystyle}>
-      <Form
-        style={{ width: "30rem" }}
-      >
+      <Form style={{ width: "30rem" }}>
         <h2>Please Login</h2>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <Form.Group controlId="formLoginUsername">
@@ -80,17 +93,17 @@ const Login = () => {
         <Form.Group controlId="formLoginCheckbox">
           <Form.Check type="checkbox" label="Remember me" />
         </Form.Group>
-          <Button
-            variant="primary"
-            type="submit"
-            onClick={submitHandler}
-            disabled={isLoading}
-          >
-            Submit
-          </Button>
+        <Button
+          variant="primary"
+          type="submit"
+          onClick={submitHandler}
+          disabled={isLoading}
+        >
+          Submit
+        </Button>
       </Form>
     </div>
   );
-}
+};
 
 export default Login;

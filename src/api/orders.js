@@ -1,16 +1,11 @@
 import axios from "axios";
-import { getToken } from "./token";
+import { getTokenConfig } from "./token";
 
 const URL = `http://localhost:3000/api`;
-const token = getToken();
-const config = {
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  },
-};
 
 export async function getOrderByUser() {
+  const { config } = getTokenConfig();
+
   try {
     const { data } = await axios.get(`${URL}/orders/cart`, config);
 
@@ -22,6 +17,8 @@ export async function getOrderByUser() {
 }
 
 export async function getOrderHistory() {
+  const { config } = getTokenConfig();
+
   try {
     const { data } = await axios.get(`${URL}/orders/history`, config);
 
@@ -33,6 +30,8 @@ export async function getOrderHistory() {
 }
 
 export async function patchQuantity(lineItemId, quantity) {
+  const { config } = getTokenConfig();
+
   try {
     const { data } = await axios.patch(
       `${URL}/orders/${lineItemId}/quantity`,
@@ -50,6 +49,8 @@ export async function patchQuantity(lineItemId, quantity) {
 }
 
 export async function deleteProductFromCart(lineItemId) {
+  const { config } = getTokenConfig();
+
   try {
     const { data } = await axios.delete(`${URL}/orders/${lineItemId}`, config);
 
@@ -61,6 +62,8 @@ export async function deleteProductFromCart(lineItemId) {
 }
 
 export async function addProductToCart(orderId, productId, price, quantity) {
+  const { config } = getTokenConfig();
+
   try {
     const { data } = await axios.post(
       `${URL}/orders/${orderId}`,
@@ -76,6 +79,8 @@ export async function addProductToCart(orderId, productId, price, quantity) {
 }
 
 export async function patchInactive(orderId) {
+  const { token } = getTokenConfig();
+
   try {
     const response = await fetch(`${URL}/orders/${orderId}`, {
       method: "PATCH",

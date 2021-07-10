@@ -145,7 +145,11 @@ const Cart = () => {
                   variant="primary"
                   block
                   onClick={handleCheckout}
-                  disabled={myOrder.products.length === 0 || myOrder === null ? true : false}
+                  disabled={
+                    myOrder === null || myOrder.products.length === 0
+                      ? true
+                      : false
+                  }
                 >
                   Checkout
                 </Button>
