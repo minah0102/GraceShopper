@@ -1,1 +1,1 @@
-export { getOrder, patchQuantity, deleteProductFromCart, addProductToCart, patchInactive, getOrderByUser } from "./orders";
+export { patchQuantity, deleteProductFromCart, addProductToCart, patchInactive, getOrderByUser, getOrderHistory } from "./orders";

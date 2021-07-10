@@ -14,6 +14,7 @@ const Products = () => {
     setProducts(allProducts);
   }, []);
 
+  console.log("products", products);
   return (
     <Switch>
       <Route path="/products">

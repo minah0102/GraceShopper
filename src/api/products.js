@@ -74,3 +74,23 @@ export const deleteProduct = async (id) => {
     console.error(error);
   }
 }
+
+export const fetchCategories = async () => {
+  try {
+    const {data: categories} = await axios.get('/api/categories');
+    return categories;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export const fetchCategoryProducts = async (categoryName) => {
+  try {
+    console.log("NAME", categoryName);
+    const {data: products} = await axios.get(`/api/products/category/${categoryName}`);
+    console.log("API", products);
+    return products;
+  } catch (error) {
+    console.error(error);
+  }
+}

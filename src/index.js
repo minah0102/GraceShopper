@@ -11,6 +11,7 @@ import {
   ReviewForm,
   Cart,
   Donate,
+  Product,
   Products,
   Product,
   ProductNav,
@@ -22,47 +23,81 @@ import {
 
 import { Container } from "react-bootstrap";
 
-import { getOrderByUser } from "./api";
+import { getOrderByUser, getOrderHistory } from "./api";
 
-import { getToken } from "./api/token";
+import { getToken, getUsername } from "./api/token";
 
 export const UserContext = React.createContext();
 
 const App = () => {
   const [user, setUser] = useState(null);
-  const [myOrder, setMyOrder] = useState({});
+  const [myOrder, setMyOrder] = useState(null);
+  const [currentUsername, setCurrentUsername] = useState(getUsername());
+  const [total, setTotal] = useState(0);
+  const [history, setHistory] = useState([]);
+
+  // useEffect(() => {
+  //   const token = getToken();
+  //   const headers = token
+  //     ? {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       }
+  //     : {};
+
+  //   fetch("/api/users/me", {
+  //     headers,
+  //   })
+  //     .then((d) => d.json())
+  //     .then((u) => {
+  //       if (u) {
+  //         setUser(u);
+  //       }
+  //     });
+  // }, []);
 
   useEffect(() => {
-    const token = getToken();
-    const headers = token
-      ? {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        }
-      : {};
-
-    fetch("/api/users/me", {
-      headers,
-    })
-      .then((d) => d.json())
-      .then((u) => {
-        if (u) setUser(u);
-      });
-  }, []);
-
-  useEffect(() => {
+    // if (currentUsername) {
     getOrderByUser()
       .then((r) => {
+        console.log("show me r", r);
         setMyOrder(r);
-        console.log("getOrderByUSer", r);
+        setTotal(() => {
+          return r.products.reduce((acc, p) => {
+            return acc + p.quantity * p.price;
+          }, 0);
+        });
       })
       .catch((e) => console.error(e));
-  }, []);
+    // }
+  }, [currentUsername]);
+
+  useEffect(() => {
+    // if (currentUsername) {
+    getOrderHistory()
+      .then((r) => {
+        console.log("show me history", r);
+        setHistory(r);
+      })
+      .catch((e) => console.error(e));
+    // }
+  }, [currentUsername]);
 
   return (
     <Router>
       <div id="app">
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider
+          value={{
+            user,
+            setUser,
+            currentUsername,
+            setCurrentUsername,
+            myOrder,
+            setMyOrder,
+            total,
+            setTotal,
+          }}
+        >
           <Header />
           <ProductNav />
           <Container>
@@ -78,7 +113,7 @@ const App = () => {
                 <Login />
               </Route>
               <Route path="/cart">
-                <Cart {...{ myOrder, setMyOrder }} />
+                <Cart />
               </Route>
               <Route exact path="/products">
                 <Products />
@@ -96,7 +131,7 @@ const App = () => {
                 <Checkout myOrder={myOrder} />
               </Route>
               <Route path="/authenticated">
-                {user ? <LoggedInPage /> : <Login />}
+                {currentUsername ? <LoggedInPage /> : <Login />}
               </Route>
             </Switch>
             <ReviewForm />

@@ -4,11 +4,11 @@ import "../css/Product.css";
 import { Link } from "react-router-dom";
 import { addProductToCart } from "../api";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, myOrder }) => {
   const { id, name, price, imageName } = product;
 
   const handleAddToCart = async () => {
-    const added = await addProductToCart(orderId, productId, price, quantity);
+    const added = await addProductToCart(myOrder.id, id, price, 1);
 
     console.log("added", added);
   };

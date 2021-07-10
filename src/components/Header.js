@@ -5,11 +5,22 @@ import { UserContext } from "..";
 
 const Header = () => {
   const history = useHistory();
-  const { user, setUser } = useContext(UserContext);
+  const {
+    user,
+    setUser,
+    currentUsername,
+    setCurrentUsername,
+    setTotal,
+    setMyOrder,
+  } = useContext(UserContext);
 
   const handleLogout = () => {
     localStorage.clear();
     setUser(null);
+    setCurrentUsername(null);
+    setTotal(0);
+    setMyOrder(null);
+    console.log("show me user after logout", user);
     return history.push("/");
   };
 
@@ -18,12 +29,12 @@ const Header = () => {
       <Navbar expand="md">
         <Container>
           <Nav.Link onClick={() => history.push("/")}>
-            <h2 style={{color: "black"}}>Catnip Corp.</h2>
+            <h2 style={{ color: "black" }}>Catnip Corp.</h2>
           </Nav.Link>
           <Navbar.Toggle aria-controls="main-nav" />
           <Navbar.Collapse id="main-nav" className="justify-content-end">
             <Nav>
-              {user ? (
+              {currentUsername ? (
                 <Nav.Link onClick={() => history.push("/authenticated")}>
                   Account
                 </Nav.Link>
@@ -33,10 +44,8 @@ const Header = () => {
                 </Nav.Link>
               )}
 
-              {user ? (
-                <Nav.Link onClick={handleLogout}>
-                  Logout
-                </Nav.Link>
+              {currentUsername ? (
+                <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               ) : (
                 <Nav.Link onClick={() => history.push("/login")}>
                   Log in

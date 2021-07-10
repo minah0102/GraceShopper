@@ -5,11 +5,11 @@ import Profile from "./Profile";
 import { Button } from "react-bootstrap";
 
 const LoggedInPage = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser, currentUsername } = useContext(UserContext);
 
   return (
     <div>
-      <h1>Welcome {user.username}</h1>
+      <h1>Welcome {currentUsername}</h1>
       <RecentOrders />
       <Profile />
     </div>
