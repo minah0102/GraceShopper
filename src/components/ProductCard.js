@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
-import "../css/ProductCard.css";
+import "../css/Product.css";
 import { Link } from "react-router-dom";
 import { addProductToCart } from "../api";
 

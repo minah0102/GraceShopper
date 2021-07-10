@@ -10,7 +10,7 @@ import {
   Card,
 } from "react-bootstrap";
 import { fetchProductById } from "../api/products";
-import "../css/ProductCard.css";
+import "../css/Product.css";
 
 import { useParams } from "react-router-dom";
 import { Reviews } from "./index.js";

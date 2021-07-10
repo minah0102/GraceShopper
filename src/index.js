@@ -16,8 +16,10 @@ import {
   ProductNav,
   CategoryProducts,
   Checkout,
-  LoggedInPage
+  LoggedInPage,
+  AdminProductPage,
 } from "./components";
+
 import { Container } from "react-bootstrap";
 
 import { getOrderByUser } from "./api";
@@ -34,9 +36,9 @@ const App = () => {
     const token = getToken();
     const headers = token
       ? {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        }
       : {};
 
     fetch("/api/users/me", {
@@ -62,11 +64,11 @@ const App = () => {
       <div id="app">
         <UserContext.Provider value={{ user, setUser }}>
           <Header />
-          <ProductNav/>
+          <ProductNav />
           <Container>
             {/* <Donate /> */}
             <Switch>
-            <Route exact path="/">
+              <Route exact path="/">
                 <Home />
               </Route>
               <Route path="/register">
@@ -82,12 +84,17 @@ const App = () => {
                 <Products />
               </Route>
               <Route exact path="/products/:id">
-              <Product />
-            </Route>
-            <Route path="/products/category/:name">
-              <CategoryProducts/>
-          </Route>
-              <Route path="/checkout"><Checkout myOrder={myOrder} /></Route>
+                <Product />
+              </Route>
+              <Route path="/products/category/:name">
+                <CategoryProducts />
+              </Route>
+              <Route path="/admin/products">
+                <AdminProductPage />
+              </Route>
+              <Route path="/checkout">
+                <Checkout myOrder={myOrder} />
+              </Route>
               <Route path="/authenticated">
                 {user ? <LoggedInPage /> : <Login />}
               </Route>
@@ -99,6 +106,5 @@ const App = () => {
     </Router>
   );
 };
-
 
 render(<App />, document.getElementById("main"));
