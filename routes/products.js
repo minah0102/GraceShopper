@@ -89,6 +89,8 @@ productsRouter.delete("/:productId", requireAdmin, async (req, res, next) => {
   try {
     const { productId } = req.params;
     const categoryProduct = await deleteCategoryProduct(productId);
+    console.log("CAT PROD", categoryProduct);
+    // const review = await deleteReview(productId);
     const product = await deleteProduct(productId);
     if (!product)
       res.send({
