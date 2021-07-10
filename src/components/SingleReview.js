@@ -1,5 +1,6 @@
 import React from "react";
-import { FaStarHalf } from "react-icons/fa";
+// import { FaStarHalf } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 
 const SingleReview = ({ singleReview }) => {
   const { id, comment, rating, username } = singleReview;
