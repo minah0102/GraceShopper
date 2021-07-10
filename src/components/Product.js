@@ -65,7 +65,7 @@ const Product = () => {
     };
     myOrder.products.push(addedProduct);
     setMyOrder(myOrder);
-    history.push("cart");
+    history.push("/cart");
   };
 
   return (
