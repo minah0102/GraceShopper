@@ -2,14 +2,12 @@ import React, { useContext, useEffect } from "react";
 import { ListGroup, Row, Col } from "react-bootstrap";
 import { UserContext } from "..";
 
-import { patchInactive } from "../api";
-
 const Checkout = () => {
-  const { myOrder, setMyOrder } = useContext(UserContext);
+  const { myOrder, setMyOrder, history, setHistory } = useContext(UserContext);
   const total = myOrder.products.reduce((acc, p) => {
     return acc + p.quantity * p.price;
   }, 0);
-
+ console.log("inside Checkout!!!", history);
   useEffect(async () => {
     setTotal(0);
   }, []); //maybe I need to use get history.

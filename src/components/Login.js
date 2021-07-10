@@ -51,10 +51,8 @@ const Login = () => {
   };
 
   const handleMyOrder = () => {
-    console.log("show me inside handleMyOrder");
     getOrderByUser()
       .then((r) => {
-        console.log("show me rrrr inside handleMyOrder", r);
         setMyOrder(r);
         setTotal(() => {
           return r.products.reduce((acc, p) => {

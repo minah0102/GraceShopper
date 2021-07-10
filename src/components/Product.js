@@ -63,6 +63,8 @@ const Product = () => {
       description,
       imageName,
     };
+    //before pushing check if there is the same product in cart
+    //if there is the same product, change only quantity
     myOrder.products.push(addedProduct);
     setMyOrder(myOrder);
     history.push("/cart");

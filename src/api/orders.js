@@ -30,18 +30,32 @@ export async function getOrderHistory() {
 }
 
 export async function patchQuantity(lineItemId, quantity) {
-  const { config } = getTokenConfig();
+  const { token } = getTokenConfig();
 
+  // try {
+  //   const { data } = await axios.patch(
+  //     `${URL}/orders/${lineItemId}/quantity`,
+  //     {
+  //       quantity,
+  //     },
+  //     config
+  //   );
+
+  //   return data;
   try {
-    const { data } = await axios.patch(
-      `${URL}/orders/${lineItemId}/quantity`,
-      {
+    const response = await fetch(`${URL}/orders/${lineItemId}/quantity`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: {
         quantity,
       },
-      config
-    );
+    });
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
     console.log("Error in api/updateQuantity");
     throw error;
@@ -49,12 +63,23 @@ export async function patchQuantity(lineItemId, quantity) {
 }
 
 export async function deleteProductFromCart(lineItemId) {
-  const { config } = getTokenConfig();
+  const { token } = getTokenConfig();
 
+  // try {
+  //   const { data } = await axios.delete(`${URL}/orders/${lineItemId}`, config);
+
+  //   return data;
   try {
-    const { data } = await axios.delete(`${URL}/orders/${lineItemId}`, config);
+    const response = await fetch(`${URL}/orders/${lineItemId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
     console.log("Error in api/deleteProductFromCart");
     throw error;
@@ -62,16 +87,28 @@ export async function deleteProductFromCart(lineItemId) {
 }
 
 export async function addProductToCart(orderId, productId, price, quantity) {
-  const { config } = getTokenConfig();
+  const { token } = getTokenConfig();
 
+  // try {
+  //   const { data } = await axios.post(
+  //     `${URL}/orders/${orderId}`,
+  //     { productId, price, quantity },
+  //     config
+  //   );
+
+  //   return data;
   try {
-    const { data } = await axios.post(
-      `${URL}/orders/${orderId}`,
-      { productId, price, quantity },
-      config
-    );
+    const response = await fetch(`${URL}/orders/${orderId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: { productId, price, quantity },
+    });
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
     console.log("Error in api/postProductToCart");
     throw error;
