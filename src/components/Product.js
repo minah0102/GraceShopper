@@ -18,7 +18,7 @@ import { Reviews } from "./index.js";
 import { UserContext } from "..";
 
 const Product = () => {
-  const { myOrder, setMyOrder } = useContext(UserContext);
+  const { myOrder, setMyOrder, total, setTotal } = useContext(UserContext);
   const [currentProduct, setCurrentProduct] = useState({});
   const [addQuantity, setAddQuantity] = useState();
 
@@ -53,20 +53,35 @@ const Product = () => {
   const handleAddToCart = async () => {
     const added = await addProductToCart(myOrder.id, id, price, addQuantity);
 
-    const addedProduct = {
-      lineItemId: added.id,
-      orderId: added.orderId,
-      price: added.price,
-      productId: id,
-      quantity: added.quantity,
-      name,
-      description,
-      imageName,
-    };
-    //before pushing check if there is the same product in cart
-    //if there is the same product, change only quantity
-    myOrder.products.push(addedProduct);
+    const sameProduct = myOrder.products.filter(
+      (p) => Number.parseInt(p.productId) === added.productId
+    );
+
+    if (sameProduct.length !== 0) {
+      const idx = myOrder.products.findIndex(
+        (p) => Number.parseInt(p.productId) === added.productId
+      );
+      myOrder.products[idx].quantity = added.quantity;
+    } else {
+      const addedProduct = {
+        lineItemId: added.id,
+        orderId: added.orderId,
+        price: added.price,
+        productId: id,
+        quantity: added.quantity,
+        name,
+        description,
+        imageName,
+      };
+      myOrder.products.push(addedProduct);
+    }
+
     setMyOrder(myOrder);
+    setTotal(() => {
+      return myOrder.products.reduce((acc, p) => {
+        return acc + p.quantity * p.price;
+      }, 0);
+    });
     history.push("/cart");
   };
 

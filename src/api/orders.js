@@ -30,32 +30,18 @@ export async function getOrderHistory() {
 }
 
 export async function patchQuantity(lineItemId, quantity) {
-  const { token } = getTokenConfig();
+  const { config } = getTokenConfig();
 
-  // try {
-  //   const { data } = await axios.patch(
-  //     `${URL}/orders/${lineItemId}/quantity`,
-  //     {
-  //       quantity,
-  //     },
-  //     config
-  //   );
-
-  //   return data;
   try {
-    const response = await fetch(`${URL}/orders/${lineItemId}/quantity`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: {
+    const { data } = await axios.patch(
+      `${URL}/orders/${lineItemId}/quantity`,
+      {
         quantity,
       },
-    });
-    const result = await response.json();
+      config
+    );
 
-    return result;
+    return data;
   } catch (error) {
     console.log("Error in api/updateQuantity");
     throw error;
@@ -63,23 +49,12 @@ export async function patchQuantity(lineItemId, quantity) {
 }
 
 export async function deleteProductFromCart(lineItemId) {
-  const { token } = getTokenConfig();
+  const { config } = getTokenConfig();
 
-  // try {
-  //   const { data } = await axios.delete(`${URL}/orders/${lineItemId}`, config);
-
-  //   return data;
   try {
-    const response = await fetch(`${URL}/orders/${lineItemId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const result = await response.json();
+    const { data } = await axios.delete(`${URL}/orders/${lineItemId}`, config);
 
-    return result;
+    return data;
   } catch (error) {
     console.log("Error in api/deleteProductFromCart");
     throw error;
@@ -87,28 +62,16 @@ export async function deleteProductFromCart(lineItemId) {
 }
 
 export async function addProductToCart(orderId, productId, price, quantity) {
-  const { token } = getTokenConfig();
+  const { config } = getTokenConfig();
 
-  // try {
-  //   const { data } = await axios.post(
-  //     `${URL}/orders/${orderId}`,
-  //     { productId, price, quantity },
-  //     config
-  //   );
-
-  //   return data;
   try {
-    const response = await fetch(`${URL}/orders/${orderId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: { productId, price, quantity },
-    });
-    const result = await response.json();
+    const { data } = await axios.post(
+      `${URL}/orders/${orderId}`,
+      { productId, price, quantity },
+      config
+    );
 
-    return result;
+    return data;
   } catch (error) {
     console.log("Error in api/postProductToCart");
     throw error;
@@ -116,19 +79,23 @@ export async function addProductToCart(orderId, productId, price, quantity) {
 }
 
 export async function patchInactive(orderId) {
-  const { token } = getTokenConfig();
+  const { config } = getTokenConfig();
 
+  // try {
+  //   const response = await fetch(`${URL}/orders/${orderId}`, {
+  //     method: "PATCH",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   });
+  //   const result = await response.json();
+
+  //   return result;
   try {
-    const response = await fetch(`${URL}/orders/${orderId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const result = await response.json();
+    const { data } = await axios.patch(`${URL}/orders/${orderId}`, config);
 
-    return result;
+    return data;
   } catch (error) {
     console.log("Error in api/patchInactive");
     throw error;
