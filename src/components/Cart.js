@@ -8,7 +8,7 @@ import {
   Card,
   CloseButton,
 } from "react-bootstrap";
-import { patchQuantity, deleteProductFromCart } from "../api";
+import { patchQuantity, deleteProductFromCart, patchInactive } from "../api";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "..";
 
@@ -62,9 +62,9 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
-    // const inactive = await patchInactive(myOrder.id);
-    // console.log("show me inactive!!!", inactive);
-    // setMyOrder(inactive); //set in checkout
+    const inactive = await patchInactive(myOrder.id);
+    console.log("show me inactive!!!", inactive);
+    setMyOrder(inactive); //set in checkout
     history.push("/checkout");
   };
 
@@ -145,7 +145,7 @@ const Cart = () => {
                   variant="primary"
                   block
                   onClick={handleCheckout}
-                  disabled={myOrder.products.length === 0 ? true : false}
+                  disabled={myOrder.products.length === 0 || myOrder === null ? true : false}
                 >
                   Checkout
                 </Button>

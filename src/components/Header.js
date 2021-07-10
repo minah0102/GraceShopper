@@ -5,12 +5,22 @@ import { UserContext } from "..";
 
 const Header = () => {
   const history = useHistory();
-  const { user, setUser, currentUsername, setCurrentUsername } = useContext(UserContext);
+  const {
+    user,
+    setUser,
+    currentUsername,
+    setCurrentUsername,
+    setTotal,
+    setMyOrder,
+  } = useContext(UserContext);
 
   const handleLogout = () => {
     localStorage.clear();
     setUser(null);
     setCurrentUsername(null);
+    setTotal(0);
+    setMyOrder(null);
+    console.log("show me user after logout", user);
     return history.push("/");
   };
 
