@@ -1,8 +1,15 @@
 import React from "react";
-
-const Reviews = () =>{
-    return
-}
-
+import { SingleReview } from "./index.js";
+const Reviews = ({ currentProduct }) => {
+  const { reviews } = currentProduct;
+  return (
+    <div>
+      {reviews &&
+        reviews.map((review) => {
+          return <SingleReview key={review.id} singleReview={review} />;
+        })}
+    </div>
+  );
+};
 
 export default Reviews;

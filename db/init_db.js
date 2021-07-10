@@ -61,7 +61,7 @@ async function buildTables() {
       CREATE TABLE reviews(
         id SERIAL PRIMARY KEY,
         comment VARCHAR(255),
-        rating NUMERIC CHECK(rating >= 1 AND rating <=5),
+        rating INTEGER CHECK(rating >= 1 AND rating <=5),
         "userId" INTEGER REFERENCES users(id),
         "productId" INTEGER REFERENCES products(id)
       );

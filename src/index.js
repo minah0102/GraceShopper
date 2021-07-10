@@ -62,6 +62,7 @@ const App = () => {
       <div id="app">
         <UserContext.Provider value={{ user, setUser }}>
           <Header />
+          <ProductNav/>
           <Container>
             {/* <Donate /> */}
             <Switch>

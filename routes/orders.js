@@ -27,18 +27,19 @@ ordersRouter.get("/history", requireUser, async (req, res, next) => {
 });
 
 ordersRouter.get("/cart", requireUser, async (req, res, next) => {
-  try {
+  try { 
     const { id: userId } = req.user;
+    console.log("show me user", req.user);
     const cart = await getOrderByUserId(userId);
 
-    res.send(cart);
+    res.send(cart[0]);
   } catch (error) {
     console.log("Error in GET orders/cart");
     next(error);
   }
 });
-//needs to add requireUser
-ordersRouter.get("/:orderId", async (req, res, next) => {
+
+ordersRouter.get("/:orderId", requireUser, async (req, res, next) => {
   try {
     const { orderId } = req.params;
     const order = await getOrderById(orderId);
@@ -50,7 +51,7 @@ ordersRouter.get("/:orderId", async (req, res, next) => {
   }
 });
 
-ordersRouter.patch("/:orderId", async (req, res, next) => {
+ordersRouter.patch("/:orderId", requireUser, async (req, res, next) => {
   try {
     const { orderId } = req.params;
     const inactive = await removeOrder(orderId);
@@ -61,19 +62,23 @@ ordersRouter.patch("/:orderId", async (req, res, next) => {
     next(error);
   }
 });
-//needs to add requireUser
-ordersRouter.patch("/:lineItemId/quantity", async (req, res, next) => {
-  try {
-    const { lineItemId } = req.params;
-    const { quantity } = req.body;
-    const updated = await updateQuantity(lineItemId, { quantity });
 
-    res.send(updated);
-  } catch (error) {
-    console.log("Error in PATCH orders/:lineItemId/quantity");
-    next(error);
+ordersRouter.patch(
+  "/:lineItemId/quantity",
+  requireUser,
+  async (req, res, next) => {
+    try {
+      const { lineItemId } = req.params;
+      const { quantity } = req.body;
+      const updated = await updateQuantity(lineItemId, { quantity });
+
+      res.send(updated);
+    } catch (error) {
+      console.log("Error in PATCH orders/:lineItemId/quantity");
+      next(error);
+    }
   }
-});
+);
 
 // ordersRouter.post("/", requireUser, async (req, res, next) => {
 //   try {
@@ -87,10 +92,10 @@ ordersRouter.patch("/:lineItemId/quantity", async (req, res, next) => {
 //   }
 // });
 
-ordersRouter.post("/:productId", requireUser, async (req, res, next) => {
+ordersRouter.post("/:orderId", requireUser, async (req, res, next) => {
   try {
-    const { productId } = req.params;
-    const { orderId, price, quantity } = req.body;
+    const { orderId } = req.params;
+    const { productId, price, quantity } = req.body;
     const added = await addProductToCart({
       productId,
       orderId,
@@ -116,8 +121,8 @@ ordersRouter.delete("/", requireUser, async (req, res, next) => {
     next(error);
   }
 });
-//needs to add requireUser
-ordersRouter.delete("/:lineItemId", async (req, res, next) => {
+
+ordersRouter.delete("/:lineItemId", requireUser, async (req, res, next) => {
   try {
     const { lineItemId } = req.params;
     const deletedProduct = await removeProductFromCart(lineItemId);

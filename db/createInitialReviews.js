@@ -17,6 +17,18 @@ const createInitialReviews = async () => {
         productId: 3,
       },
       {
+        comment: "awesome product",
+        rating: 5,
+        userId: 1,
+        productId: 3,
+      },
+      {
+        comment: "runs large",
+        rating: 3,
+        userId: 3,
+        productId: 3,
+      },
+      {
         comment: "my dog enjoyed it",
         rating: 5,
         userId: 3,
