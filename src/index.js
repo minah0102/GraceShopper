@@ -122,7 +122,7 @@ const App = () => {
                 <AdminProductPage />
               </Route>
               <Route path="/checkout">
-                <Checkout myOrder={myOrder} />
+                <Checkout />
               </Route>
               <Route path="/authenticated">
                 {currentUsername ? <LoggedInPage /> : <Login />}
