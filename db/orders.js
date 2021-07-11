@@ -18,7 +18,7 @@ async function createOrder(userId) {
     console.log("Error in createOrder");
     throw error;
   }
-} //needs userId to create a cart for an authenticated user.
+}
 
 async function removeOrder(orderId) {
   try {
@@ -26,15 +26,17 @@ async function removeOrder(orderId) {
       rows: [removedCart],
     } = await client.query(
       /*sql*/ `
-      UPDATE orders
-      SET "isActive"=false
-      WHERE id=$1
-      RETURNING *;
-    `,
+        UPDATE orders
+        SET "isActive"=false, "purchasedDate"=CURRENT_TIMESTAMP
+        WHERE id=$1
+        RETURNING *;
+      `,
       [orderId]
     );
 
-    return removedCart;
+    const newOrder = await createOrder(removedCart.userId);
+
+    return attachProductsToOrder([newOrder]);
   } catch (error) {
     console.log("Error in removeOrder");
     throw error;
@@ -73,9 +75,7 @@ GET /orders/cart
 */
 async function getOrderByUserId(userId) {
   try {
-    const {
-      rows: [cart],
-    } = await client.query(
+    const { rows: cart } = await client.query(
       /*sql*/ `
       SELECT * FROM orders
       WHERE "userId"=$1 AND "isActive"=true;
@@ -83,11 +83,11 @@ async function getOrderByUserId(userId) {
       [userId]
     );
 
-    if (!cart) {
+    if (cart.length === 0) {
       return await createOrder(userId);
     }
 
-    return cart;
+    return await attachProductsToOrder(cart);
   } catch (error) {
     console.log("Error in getOrderByUserId");
     throw error;
@@ -141,7 +141,7 @@ async function attachProductsToOrder(orders) {
     const orderIds = orders.map((o) => o.id).join(", "); //3, 11
 
     const { rows: products } = await client.query(/*sql*/ `
-      SELECT p.id AS "productId", p.name, p.description, p."imageName", li.quantity, li.price, li."orderId"
+      SELECT p.id AS "productId", p.name, p.description, p."imageName", li.quantity, li.price, li."orderId", li.id as "lineItemId"
       FROM line_items AS li
       JOIN products AS p ON p.id=li."productId"
       WHERE "orderId" IN (${orderIds});
@@ -160,7 +160,7 @@ async function attachProductsToOrder(orders) {
   }
 }
 
-async function addProductToCart({ productId, orderId, price, quantity }) {
+async function addProductToCart({ orderId, productId, price, quantity }) {
   try {
     //check if the product is already in the cart.
     //if I use getOrderByUserId() I will not get productId
@@ -174,7 +174,7 @@ async function addProductToCart({ productId, orderId, price, quantity }) {
     );
 
     if (lineItem) {
-      return await updateQuantity({ orderId, productId, quantity });
+      return await updateQuantity(lineItem.id, { quantity });
     }
 
     const {
@@ -195,7 +195,7 @@ async function addProductToCart({ productId, orderId, price, quantity }) {
   }
 }
 
-async function updateQuantity({ orderId, productId, quantity }) {
+async function updateQuantity(lineItemId, { quantity }) {
   try {
     const {
       rows: [updated],
@@ -203,14 +203,14 @@ async function updateQuantity({ orderId, productId, quantity }) {
       /*sql*/ `
       UPDATE line_items
       SET quantity=$1
-      WHERE "orderId"=$2 AND "productId"=$3
+      WHERE id=$2
       RETURNING *;
     `,
-      [quantity, orderId, productId]
+      [quantity, lineItemId]
     );
 
     if (updated.quantity === 0) {
-      return await removeProductFromCart({ orderId, productId });
+      return await removeProductFromCart(lineItemId);
     }
 
     return updated;
@@ -239,17 +239,17 @@ async function deleteProducts(orderId) {
   }
 }
 
-async function removeProductFromCart({ orderId, productId }) {
-  try { console.log("show me orderId, productId", orderId, productId);
+async function removeProductFromCart(lineItemId) {
+  try {
     const {
       rows: [removedProduct],
     } = await client.query(
       /*sql*/ `
     DELETE FROM line_items
-    WHERE "orderId"=$1 AND "productId"=$2
+    WHERE id=$1
     RETURNING *;
     `,
-      [orderId, productId]
+      [lineItemId]
     );
 
     return removedProduct;

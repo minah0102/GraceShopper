@@ -27,11 +27,11 @@ ordersRouter.get("/history", requireUser, async (req, res, next) => {
 });
 
 ordersRouter.get("/cart", requireUser, async (req, res, next) => {
-  try {
+  try { 
     const { id: userId } = req.user;
     const cart = await getOrderByUserId(userId);
 
-    res.send(cart);
+    res.send(cart[0]);
   } catch (error) {
     console.log("Error in GET orders/cart");
     next(error);
@@ -43,19 +43,19 @@ ordersRouter.get("/:orderId", requireUser, async (req, res, next) => {
     const { orderId } = req.params;
     const order = await getOrderById(orderId);
 
-    res.send(order);
+    res.send(order[0]);
   } catch (error) {
     console.log("Error in GET orders/:orderId");
     next(error);
   }
 });
 
-ordersRouter.patch("/:orderId", async (req, res, next) => {
+ordersRouter.patch("/:orderId", requireUser, async (req, res, next) => {
   try {
     const { orderId } = req.params;
     const inactive = await removeOrder(orderId);
 
-    res.send(inactive);
+    res.send(inactive[0]);
   } catch (error) {
     console.log("Error in PATCH orders/:orderId");
     next(error);
@@ -63,17 +63,17 @@ ordersRouter.patch("/:orderId", async (req, res, next) => {
 });
 
 ordersRouter.patch(
-  "/:productId/quantity",
+  "/:lineItemId/quantity",
   requireUser,
   async (req, res, next) => {
     try {
-      const { productId } = req.params;
-      const { orderId, quantity } = req.body;
-      const updated = await updateQuantity({ orderId, productId, quantity });
+      const { lineItemId } = req.params;
+      const { quantity } = req.body;
+      const updated = await updateQuantity(lineItemId, { quantity });
 
       res.send(updated);
     } catch (error) {
-      console.log("Error in PATCH orders/:productId/quantity");
+      console.log("Error in PATCH orders/:lineItemId/quantity");
       next(error);
     }
   }
@@ -91,10 +91,10 @@ ordersRouter.patch(
 //   }
 // });
 
-ordersRouter.post("/:productId", requireUser, async (req, res, next) => {
+ordersRouter.post("/:orderId", requireUser, async (req, res, next) => {
   try {
-    const { productId } = req.params;
-    const { orderId, price, quantity } = req.body;
+    const { orderId } = req.params;
+    const { productId, price, quantity } = req.body;
     const added = await addProductToCart({
       productId,
       orderId,
@@ -121,15 +121,14 @@ ordersRouter.delete("/", requireUser, async (req, res, next) => {
   }
 });
 
-ordersRouter.delete("/:productId", requireUser, async (req, res, next) => {
+ordersRouter.delete("/:lineItemId", requireUser, async (req, res, next) => {
   try {
-    const { productId } = req.params;
-    const { orderId } = req.body;
-    const deletedProduct = await removeProductFromCart({ orderId, productId });
+    const { lineItemId } = req.params;
+    const deletedProduct = await removeProductFromCart(lineItemId);
 
     res.send(deletedProduct);
   } catch (error) {
-    console.log("Error in DELETE orders/:productId");
+    console.log("Error in DELETE orders/:lineItemId");
     next(error);
   }
 });

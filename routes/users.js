@@ -19,12 +19,8 @@ const { JWT_SECRET } = process.env;
 // GET /users/me
 usersRouter.get("/me", requireUser, async (req, res, next) => {
   try {
-    const { id, username } = req.user;
-
-    res.send({
-      id,
-      username,
-    });
+    delete user.password;
+    res.send(user);
   } catch (error) {
     console.error("Error on user/me")
     res.status(404);
@@ -68,33 +64,59 @@ usersRouter.post("/login", async (req, res, next) => {
 
 //POST /users/register
 usersRouter.post('/register', async (req, res, next) => {
-	try {
-		const { username, password, email } = req.body;
+  try {
+    const { username, password, email } = req.body;
 
-		if (!username || !password || !email) {
-			const error = new Error('Missing credentials');
-			return res.status(400).send({ data: error.message });
-		}
+    if (!username || !password || !email) {
+      return next(new Error("Missing credentials"));
+    }
 
     const user = await getUserByUsername(username);
 
     if (user) {
-      const error = new Error("User already exists");
-      return res.status(400).send({ data: error.message });
+      const error = new Error("username is taken");
+      return next(error);
     }
 
-		if (password.length < 8) {
-			const error = new Error('Password must be at least 8 characters');
-			return res.status(400).send({ data: error.message });
-		}
-		const newUser = await createUser({ username, password, email });
+    if (password.length < 8) {
+      const error = new Error('Password must be at least 8 characters');
+      return next(error);
+    }
+
+    const newUser = await createUser({ username, password, email });
     const token = jwt.sign(newUser, JWT_SECRET);
-		res.send({ user: newUser, token });
-	} catch (error) {
-		console.error("Error on register/user");
+    res.send({
+      user: newUser,
+      token,
+      message: "You are signed in!"
+    });
+  } catch (error) {
+    console.error("Error on register/user");
     next(error);
-	}
+  }
 });
+
+// usersRouter.post("/register", async (req, res, next) => {
+//   const { username, email, password } = req.body;
+
+//   if (!username || !email || !password) {
+//     next(new Error("Missing login credentials!"));
+//   }
+//   const _user = await getUserByUsername(username);
+
+//   if (_user) {
+//     const error = new Error("Username is taken");
+//     next(error);
+//   }
+
+//   const user = await createUser({ username, email, password });
+//   const token = jwt.sign(user, JWT_SECRET);
+//   res.send({
+//     user,
+//     message: "You are signed in!",
+//     token
+//   });
+// });
 
 //PATCH /users/:userId
 usersRouter.patch('/:userId', requireUser, async (req, res, next) => {
@@ -113,7 +135,7 @@ usersRouter.patch('/:userId', requireUser, async (req, res, next) => {
 });
 
 //DELETE /users/:userId
-usersRouter.delete('/:userId', requireUser, requireAdmin, async (req, res, next) => { 
+usersRouter.delete('/:userId', requireUser, requireAdmin, async (req, res, next) => {
   try {
     const userId = req.user.id;
     if (userId) {
