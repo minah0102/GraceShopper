@@ -20,7 +20,7 @@ import { UserContext } from "..";
 const Product = () => {
   const { myOrder, setMyOrder, total, setTotal } = useContext(UserContext);
   const [currentProduct, setCurrentProduct] = useState({});
-  const [addQuantity, setAddQuantity] = useState();
+  const [addQuantity, setAddQuantity] = useState(1);
 
   const history = useHistory();
 
