@@ -1,8 +1,7 @@
 import axios from "axios";
 import { getToken } from "./token";
-const token = getToken();
-console.log(token);
-//need to use config
+import { getTokenConfig } from "./token";
+const { token } = getTokenConfig();
 
 export const fetchAllProducts = async () => {
   try {
