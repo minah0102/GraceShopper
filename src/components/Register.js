@@ -40,7 +40,8 @@ const Register = () => {
       }
       if (user) {
         setUser(user);
-        history.push("/login");
+        setCurrentUsername(user.username);
+        history.push("/authenticated");
       }
     });
   };

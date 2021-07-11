@@ -11,14 +11,15 @@ import {
   ReviewForm,
   Cart,
   Donate,
-  Product,
   Products,
   Product,
   ProductNav,
   CategoryProducts,
   Checkout,
   LoggedInPage,
+  Admin,
   AdminProductPage,
+  AdminUserInfoPage,
 } from "./components";
 
 import { Container } from "react-bootstrap";
@@ -125,6 +126,9 @@ const App = () => {
               </Route>
               <Route path="/authenticated">
                 {currentUsername ? <LoggedInPage /> : <Login />}
+              </Route>
+              <Route path="/admin">
+                <Admin />
               </Route>
             </Switch>
             <ReviewForm />

@@ -19,12 +19,8 @@ const { JWT_SECRET } = process.env;
 // GET /users/me
 usersRouter.get("/me", requireUser, async (req, res, next) => {
   try {
-    const { id, username } = req.user;
-
-    res.send({
-      id,
-      username,
-    });
+    delete user.password;
+    res.send(user);
   } catch (error) {
     console.error("Error on user/me")
     res.status(404);
@@ -72,19 +68,19 @@ usersRouter.post('/register', async (req, res, next) => {
     const { username, password, email } = req.body;
 
     if (!username || !password || !email) {
-      next(new Error("Missing credentials"));
+      return next(new Error("Missing credentials"));
     }
 
     const user = await getUserByUsername(username);
 
     if (user) {
       const error = new Error("username is taken");
-      next(error);
+      return next(error);
     }
 
     if (password.length < 8) {
       const error = new Error('Password must be at least 8 characters');
-      next(error);
+      return next(error);
     }
 
     const newUser = await createUser({ username, password, email });
