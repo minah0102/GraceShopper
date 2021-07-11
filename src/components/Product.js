@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { fetchProductById } from "../api/products";
 import { addProductToCart } from "../api";
-import "../css/ProductCard.css";
+import "../css/Product.css";
 
 import { useParams, useHistory } from "react-router-dom";
 import { Reviews } from "./index.js";
