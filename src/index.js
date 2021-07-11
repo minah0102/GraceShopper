@@ -12,6 +12,7 @@ import {
   Cart,
   Donate,
   Products,
+  Product,
   ProductNav,
   CategoryProducts,
   Checkout,
