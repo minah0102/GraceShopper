@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getToken } from "./token";
 import { getTokenConfig } from "./token";
 const { token } = getTokenConfig();
 
@@ -44,6 +43,7 @@ export const fetchCategoryProducts = async (categoryName) => {
 
 export const updateProduct = async (product) => {
   const { id } = product;
+
   try {
     const { data: updatedProduct } = await axios.patch(
       `/api/products/${id}`,
