@@ -13,7 +13,6 @@ const ProductCard = ({ product }) => {
         <Card.Body>
           <Card.Title>{name}</Card.Title>
           <Card.Text>${price}</Card.Text>
-          <Button variant="primary">Add To Cart</Button>
         </Card.Body>
       </Card>
     </Link>

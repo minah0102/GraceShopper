@@ -42,19 +42,19 @@ export const fetchCategoryProducts = async (categoryName) => {
 };
 
 export const updateProduct = async (product) => {
-  const { name, description, price, quantity } = product;
+  const { id } = product;
+
   try {
     const { data: updatedProduct } = await axios.patch(
-      `/api/products/...`,
-      { name, description, price, quantity },
+      `/api/products/${id}`,
+      product,
       {
         headers: {
           Authorization: "Bearer " + token,
         },
       }
     );
-    console.log("updatedProduct API", updatedProduct);
-    return updatedProduct;
+    return updatedProduct[0];
   } catch (error) {
     console.error(error);
   }
