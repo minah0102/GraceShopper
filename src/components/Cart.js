@@ -64,7 +64,8 @@ const Cart = () => {
   const handleCheckout = async () => {
     const inactive = await patchInactive(myOrder.id);
     console.log("show me inactive!!!", inactive);
-    setMyOrder(inactive); //set in checkout
+    //remove from myOrder
+    //add to history after create an object
     history.push("/checkout");
   };
 
@@ -145,7 +146,11 @@ const Cart = () => {
                   variant="primary"
                   block
                   onClick={handleCheckout}
-                  disabled={myOrder.products.length === 0 || myOrder === null ? true : false}
+                  disabled={
+                    myOrder === null || myOrder.products.length === 0
+                      ? true
+                      : false
+                  }
                 >
                   Checkout
                 </Button>

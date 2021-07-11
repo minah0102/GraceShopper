@@ -2,7 +2,6 @@ import React from "react";
 import { Card, Button } from "react-bootstrap";
 import "../css/Product.css";
 import { Link } from "react-router-dom";
-import { addProductToCart } from "../api";
 
 const ProductCard = ({ product }) => {
   const { id, name, price, imageName } = product;

@@ -1,5 +1,4 @@
 import axios from "axios";
-//import { loginUser } from "./users";
 import { setToken, setUsername } from "./token";
 
 const URL = `http://localhost:3000/api`;
@@ -15,21 +14,6 @@ export async function getUser(userId) {
     throw error;
   }
 }
-
-// export async function registerUser() {
-//   try {
-//     const { data } = await axios.post(`${URL}/users/register`);
-
-//     return data;
-//   } catch (error) {
-//     console.log("Error in api/registerUser");
-//     throw error;
-//   }
-// }
-
-// export async function loginUser() {
-
-// }
 
 export const loginUser = (username, password) => {
   return fetch("/api/users/login", {

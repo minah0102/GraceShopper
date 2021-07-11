@@ -11,75 +11,67 @@ import {
   ReviewForm,
   Cart,
   Donate,
-  Product,
   Products,
   ProductNav,
   CategoryProducts,
   Checkout,
   LoggedInPage,
+  Admin,
   AdminProductPage,
+  AdminUserInfoPage,
 } from "./components";
 
 import { Container } from "react-bootstrap";
 
 import { getOrderByUser, getOrderHistory } from "./api";
 
-import { getToken, getUsername } from "./api/token";
+import { getTokenConfig } from "./api/token";
 
 export const UserContext = React.createContext();
 
 const App = () => {
   const [user, setUser] = useState(null);
   const [myOrder, setMyOrder] = useState(null);
-  const [currentUsername, setCurrentUsername] = useState(getUsername());
+  const [currentUsername, setCurrentUsername] = useState("");
   const [total, setTotal] = useState(0);
   const [history, setHistory] = useState([]);
 
-  // useEffect(() => {
-  //   const token = getToken();
-  //   const headers = token
-  //     ? {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       }
-  //     : {};
+  useEffect(() => {
+    const { config } = getTokenConfig();
 
-  //   fetch("/api/users/me", {
-  //     headers,
-  //   })
-  //     .then((d) => d.json())
-  //     .then((u) => {
-  //       if (u) {
-  //         setUser(u);
-  //       }
-  //     });
-  // }, []);
+    fetch("/api/users/me", config)
+      .then((d) => d.json())
+      .then((u) => {
+        if (u) {
+          setUser(u);
+          setCurrentUsername(u.username);
+        }
+      });
+  }, []);
 
   useEffect(() => {
-    // if (currentUsername) {
-    getOrderByUser()
-      .then((r) => {
-        console.log("show me r", r);
-        setMyOrder(r);
-        setTotal(() => {
-          return r.products.reduce((acc, p) => {
-            return acc + p.quantity * p.price;
-          }, 0);
-        });
-      })
-      .catch((e) => console.error(e));
-    // }
+    if (currentUsername) {
+      getOrderByUser()
+        .then((r) => {
+          setMyOrder(r);
+          setTotal(() => {
+            return r.products.reduce((acc, p) => {
+              return acc + p.quantity * p.price;
+            }, 0);
+          });
+        })
+        .catch((e) => console.error(e));
+    }
   }, [currentUsername]);
 
   useEffect(() => {
-    // if (currentUsername) {
-    getOrderHistory()
-      .then((r) => {
-        console.log("show me history", r);
-        setHistory(r);
-      })
-      .catch((e) => console.error(e));
-    // }
+    if (currentUsername) {
+      getOrderHistory()
+        .then((r) => {
+          setHistory(r);
+        })
+        .catch((e) => console.error(e));
+    }
   }, [currentUsername]);
 
   return (
@@ -95,6 +87,8 @@ const App = () => {
             setMyOrder,
             total,
             setTotal,
+            history,
+            setHistory,
           }}
         >
           <Header />
@@ -127,10 +121,13 @@ const App = () => {
                 <AdminProductPage />
               </Route>
               <Route path="/checkout">
-                <Checkout myOrder={myOrder} />
+                <Checkout />
               </Route>
               <Route path="/authenticated">
                 {currentUsername ? <LoggedInPage /> : <Login />}
+              </Route>
+              <Route path="/admin">
+                <Admin />
               </Route>
             </Switch>
             <ReviewForm />

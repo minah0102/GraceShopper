@@ -4,12 +4,11 @@ import { UserContext } from "..";
 import { Form, Button } from "react-bootstrap";
 import { loginUser } from "../api/users";
 
-
 const mystyle = {
   padding: "1rem",
   margin: "1rem",
   display: "flex",
-  justifyContent: "center"
+  justifyContent: "center",
 };
 
 const Login = () => {
@@ -44,7 +43,6 @@ const Login = () => {
       if (user) {
         setUser(user);
         setCurrentUsername(user.username);
-        console.log("show me ueser.username", user.username);
         history.push("/authenticated");
       }
     });
@@ -52,9 +50,7 @@ const Login = () => {
 
   return (
     <div style={mystyle}>
-      <Form
-        style={{ width: "30rem" }}
-      >
+      <Form style={{ width: "30rem" }}>
         <h2>Please Login</h2>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <Form.Group controlId="formLoginUsername">
@@ -80,17 +76,17 @@ const Login = () => {
         <Form.Group controlId="formLoginCheckbox">
           <Form.Check type="checkbox" label="Remember me" />
         </Form.Group>
-          <Button
-            variant="primary"
-            type="submit"
-            onClick={submitHandler}
-            disabled={isLoading}
-          >
-            Submit
-          </Button>
+        <Button
+          variant="primary"
+          type="submit"
+          onClick={submitHandler}
+          disabled={isLoading}
+        >
+          Submit
+        </Button>
       </Form>
     </div>
   );
-}
+};
 
 export default Login;
