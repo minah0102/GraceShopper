@@ -35,7 +35,7 @@ const App = () => {
   const [myOrder, setMyOrder] = useState(null);
   const [currentUsername, setCurrentUsername] = useState("");
   const [total, setTotal] = useState(0);
-  const [history, setHistory] = useState([]);
+  const [orderHistory, setOrderHistory] = useState([]);
 
   useEffect(() => {
     const { config } = getTokenConfig();
@@ -69,7 +69,7 @@ const App = () => {
     if (currentUsername) {
       getOrderHistory()
         .then((r) => {
-          setHistory(r);
+          setOrderHistory(r);
         })
         .catch((e) => console.error(e));
     }
@@ -88,8 +88,8 @@ const App = () => {
             setMyOrder,
             total,
             setTotal,
-            history,
-            setHistory,
+            orderHistory,
+            setOrderHistory,
           }}
         >
           <Header />

@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { fetchProductById } from "../api/products";
 import { addProductToCart } from "../api";
-import "../css/ProductCard.css";
+import "../css/Product.css";
 
 import { useParams, useHistory } from "react-router-dom";
 import { Reviews } from "./index.js";
@@ -20,7 +20,7 @@ import { UserContext } from "..";
 const Product = () => {
   const { myOrder, setMyOrder, total, setTotal } = useContext(UserContext);
   const [currentProduct, setCurrentProduct] = useState({});
-  const [addQuantity, setAddQuantity] = useState();
+  const [addQuantity, setAddQuantity] = useState(1);
 
   const history = useHistory();
 

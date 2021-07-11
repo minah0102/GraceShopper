@@ -43,7 +43,7 @@ export async function patchQuantity(lineItemId, quantity) {
 
     return data;
   } catch (error) {
-    console.log("Error in api/updateQuantity");
+    console.log("Error in api/patchQuantity");
     throw error;
   }
 }
@@ -79,23 +79,19 @@ export async function addProductToCart(orderId, productId, price, quantity) {
 }
 
 export async function patchInactive(orderId) {
-  const { config } = getTokenConfig();
+  const { token } = getTokenConfig();
 
-  // try {
-  //   const response = await fetch(`${URL}/orders/${orderId}`, {
-  //     method: "PATCH",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   });
-  //   const result = await response.json();
-
-  //   return result;
   try {
-    const { data } = await axios.patch(`${URL}/orders/${orderId}`, config);
+    const response = await fetch(`${URL}/orders/${orderId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
 
-    return data;
+    return result;
   } catch (error) {
     console.log("Error in api/patchInactive");
     throw error;
