@@ -1,0 +1,91 @@
+import React, {useState} from 'react';
+import { Form, Button, Container } from "react-bootstrap";
+
+const AddProduct = ({setShowAddModal}) => {
+  const [nameInput, setNameInput] = useState("");
+  const [descInput, setDescInput] = useState("");
+  const [priceInput, setPriceInput] = useState("");
+  const [categoryInput, setCategoryInput] = useState("Select Category");
+  const [quantityInput, setQuantityInput] = useState("");
+
+  const nameHandler = (event) => {
+    setNameInput(event.target.value);
+  };
+
+  const descHandler = (event) => {
+    setDescInput(event.target.value);
+  };
+
+  const priceHandler = (event) => {
+    setPriceInput(event.target.value);
+  };
+
+  const inventoryHandler = (event) => {
+    setQuantityInput(event.target.value);
+  };
+
+  const categoryHandler = (event) => {
+    setCategoryInput(event.target.value);
+  };
+
+  const handleCancelEdit = () => {
+    setShowAddModal(false);
+  };
+
+  const handleAddProduct = (product) => {
+    console.log("ADD");
+  };
+
+  return (
+    <>
+      <Container>
+        <h1>Add Product</h1>
+      </Container>
+      <Form id="product__form">
+        <Form.Group controlId="addProductTitle">
+          <Form.Label>Name</Form.Label>
+          <Form.Control value={nameInput} onChange={nameHandler} />
+        </Form.Group>
+        <Form.Group controlId="addProductDescription">
+          <Form.Label>Description</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            value={descInput}
+            onChange={descHandler}
+          />
+        </Form.Group>
+        <Form.Group controlId="addProductPrice">
+          <Form.Label>Price</Form.Label>
+          <Form.Control value={priceInput} onChange={priceHandler} />
+        </Form.Group>
+        <Form.Group controlId="addProductInventory">
+          <Form.Label>Inventory</Form.Label>
+          <Form.Control value={quantityInput} onChange={inventoryHandler} />
+        </Form.Group>
+        <Form.Group controlId="addCategory">
+          <Form.Label>Category</Form.Label>
+          <Form.Control
+            as="select"
+            value={categoryInput}
+            onChange={categoryHandler}
+          >
+            {/* {categories.map((category) => {
+              let { id, name } = category;
+              name = name.charAt(0).toUpperCase() + name.slice(1);
+              return <option key={id}>{name}</option>;
+            })} */}
+          </Form.Control>
+        </Form.Group>
+        <Button variant="primary" type="submit" onClick={handleAddProduct}>
+          Add
+        </Button>
+        <Button variant="danger" onClick={handleCancelEdit}>
+          Cancel
+        </Button>
+      </Form>
+    </>
+  );
+};
+
+export default AddProduct;

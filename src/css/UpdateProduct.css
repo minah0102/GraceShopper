@@ -1,12 +1,12 @@
-#update__product__form {
+#product__form {
   width: 500px;
   padding: 15px;
 }
 
-#update__product__form .form-group {
+#product__form .form-group {
   margin-bottom: 15px;
 }
 
-#update__product__form button {
+#product__form button {
   margin-right: 8px;
 }

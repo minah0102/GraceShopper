@@ -65,7 +65,7 @@ const UpdateProduct = ({ product, setShowEditModal, setProducts }) => {
       <Container>
         <h1>Update Product</h1>
       </Container>
-      <Form id="update__product__form">
+      <Form id="product__form">
         <Form.Group controlId="editProductTitle">
           <Form.Label>Name</Form.Label>
           <Form.Control value={nameInput} onChange={nameHandler} />

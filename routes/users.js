@@ -19,6 +19,7 @@ const { JWT_SECRET } = process.env;
 // GET /users/me
 usersRouter.get("/me", requireUser, async (req, res, next) => {
   try {
+    const user = req.user;
     delete user.password;
     res.send(user);
   } catch (error) {

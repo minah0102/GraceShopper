@@ -70,7 +70,7 @@ productsRouter.post("/", requireAdmin, async (req, res, next) => {
   }
 });
 
-productsRouter.patch('/:productId', async (req, res, next) => {
+productsRouter.patch('/:productId', requireAdmin, async (req, res, next) => {
   const {productId} = req.params;
   const {name, description, price, quantity} = req.body;
   const fields = {};
