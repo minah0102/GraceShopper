@@ -75,9 +75,29 @@ const deleteReview = async (reviewId) => {
   }
 };
 
+const deleteProductReviews = async (productId) => {
+  try {
+    const {
+      rows: [reviews],
+    } = await client.query(
+      `
+  DELETE from reviews
+  WHERE "productId"=$1
+  RETURNING *;
+  `,
+      [productId]
+    );
+    console.log("DB DELETED REVIEWS");
+    return reviews;
+  } catch (error) {
+    console.log("deleteReviewDB", error);
+  }
+}
+
 module.exports = {
   createReview,
   updateReview,
   deleteReview,
   getReviewById,
+  deleteProductReviews
 };

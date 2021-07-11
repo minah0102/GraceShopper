@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Col, Container, Card, Button } from "react-bootstrap";
 import "../css/UpdateProduct.css";
-import { Link } from "react-router-dom";
-import { deleteProduct } from "../api/products";
+import { Link, useRouteMatch } from "react-router-dom";
+import { updateProduct } from "../api/products";
 
 const AdminProductCard = ({ product, setShowEditModal, setProductToEdit }) => {
   const { id, name, description, price, imageName, quantity } = product;
@@ -13,10 +13,9 @@ const AdminProductCard = ({ product, setShowEditModal, setProductToEdit }) => {
   };
 
   const handleDeleteProduct = async () => {
-    console.log("DELETE");
-    const deletedProduct = await deleteProduct(id);
-    console.log("FINAL DELETE", id, deletedProduct);
-  }
+    // const deletedProduct = await deleteProduct(id);
+    const deletedProduct = await updateProduct({ quantity: 0 });
+  };
 
   return (
     <Card className="admin__product__card">
@@ -26,7 +25,7 @@ const AdminProductCard = ({ product, setShowEditModal, setProductToEdit }) => {
           <Card.Title>{name}</Card.Title>
           <Card.Text>{description}</Card.Text>
           <Card.Text>${price}</Card.Text>
-          <Card.Text>In Stock: {quantity}</Card.Text>
+          <Card.Text>Inventory: {quantity}</Card.Text>
         </Card.Body>
         <Col className="update__product__buttons">
           <Button onClick={handleEditProduct}>Edit</Button>

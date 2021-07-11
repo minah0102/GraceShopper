@@ -13,7 +13,6 @@ import {
   Donate,
   Product,
   Products,
-  Product,
   ProductNav,
   CategoryProducts,
   Checkout,
