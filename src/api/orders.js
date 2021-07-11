@@ -79,19 +79,23 @@ export async function addProductToCart(orderId, productId, price, quantity) {
 }
 
 export async function patchInactive(orderId) {
-  const { token } = getTokenConfig();
+  const { config } = getTokenConfig();
 
+  // try {
+  //   const response = await fetch(`${URL}/orders/${orderId}`, {
+  //     method: "PATCH",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   });
+  //   const result = await response.json();
+
+  //   return result;
   try {
-    const response = await fetch(`${URL}/orders/${orderId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const result = await response.json();
+    const { data } = await axios.patch(`${URL}/orders/${orderId}`, config);
 
-    return result;
+    return data;
   } catch (error) {
     console.log("Error in api/patchInactive");
     throw error;

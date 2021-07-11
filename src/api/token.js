@@ -1,6 +1,5 @@
 export const getToken = () => {
   const token = localStorage.getItem("token");
-  // debugger;
   if (token) {
     return token;
   } else {

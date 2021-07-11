@@ -5,7 +5,7 @@ import { UserContext } from "..";
 
 const Header = () => {
   const history = useHistory();
-  const { setUser, currentUsername, setCurrentUsername, setTotal, setMyOrder } =
+  const { setUser, currentUsername, setCurrentUsername, setTotal } =
     useContext(UserContext);
 
   const handleLogout = () => {

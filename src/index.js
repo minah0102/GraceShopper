@@ -25,7 +25,6 @@ import { Container } from "react-bootstrap";
 
 import { getOrderByUser, getOrderHistory } from "./api";
 
-// import { getToken, getUsername } from "./api/token";
 import { getTokenConfig } from "./api/token";
 
 export const UserContext = React.createContext();
@@ -51,26 +50,28 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    getOrderByUser()
-      .then((r) => {
-        console.log("show me r", r);
-        setMyOrder(r);
-        setTotal(() => {
-          return r.products.reduce((acc, p) => {
-            return acc + p.quantity * p.price;
-          }, 0);
-        });
-      })
-      .catch((e) => console.error(e));
+    if (currentUsername) {
+      getOrderByUser()
+        .then((r) => {
+          setMyOrder(r);
+          setTotal(() => {
+            return r.products.reduce((acc, p) => {
+              return acc + p.quantity * p.price;
+            }, 0);
+          });
+        })
+        .catch((e) => console.error(e));
+    }
   }, [currentUsername]);
 
   useEffect(() => {
-    getOrderHistory()
-      .then((r) => {
-        console.log("show me history", r);
-        setHistory(r);
-      })
-      .catch((e) => console.error(e));
+    if (currentUsername) {
+      getOrderHistory()
+        .then((r) => {
+          setHistory(r);
+        })
+        .catch((e) => console.error(e));
+    }
   }, [currentUsername]);
 
   return (
@@ -86,6 +87,8 @@ const App = () => {
             setMyOrder,
             total,
             setTotal,
+            history,
+            setHistory,
           }}
         >
           <Header />
