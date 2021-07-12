@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Col, Container, Card, Button } from "react-bootstrap";
 import "../css/UpdateProduct.css";
-import { Link, useRouteMatch } from "react-router-dom";
 import { updateProduct } from "../api/products";
 
 const AdminProductCard = ({ product, setShowEditModal, setProductToEdit }) => {

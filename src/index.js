@@ -61,11 +61,13 @@ const App = () => {
       getOrderByUser()
         .then((r) => {
           setMyOrder(r);
-          setTotal(() => {
-            return r.products.reduce((acc, p) => {
-              return acc + p.quantity * p.price;
-            }, 0);
-          });
+          if (r.products) {
+            setTotal(() => {
+              return r.products.reduce((acc, p) => {
+                return acc + p.quantity * p.price;
+              }, 0);
+            });
+          }
         })
         .catch((e) => console.error(e));
     }
@@ -127,7 +129,7 @@ const App = () => {
                 <CategoryProducts />
               </Route>
               <Route path="/admin/products">
-                <AdminProductPage />
+                <Products />
               </Route>
               <Route path="/checkout">
                 <Checkout />
