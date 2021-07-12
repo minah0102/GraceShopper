@@ -29,6 +29,7 @@ const Product = () => {
 
   const { name, description, imageName, price, reviews, quantity } =
     currentProduct;
+    
   let averageRating;
   if ("reviews" in currentProduct) {
     const productReviews = currentProduct.reviews;
@@ -39,7 +40,7 @@ const Product = () => {
     });
     console.log(ratings);
     const r = (acc, value) => acc + value;
-    const averageRating = ratings.reduce(r) / ratings.length;
+    averageRating = ratings.reduce(r) / ratings.length;
     console.log(averageRating);
   }
   console.log("real", averageRating);
@@ -78,7 +79,7 @@ const Product = () => {
           </Row>
         </Col>
       </Row>
-      <ReviewForm/>
+      <ReviewForm id={id}/>
       <Row>
         <Accordion>
           <Card>

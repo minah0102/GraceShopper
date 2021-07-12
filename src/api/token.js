@@ -25,3 +25,16 @@ export const setUsername = (username) => {
   localStorage.setItem("username", username);
   return username;
 }
+
+export function getTokenConfig() {
+  const token = getToken();
+  const headers = token
+    ? {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      }
+    : {};
+  const config = { headers };
+
+  return { token, config };
+}

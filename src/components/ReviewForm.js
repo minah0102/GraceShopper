@@ -4,12 +4,14 @@ import StarRating from "./StarRating";
 import { createReview } from "../api/reviews";
 import { useParams } from "react-router-dom";
 
-const ReviewForm = ({ productReviews, setProductReviews }) => {
+
+const ReviewForm = ({ productReviews, setProductReviews, id }) => {
+  console.log("THIS ID", id)
   const [rating, setRating] = useState(null);
   const [comment, setComment] = useState("");
   console.log(comment);
 
-  const {id} = useParams();
+  // const {id} = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,13 +21,13 @@ const ReviewForm = ({ productReviews, setProductReviews }) => {
       return;
     }
     try {
-      const { review: newReview } = await createReview(
-        comment,
+      const newReview = await createReview(
+       {comment,
         rating,
-        id,
-        // userId
+        productId: id
+      }
       );
-      console.log("this");
+      console.log("this", newReview);
       setProductReviews([...productReviews, newReview]);
       setRating(null);
       setComment("");

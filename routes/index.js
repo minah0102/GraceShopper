@@ -19,8 +19,10 @@ async function attachUser(req, res, next) {
     } else if (auth.startsWith(prefix)) {
       const token = auth.replace(prefix, "");
       const parsedToken = jwt.verify(token, JWT_SECRET);
+      console.log("PARSEDtOKEN", parsedToken)
       const id = parsedToken.id;
       const user = await getUserById(id);
+      console.log(user)
       if (!user) {
         next(new Error("could not find user"));
       } else {
