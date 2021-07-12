@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { fetchCategories } from "../api/products";
 import { Form, Button, Container } from "react-bootstrap";
-import { updateProduct } from "../api/products";
-import "../css/UpdateProduct.css";
+import { addProduct } from "../api/products";
 
-const UpdateProduct = ({ product, setShowEditModal, setProducts }) => {
-  const { id, name, description, price, category, quantity } = product;
+const AddProduct = ({ setShowAddModal, setProducts }) => {
+  const [nameInput, setNameInput] = useState("");
+  const [descInput, setDescInput] = useState("");
+  const [priceInput, setPriceInput] = useState("");
+  const [categoryInput, setCategoryInput] = useState("Select Category");
+  const [quantityInput, setQuantityInput] = useState("");
   const [categories, setCategories] = useState([]);
-  const [nameInput, setNameInput] = useState(name);
-  const [descInput, setDescInput] = useState(description);
-  const [priceInput, setPriceInput] = useState(price);
-  const [categoryInput, setCategoryInput] = useState(category);
-  const [quantityInput, setQuantityInput] = useState(quantity);
 
   useEffect(async () => {
     const categories = await fetchCategories();
@@ -39,38 +37,36 @@ const UpdateProduct = ({ product, setShowEditModal, setProducts }) => {
   };
 
   const handleCancelEdit = () => {
-    setShowEditModal(false);
+    setShowAddModal(false);
   };
 
-  const handleUpdateProduct = async (event) => {
+  const handleAddProduct = async (event) => {
     event.preventDefault();
-    setShowEditModal(false);
-    const updatedProduct = await updateProduct({
-      id,
+    setShowAddModal(false);
+    const newProduct = await addProduct({
       name: nameInput,
       description: descInput,
       price: priceInput,
       quantity: quantityInput,
+      categoryId: categoryInput,
     });
-    setProducts((products) => {
-      return products.map((_product) => {
-        if (_product.id !== id) return _product;
-        return updatedProduct;
-      });
+    setProducts(products => {
+      const newProducts = [...products, newProduct];
+      return newProducts;
     });
   };
 
   return (
     <>
       <Container>
-        <h1>Update Product</h1>
+        <h1>Add Product</h1>
       </Container>
       <Form id="product__form">
-        <Form.Group controlId="editProductTitle">
+        <Form.Group controlId="addProductTitle">
           <Form.Label>Name</Form.Label>
           <Form.Control value={nameInput} onChange={nameHandler} />
         </Form.Group>
-        <Form.Group controlId="editProductDescription">
+        <Form.Group controlId="addProductDescription">
           <Form.Label>Description</Form.Label>
           <Form.Control
             as="textarea"
@@ -79,31 +75,30 @@ const UpdateProduct = ({ product, setShowEditModal, setProducts }) => {
             onChange={descHandler}
           />
         </Form.Group>
-        <Form.Group controlId="editProductPrice">
+        <Form.Group controlId="addProductPrice">
           <Form.Label>Price</Form.Label>
           <Form.Control value={priceInput} onChange={priceHandler} />
         </Form.Group>
-        <Form.Group controlId="editProductInventory">
+        <Form.Group controlId="addProductInventory">
           <Form.Label>Inventory</Form.Label>
           <Form.Control value={quantityInput} onChange={inventoryHandler} />
         </Form.Group>
-        <Form.Group controlId="exampleForm.ControlSelect1">
+        <Form.Group controlId="addCategory">
           <Form.Label>Category</Form.Label>
           <Form.Control
             as="select"
             value={categoryInput}
             onChange={categoryHandler}
           >
-            <option key={0}>{category}</option>
             {categories.map((category) => {
               let { id, name } = category;
               name = name.charAt(0).toUpperCase() + name.slice(1);
-              return <option key={id}>{name}</option>;
+              return <option key={id} value={id}>{name}</option>;
             })}
           </Form.Control>
         </Form.Group>
-        <Button variant="primary" type="submit" onClick={handleUpdateProduct}>
-          Update
+        <Button variant="primary" type="submit" onClick={handleAddProduct}>
+          Add
         </Button>
         <Button variant="danger" onClick={handleCancelEdit}>
           Cancel
@@ -113,4 +108,4 @@ const UpdateProduct = ({ product, setShowEditModal, setProducts }) => {
   );
 };
 
-export default UpdateProduct;
+export default AddProduct;

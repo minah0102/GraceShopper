@@ -1,24 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { ProductCard, AdminProductCard, UpdateProduct } from "./index";
-import { Switch, Route } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { ProductCard, AdminProductPage } from "./index";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { fetchAllProducts } from "../api/products";
-import { Container, Row, Button } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
+import { UserContext } from "..";
 
 const Products = () => {
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [productToEdit, setProductToEdit] = useState({});
   const [products, setProducts] = useState([]);
+
+  const { user } = useContext(UserContext);
 
   useEffect(async () => {
     const allProducts = await fetchAllProducts();
     setProducts(allProducts);
   }, []);
 
-  const handleAddProduct = (product) => {
-    console.log("ADD");
-  };
-
-  console.log("products", products);
   return (
     <Switch>
       <Route path="/products">
@@ -32,35 +28,7 @@ const Products = () => {
         </Container>
       </Route>
       <Route path="/admin/products">
-        {showEditModal ? (
-          <UpdateProduct
-            product={productToEdit}
-            setShowEditModal={setShowEditModal}
-            setProducts={setProducts}
-          />
-        ) : (
-          <>
-            <Container className="admin__product__header">
-              <h1>Admin Product Page</h1>
-              <Button variant="success" onClick={handleAddProduct}>
-                Add Product
-              </Button>
-            </Container>
-            <Container>
-              <Row>
-                {products &&
-                  products.map((product) => (
-                    <AdminProductCard
-                      key={product.id}
-                      product={product}
-                      setShowEditModal={setShowEditModal}
-                      setProductToEdit={setProductToEdit}
-                    />
-                  ))}
-              </Row>
-            </Container>
-          </>
-        )}
+      {user && user.isAdmin === false ? <Redirect to="/" /> : <AdminProductPage products={products} setProducts={setProducts}/>}
       </Route>
     </Switch>
   );

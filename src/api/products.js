@@ -1,6 +1,5 @@
 import axios from "axios";
 import { getTokenConfig } from "./token";
-const { token } = getTokenConfig();
 
 export const fetchAllProducts = async () => {
   try {
@@ -34,16 +33,33 @@ export const fetchCategoryProducts = async (categoryName) => {
     const { data: products } = await axios.get(
       `/api/products/category/${categoryName}`
     );
-    console.log("API", products);
     return products;
   } catch (error) {
     console.error(error);
   }
 };
 
+export const addProduct = async (product) => {
+  const { token } = getTokenConfig();
+  try {
+    const {data: newProduct} = await axios.post(
+      `/api/products`,
+      product,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
+    return newProduct;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export const updateProduct = async (product) => {
   const { id } = product;
-
+  const { token } = getTokenConfig();
   try {
     const { data: updatedProduct } = await axios.patch(
       `/api/products/${id}`,
@@ -63,7 +79,6 @@ export const updateProduct = async (product) => {
 export const deleteProduct = async (id) => {
   try {
     const { data: product } = await axios.delete(`/api/products/${id}`);
-    console.log("DELETED", product);
     return product;
   } catch (error) {
     console.error(error);
