@@ -71,6 +71,7 @@ productsRouter.post("/", requireAdmin, async (req, res, next) => {
   }
 });
 
+// add category product
 productsRouter.patch('/:productId', requireAdmin, async (req, res, next) => {
   const {productId} = req.params;
   const {name, description, price, quantity} = req.body;
@@ -80,6 +81,7 @@ productsRouter.patch('/:productId', requireAdmin, async (req, res, next) => {
   if (price) fields.price = price;
   if (quantity !== undefined) fields.quantity = quantity;
   try {
+    // add new query for cat product
     const updatedProduct = await updateProduct(productId, fields);
     res.send(updatedProduct);
   } catch (error) {
