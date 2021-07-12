@@ -8,8 +8,7 @@ const AdminProductPage = ({ products, setProducts }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [productToEdit, setProductToEdit] = useState({});
 
-  const handleAddProduct = (product) => {
-    console.log("ADD");
+  const handleAddProductButton = () => {
     setShowAddModal(true);
   };
 
@@ -22,12 +21,12 @@ const AdminProductPage = ({ products, setProducts }) => {
           setProducts={setProducts}
         />
       ) : showAddModal ? (
-        <AddProduct setShowAddModal={setShowAddModal} />
+        <AddProduct setShowAddModal={setShowAddModal} setProducts={setProducts}/>
       ) : (
         <>
           <Container className="admin__product__header">
             <h1>Admin Product Page</h1>
-            <Button variant="success" onClick={handleAddProduct}>
+            <Button variant="success" onClick={handleAddProductButton}>
               Add Product
             </Button>
           </Container>

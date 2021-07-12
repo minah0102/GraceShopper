@@ -52,9 +52,10 @@ productsRouter.get("/category/:categoryName", async (req, res, next) => {
 });
 
 productsRouter.post("/", requireAdmin, async (req, res, next) => {
+  console.log("req body", req.body);
   try {
     const { name, description, price, quantity, categoryId } = req.body;
-    let imageName = req.body.imageName ? imageName : "dog.jpeg";
+    let imageName = req.body.imageName ? imageName : "cat.jpeg";
     const product = await createProduct({
       name,
       description,

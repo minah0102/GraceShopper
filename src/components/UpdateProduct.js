@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchCategories, fetchProductById } from "../api/products";
+import { fetchCategories } from "../api/products";
 import { Form, Button, Container } from "react-bootstrap";
 import { updateProduct } from "../api/products";
 import "../css/UpdateProduct.css";

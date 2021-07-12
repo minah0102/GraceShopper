@@ -1,12 +1,20 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from "react";
+import { fetchCategories } from "../api/products";
 import { Form, Button, Container } from "react-bootstrap";
+import { addProduct } from "../api/products";
 
-const AddProduct = ({setShowAddModal}) => {
+const AddProduct = ({ setShowAddModal, setProducts }) => {
   const [nameInput, setNameInput] = useState("");
   const [descInput, setDescInput] = useState("");
   const [priceInput, setPriceInput] = useState("");
   const [categoryInput, setCategoryInput] = useState("Select Category");
   const [quantityInput, setQuantityInput] = useState("");
+  const [categories, setCategories] = useState([]);
+
+  useEffect(async () => {
+    const categories = await fetchCategories();
+    setCategories(categories);
+  }, []);
 
   const nameHandler = (event) => {
     setNameInput(event.target.value);
@@ -32,8 +40,20 @@ const AddProduct = ({setShowAddModal}) => {
     setShowAddModal(false);
   };
 
-  const handleAddProduct = (product) => {
-    console.log("ADD");
+  const handleAddProduct = async (event) => {
+    event.preventDefault();
+    setShowAddModal(false);
+    const newProduct = await addProduct({
+      name: nameInput,
+      description: descInput,
+      price: priceInput,
+      quantity: quantityInput,
+      categoryId: categoryInput,
+    });
+    setProducts(products => {
+      const newProducts = [...products, newProduct];
+      return newProducts;
+    });
   };
 
   return (
@@ -70,11 +90,11 @@ const AddProduct = ({setShowAddModal}) => {
             value={categoryInput}
             onChange={categoryHandler}
           >
-            {/* {categories.map((category) => {
+            {categories.map((category) => {
               let { id, name } = category;
               name = name.charAt(0).toUpperCase() + name.slice(1);
-              return <option key={id}>{name}</option>;
-            })} */}
+              return <option key={id} value={id}>{name}</option>;
+            })}
           </Form.Control>
         </Form.Group>
         <Button variant="primary" type="submit" onClick={handleAddProduct}>

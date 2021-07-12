@@ -39,6 +39,24 @@ export const fetchCategoryProducts = async (categoryName) => {
   }
 };
 
+export const addProduct = async (product) => {
+  const { token } = getTokenConfig();
+  try {
+    const {data: newProduct} = await axios.post(
+      `/api/products`,
+      product,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
+    return newProduct;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export const updateProduct = async (product) => {
   const { id } = product;
   const { token } = getTokenConfig();
