@@ -6,7 +6,7 @@ import { createReview } from "../api/reviews";
 const ReviewForm = ({ productReviews, setProductReviews }) => {
   const [rating, setRating] = useState(null);
   const [comment, setComment] = useState("");
-  console.log(comment);
+  // console.log(comment);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -45,13 +45,16 @@ const UpdateProduct = ({ product, setShowEditModal, setProducts }) => {
   const handleUpdateProduct = async (event) => {
     event.preventDefault();
     setShowEditModal(false);
+    console.log({categoryInput});
     const updatedProduct = await updateProduct({
       id,
       name: nameInput,
       description: descInput,
       price: priceInput,
       quantity: quantityInput,
+      category: categoryInput
     });
+    console.log("updated", updatedProduct);
     setProducts((products) => {
       return products.map((_product) => {
         if (_product.id !== id) return _product;
@@ -98,7 +101,7 @@ const UpdateProduct = ({ product, setShowEditModal, setProducts }) => {
             {categories.map((category) => {
               let { id, name } = category;
               name = name.charAt(0).toUpperCase() + name.slice(1);
-              return <option key={id}>{name}</option>;
+              return <option key={id} >{name}</option>;
             })}
           </Form.Control>
         </Form.Group>

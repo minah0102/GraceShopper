@@ -27,7 +27,7 @@ const Products = () => {
           </Row>
         </Container>
       </Route>
-      <Route path="/admin/products">
+      <Route path="/admin">
       {user && user.isAdmin === false ? <Redirect to="/" /> : <AdminProductPage products={products} setProducts={setProducts}/>}
       </Route>
     </Switch>

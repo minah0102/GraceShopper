@@ -25,7 +25,7 @@ const ProductNav = () => {
       <Navbar bg="light" expand="lg">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
+          <Nav>
             <Nav.Link href="/products">All Products</Nav.Link>
             {categories.map((category) => {
               let { id, name } = category;
