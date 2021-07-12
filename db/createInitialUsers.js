@@ -1,17 +1,17 @@
 const {
-  createUser
+  createUser, createAdmin
 } = require("./users");
 
 async function createInitialUsers() {
   console.log('Starting to create users...');
   try {
+    await createAdmin({
+      username: 'admin',
+      email: 'admin@gmail.com',
+      password: 'adminpassword'
+    });
 
     const usersToCreate = [
-      {
-        username: 'admin',
-        email: 'admin@gmail.com',
-        password: 'adminpassword'
-      },
       {
         username: 'albert',
         email: 'albert123@gmail.com',

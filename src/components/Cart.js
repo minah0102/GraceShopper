@@ -13,8 +13,15 @@ import { useHistory } from "react-router-dom";
 import { UserContext } from "..";
 
 const Cart = () => {
-  const { myOrder, setMyOrder, currentUsername, total, setTotal } =
-    useContext(UserContext);
+  const {
+    myOrder,
+    setMyOrder,
+    currentUsername,
+    total,
+    setTotal,
+    orderHistory,
+    setOrderHistory,
+  } = useContext(UserContext);
   const history = useHistory();
   const [quantity, setQuantity] = useState();
 
@@ -62,9 +69,12 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
-    const inactive = await patchInactive(myOrder.id);
-    console.log("show me inactive!!!", inactive);
-    setMyOrder(inactive); //set in checkout
+    const newOrder = await patchInactive(myOrder.id);
+
+    setOrderHistory([...orderHistory, myOrder]);
+    setMyOrder(newOrder);
+    setTotal(0);
+
     history.push("/checkout");
   };
 
@@ -134,7 +144,7 @@ const Cart = () => {
           </Col>
           <Col md={4}>
             <Card>
-              <Card.Body>
+              <Card.Body style={{ width: "100%" }}>
                 <Card.Title
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
@@ -145,7 +155,11 @@ const Cart = () => {
                   variant="primary"
                   block
                   onClick={handleCheckout}
-                  disabled={myOrder.products.length === 0 || myOrder === null ? true : false}
+                  disabled={
+                    myOrder === null || myOrder.products.length === 0
+                      ? true
+                      : false
+                  }
                 >
                   Checkout
                 </Button>
@@ -160,7 +174,7 @@ const Cart = () => {
           </Col>
           <Col md={4}>
             <Card>
-              <Card.Body>
+              <Card.Body style={{ width: "100%" }}>
                 <Card.Title
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >

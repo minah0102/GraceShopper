@@ -25,6 +25,24 @@ async function createUser({ username, email, password }) {
   }
 }
 
+async function createAdmin({ username, email, password }) {
+  const hashedPassword = await hashPassword(password);
+
+  try {
+    const { rows: [user] } = await client.query(/*sql*/`
+        INSERT INTO users(username, email, password, "isAdmin")
+        VALUES ($1, $2, $3, $4)
+        RETURNING *;
+      `, [username, email, hashedPassword, true]);
+
+    delete user.password;
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function getUser({ username, password }) {
   try {
     const user = await getUserByUsername(username);
@@ -112,6 +130,7 @@ async function deleteUser(id) {
 module.exports = {
   client,
   createUser,
+  createAdmin,
   getUserByUsername,
   getUser,
   getUserById,

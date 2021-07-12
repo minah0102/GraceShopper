@@ -19,12 +19,12 @@ export const getUsername = () => {
   } else {
     return null;
   }
-}
+};
 
 export const setUsername = (username) => {
   localStorage.setItem("username", username);
   return username;
-}
+};
 
 export function getTokenConfig() {
   const token = getToken();

@@ -9,7 +9,7 @@ function requireUser(req, res, next) {
 }
 
 function requireAdmin(req, res, next) {
-  if (req.user && req.user.isAdmin === true) {
+  if (!req.user || req.user.isAdmin !== true) {
     next({
       error: "Not Admin Error",
       message: "You are not allowed to perform this action.",

@@ -11,6 +11,8 @@ const {
   getProductsByCategory,
 } = require("../db/products");
 const { deleteCategoryProduct } = require("../db/categories");
+const { deleteProductReviews } = require("../db/reviews");
+
 
 productsRouter.get("/", async (req, res, next) => {
   try {
@@ -75,12 +77,11 @@ productsRouter.patch('/:productId', async (req, res, next) => {
   if (name) fields.name = name;
   if (description) fields.description = description;
   if (price) fields.price = price;
-  if (quantity) fields.quantity = quantity;
+  if (quantity !== undefined) fields.quantity = quantity;
   try {
     const updatedProduct = await updateProduct(productId, fields);
     res.send(updatedProduct);
   } catch (error) {
-    console.log("PATCH /:productId", error);
     next(error);
   }
 })
@@ -88,7 +89,8 @@ productsRouter.patch('/:productId', async (req, res, next) => {
 productsRouter.delete("/:productId", requireAdmin, async (req, res, next) => {
   try {
     const { productId } = req.params;
-    const categoryProduct = await deleteCategoryProduct(productId);
+    await deleteCategoryProduct(productId);
+    await deleteProductReviews(productId);
     const product = await deleteProduct(productId);
     if (!product)
       res.send({
