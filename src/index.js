@@ -36,6 +36,12 @@ const App = () => {
   const [currentUsername, setCurrentUsername] = useState("");
   const [total, setTotal] = useState(0);
   const [orderHistory, setOrderHistory] = useState([]);
+  const [localCart, setLocalCart] = useState([]);
+
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    if (cart) setLocalCart(cart);
+  }, []);
 
   useEffect(() => {
     const { config } = getTokenConfig();
@@ -90,6 +96,8 @@ const App = () => {
             setTotal,
             orderHistory,
             setOrderHistory,
+            localCart,
+            setLocalCart,
           }}
         >
           <Header />

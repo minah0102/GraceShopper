@@ -23,10 +23,10 @@ const Cart = () => {
     setOrderHistory,
   } = useContext(UserContext);
   const history = useHistory();
-  const [quantity, setQuantity] = useState();
+  const [updateQuantity, setUpdateQuantity] = useState();
 
   const handleUpdateQuantity = async (lineItemId) => {
-    const updated = await patchQuantity(lineItemId, quantity);
+    const updated = await patchQuantity(lineItemId, updateQuantity);
 
     const idx = myOrder.products.findIndex((p) => p.lineItemId === lineItemId);
 
@@ -92,7 +92,6 @@ const Cart = () => {
                     price,
                     quantity,
                     name,
-                    description,
                     imageName,
                     orderId,
                     lineItemId,
@@ -126,7 +125,9 @@ const Cart = () => {
                               as="select"
                               defaultValue={quantity}
                               style={{ marginBottom: "10px" }}
-                              onChange={(e) => setQuantity(e.target.value)}
+                              onChange={(e) =>
+                                setUpdateQuantity(e.target.value)
+                              }
                               onClick={() => handleUpdateQuantity(lineItemId)}
                             >
                               {[...Array(50)].map((_, idx) => (

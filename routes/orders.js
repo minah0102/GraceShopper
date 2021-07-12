@@ -79,17 +79,17 @@ ordersRouter.patch(
   }
 );
 
-// ordersRouter.post("/", requireUser, async (req, res, next) => {
-//   try {
-//     const { id: userId } = req.user;
-//     const cart = await createOrder(userId);
+ordersRouter.post("/", requireUser, async (req, res, next) => {
+  try {
+    const { id: userId } = req.user;
+    const cart = await createOrder(userId);
 
-//     res.send(cart);
-//   } catch (error) {
-//     console.log("Error in POST orders");
-//     next(error);
-//   }
-// });
+    res.send(cart);
+  } catch (error) {
+    console.log("Error in POST orders");
+    next(error);
+  }
+});
 
 ordersRouter.post("/:orderId", requireUser, async (req, res, next) => {
   try {
