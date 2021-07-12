@@ -5,6 +5,7 @@ export { default as CategoryProducts } from "./CategoryProducts";
 export { default as ProductCard } from "./ProductCard";
 export { default as Product } from "./Product";
 export { default as UpdateProduct } from "./UpdateProduct";
+export { default as AddProduct } from "./AddProduct";
 export { default as AdminProductPage } from "./AdminProductPage";
 export { default as AdminProductCard } from "./AdminProductCard";
 export { default as ReviewForm } from "./ReviewForm";

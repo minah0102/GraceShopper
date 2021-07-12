@@ -13,7 +13,6 @@ const CategoryProducts = () => {
     setProducts(allProducts);
   }, [name]);
   
-  console.log("category products", products);
   return (
     <Container>
       <Row>

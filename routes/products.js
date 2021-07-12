@@ -52,9 +52,10 @@ productsRouter.get("/category/:categoryName", async (req, res, next) => {
 });
 
 productsRouter.post("/", requireAdmin, async (req, res, next) => {
+  console.log("req body", req.body);
   try {
     const { name, description, price, quantity, categoryId } = req.body;
-    let imageName = req.body.imageName ? imageName : "dog.jpeg";
+    let imageName = req.body.imageName ? imageName : "cat.jpeg";
     const product = await createProduct({
       name,
       description,
@@ -70,7 +71,7 @@ productsRouter.post("/", requireAdmin, async (req, res, next) => {
   }
 });
 
-productsRouter.patch('/:productId', async (req, res, next) => {
+productsRouter.patch('/:productId', requireAdmin, async (req, res, next) => {
   const {productId} = req.params;
   const {name, description, price, quantity} = req.body;
   const fields = {};
