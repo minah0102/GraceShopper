@@ -14,7 +14,7 @@ import { addProductToCart } from "../api";
 import "../css/Product.css";
 
 import { useParams, useHistory } from "react-router-dom";
-import { Reviews } from "./index.js";
+import { Reviews, ReviewForm } from "./index.js";
 import { UserContext } from "..";
 
 const Product = () => {
