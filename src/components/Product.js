@@ -13,7 +13,7 @@ import { fetchProductById } from "../api/products";
 import "../css/ProductCard.css";
 
 import { useParams } from "react-router-dom";
-import { Reviews } from "./index.js";
+import { Reviews, ReviewForm } from "./index.js";
 
 const Product = () => {
   const [currentProduct, setCurrentProduct] = useState({});
@@ -22,23 +22,27 @@ const Product = () => {
 
   useEffect(async () => {
     const product = await fetchProductById(id);
+    console.log("product from fetch", product);
     setCurrentProduct(product);
+    console.log("HERE", currentProduct);
   }, []);
 
   const { name, description, imageName, price, reviews, quantity } =
     currentProduct;
-
-  const productReviews = currentProduct.reviews;
-  console.log(productReviews);
-  const ratings = productReviews.map((review) => {
-    const { rating } = review;
-    return rating;
-  });
-  console.log(ratings);
-  const r = (acc, value) => acc + value;
-  const averageRating = ratings.reduce(r) / ratings.length;
-  console.log(averageRating);
-
+  let averageRating;
+  if ("reviews" in currentProduct) {
+    const productReviews = currentProduct.reviews;
+    console.log(currentProduct);
+    const ratings = productReviews.map((review) => {
+      const { rating } = review;
+      return rating;
+    });
+    console.log(ratings);
+    const r = (acc, value) => acc + value;
+    const averageRating = ratings.reduce(r) / ratings.length;
+    console.log(averageRating);
+  }
+  console.log("real", averageRating);
   let selectQuantity = [];
   for (let i = 1; selectQuantity.length < quantity; i++) {
     selectQuantity.push(i);
@@ -74,11 +78,15 @@ const Product = () => {
           </Row>
         </Col>
       </Row>
+      <ReviewForm/>
       <Row>
         <Accordion>
           <Card>
             <Card.Header>
-              <h5>Average rating: {averageRating}</h5>
+              <div>{averageRating}</div>
+              {averageRating !== undefined && (
+                <h5>Average rating: {averageRating}</h5>
+              )}
               <Accordion.Toggle as={Button} variant="link" eventKey="0">
                 Click to see reviews
               </Accordion.Toggle>

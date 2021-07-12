@@ -1,12 +1,12 @@
 import axios from "axios";
 
-export async function createReview(comment, rating, productId, userId) {
+export async function createReview(comment, rating, productId) {
   try {
     const { data } = await axios.post(`api/reviews/${productId}`, {
       comment: comment,
       rating: rating,
       productId: productId,
-      userId: userId,
+      // userId: userId,
     });
     console.log("leaveReview", data);
     return data;

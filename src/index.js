@@ -8,7 +8,6 @@ import {
   Home,
   Register,
   Login,
-  ReviewForm,
   Cart,
   Donate,
   Product,
@@ -128,7 +127,6 @@ const App = () => {
                 {currentUsername ? <LoggedInPage /> : <Login />}
               </Route>
             </Switch>
-            <ReviewForm />
           </Container>
         </UserContext.Provider>
       </div>
