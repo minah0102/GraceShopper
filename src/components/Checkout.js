@@ -9,6 +9,10 @@ const Checkout = () => {
     ? orderHistory[orderHistory.length - 1].products
     : localCart;
 
+  if (localStorage.getItem("cart")) {
+    localStorage.removeItem("cart");
+  }
+
   const total = renderProducts.reduce((acc, p) => {
     return acc + p.quantity * p.price;
   }, 0);
