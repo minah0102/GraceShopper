@@ -10,7 +10,7 @@ import {
   Card,
 } from "react-bootstrap";
 import { fetchProductById } from "../api/products";
-import { addProductToCart } from "../api";
+import { addProductToCart, patchQuantity } from "../api";
 import "../css/Product.css";
 
 import { useParams, useHistory } from "react-router-dom";
@@ -32,7 +32,7 @@ const Product = () => {
 
   const history = useHistory();
 
-  let { id } = useParams();
+  let id = +useParams().id;
 
   useEffect(async () => {
     const product = await fetchProductById(id);
@@ -60,18 +60,28 @@ const Product = () => {
 
   const handleAddToCart = async () => {
     if (currentUsername) {
-      const added = await addProductToCart(myOrder.id, id, price, addQuantity);
+      console.log("show me product from useParams id", id);
+      console.log("show me myOrder", myOrder);
+      const sameProduct = myOrder.products.find((p) => p.productId === id);
+      console.log("show me sameProduct", sameProduct);
 
-      const sameProduct = myOrder.products.filter(
-        (p) => Number.parseInt(p.productId) === added.productId
-      );
-
-      if (sameProduct.length !== 0) {
-        const idx = myOrder.products.findIndex(
-          (p) => Number.parseInt(p.productId) === added.productId
+      if (sameProduct) {
+        const idx = myOrder.products.findIndex((p) => p.productId === id);
+        const updated = await patchQuantity(
+          sameProduct.lineItemId,
+          sameProduct.quantity + addQuantity
         );
-        myOrder.products[idx].quantity = added.quantity;
+
+        console.log("show me updated", updated);
+        myOrder.products[idx].quantity += addQuantity;
       } else {
+        const added = await addProductToCart(
+          myOrder.id,
+          id,
+          price,
+          addQuantity
+        );
+
         const addedProduct = {
           lineItemId: added.id,
           orderId: added.orderId,
@@ -79,31 +89,39 @@ const Product = () => {
           productId: id,
           quantity: added.quantity,
           name,
-          description,
           imageName,
         };
         myOrder.products.push(addedProduct);
       }
 
       setMyOrder(myOrder);
-      
     } else {
-      const lineItem = {
-        productId: id,
-        name,
-        price,
-        quantity: addQuantity,
-        imageName
-      };
+      //no currentUsername - local cart
+      const existing = localCart.find((lc) => lc.productId === id);
 
-      const newLocalCart = localCart;
-      newLocalCart.push(lineItem);
-      setLocalCart(newLocalCart);
+      if (existing) {
+        const idx = localCart.findIndex(
+          (lc) => existing.productId === lc.productId
+        );
+
+        localCart[idx].quantity += addQuantity;
+      } else {
+        //no exsiting product
+        const lineItem = {
+          productId: id,
+          name,
+          price,
+          quantity: addQuantity,
+          imageName,
+        };
+
+        localCart.push(lineItem);
+      }
+      setLocalCart(localCart);
 
       localStorage.setItem("cart", JSON.stringify(localCart));
     }
-
-    const newTotal = total + (addQuantity * price);
+    const newTotal = total + addQuantity * price;
     setTotal(newTotal);
 
     history.push("/cart");
