@@ -93,12 +93,14 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
-    const newOrder = await patchInactive(myOrder.id);
+    if (currentUsername) {
+      const newOrder = await patchInactive(myOrder.id);
 
-    setOrderHistory([...orderHistory, myOrder]);
-    setMyOrder(newOrder);
+      setOrderHistory([...orderHistory, myOrder]);
+      setMyOrder(newOrder);
+    }
     setTotal(0);
-
+    
     history.push("/checkout");
   };
 
