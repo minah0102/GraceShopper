@@ -40,7 +40,16 @@ const App = () => {
 
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart"));
-    if (cart) setLocalCart(cart);
+    if (cart) {
+      setLocalCart(cart);
+      setTotal(() => {
+        return cart.length !== 0
+          ? cart.reduce((acc, c) => {
+              return acc + c.quantity * c.price;
+            }, 0)
+          : 0;
+      });
+    }
   }, []);
 
   useEffect(() => {
