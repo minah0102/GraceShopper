@@ -28,15 +28,15 @@ const Cart = () => {
 
   const renderProducts = currentUsername ? myOrder.products : localCart;
 
-  const handleUpdateQuantity = async (lineItemId, updateQuantity) => {
+  const handleUpdateQuantity = async (updateId, updateQuantity) => {
+    let newTotal = 0;
     if (currentUsername) {
-      const updated = await patchQuantity(lineItemId, updateQuantity);
+      const updated = await patchQuantity(updateId, updateQuantity); //lineItemId
 
-      const idx = myOrder.products.findIndex(
-        (p) => p.lineItemId === lineItemId
-      );
+      const idx = myOrder.products.findIndex((p) => p.lineItemId === updateId);
 
       const newProducts = [...myOrder.products];
+      newTotal = total - newProducts[idx].quantity * newProducts[idx].price;
 
       const updatedProduct = {
         lineItemId: updated.id,
@@ -51,9 +51,23 @@ const Cart = () => {
       newProducts[idx] = updatedProduct;
       myOrder.products = newProducts;
       setMyOrder(myOrder);
-      handleTotal();
-    } else {
+
+      newTotal = newTotal + newProducts[idx].quantity * newProducts[idx].price;
+    } else { //no currentUsername - localStorage cart
+      const newLocalCart = localCart;
+      const updateProduct = newLocalCart.find(
+        (lc) => lc.productId === updateId
+      ); //productId
+      newTotal = total - updateProduct.quantity * updateProduct.price;
+
+      updateProduct.quantity = updateQuantity;
+      newTotal = newTotal + updateProduct.quantity * updateProduct.price;
+
+      setLocalCart(newLocalCart);
+      localStorage.setItem("cart", JSON.stringify(newLocalCart));
     }
+
+    setTotal(newTotal);
   };
 
   const handleDelete = async (deletedId) => {
@@ -76,13 +90,6 @@ const Cart = () => {
     }
     const newTotal = total - deleted.quantity * deleted.price;
     setTotal(newTotal);
-  };
-
-  const handleTotal = () => {
-    const totalPrice = myOrder.products.reduce((acc, p) => {
-      return acc + p.quantity * p.price;
-    }, 0);
-    setTotal(totalPrice);
   };
 
   const handleCheckout = async () => {
@@ -138,10 +145,15 @@ const Cart = () => {
                             defaultValue={p.quantity}
                             style={{ marginBottom: "10px" }}
                             onChange={(e) => {
-                              handleUpdateQuantity(
-                                p.lineItemId,
-                                e.target.value
-                              );
+                              p.lineItemId
+                                ? handleUpdateQuantity(
+                                    p.lineItemId,
+                                    e.target.value
+                                  )
+                                : handleUpdateQuantity(
+                                    p.productId,
+                                    e.target.value
+                                  );
                             }}
                           >
                             {[...Array(50)].map((_, idx) => (
@@ -162,7 +174,7 @@ const Cart = () => {
                 <Card.Title
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  Total: 
+                  Total:
                   <span style={{ color: "red" }}>${total.toFixed(2)}</span>
                 </Card.Title>
                 <Button
