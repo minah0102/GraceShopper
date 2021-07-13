@@ -9,10 +9,23 @@ const Header = () => {
     useContext(UserContext);
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem("username");
+    localStorage.removeItem("token");
     setUser(null);
     setCurrentUsername("");
-    setTotal(0);
+
+    const cart = JSON.parse(localStorage.getItem("cart"));
+
+    !cart
+      ? setTotal(0)
+      : setTotal(() => {
+          return cart.length !== 0
+            ? cart.reduce((acc, c) => {
+                return acc + c.quantity * c.price;
+              }, 0)
+            : 0;
+        });
+
     history.push("/");
   };
 
