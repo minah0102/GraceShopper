@@ -21,44 +21,61 @@ const Cart = () => {
     setTotal,
     orderHistory,
     setOrderHistory,
+    localCart,
+    setLocalCart,
   } = useContext(UserContext);
   const history = useHistory();
-  const [updateQuantity, setUpdateQuantity] = useState();
 
-  const handleUpdateQuantity = async (lineItemId) => {
-    const updated = await patchQuantity(lineItemId, updateQuantity);
+  const renderProducts = currentUsername ? myOrder.products : localCart;
 
-    const idx = myOrder.products.findIndex((p) => p.lineItemId === lineItemId);
+  const handleUpdateQuantity = async (lineItemId, updateQuantity) => {
+    if (currentUsername) {
+      const updated = await patchQuantity(lineItemId, updateQuantity);
 
-    const newProducts = [...myOrder.products];
+      const idx = myOrder.products.findIndex(
+        (p) => p.lineItemId === lineItemId
+      );
 
-    const updatedProduct = {
-      lineItemId: updated.id,
-      orderId: updated.orderId,
-      price: updated.price,
-      productId: updated.productId,
-      quantity: updated.quantity,
-      name: myOrder.products[idx].name,
-      description: myOrder.products[idx].description,
-      imageName: myOrder.products[idx].imageName,
-    };
+      const newProducts = [...myOrder.products];
 
-    newProducts[idx] = updatedProduct;
-    myOrder.products = newProducts;
-    setMyOrder(myOrder);
-    handleTotal();
+      const updatedProduct = {
+        lineItemId: updated.id,
+        orderId: updated.orderId,
+        price: updated.price,
+        productId: updated.productId,
+        quantity: updated.quantity,
+        name: myOrder.products[idx].name,
+        imageName: myOrder.products[idx].imageName,
+      };
+
+      newProducts[idx] = updatedProduct;
+      myOrder.products = newProducts;
+      setMyOrder(myOrder);
+      handleTotal();
+    } else {
+    }
   };
 
-  const handleDelete = async (lineItemId) => {
-    const deleted = await deleteProductFromCart(lineItemId);
+  const handleDelete = async (deletedId) => {
+    let deleted = {};
+    if (currentUsername) {
+      deleted = await deleteProductFromCart(deletedId); //lineItemId
 
-    const newProducts = myOrder.products.filter(
-      (p) => p.lineItemId !== deleted.id
-    );
+      const newProducts = myOrder.products.filter(
+        (p) => p.lineItemId !== deleted.id
+      );
 
-    myOrder.products = newProducts;
-    setMyOrder(myOrder);
-    handleTotal();
+      myOrder.products = newProducts;
+      setMyOrder(myOrder);
+    } else {
+      deleted = localCart.find((lc) => deletedId === lc.productId);
+      const newLocalCart = localCart.filter((lc) => deletedId !== lc.productId);
+
+      setLocalCart(newLocalCart);
+      localStorage.setItem("cart", JSON.stringify(newLocalCart));
+    }
+    const newTotal = total - deleted.quantity * deleted.price;
+    setTotal(newTotal);
   };
 
   const handleTotal = () => {
@@ -81,65 +98,61 @@ const Cart = () => {
   return (
     <>
       <h2>Your shopping cart</h2>
-      {currentUsername ? (
+      {
         <Row>
           <Col md={8}>
-            {myOrder && (
+            {renderProducts && (
               <ListGroup>
-                {myOrder.products.map(
-                  ({
-                    productId,
-                    price,
-                    quantity,
-                    name,
-                    imageName,
-                    orderId,
-                    lineItemId,
-                  }) => {
-                    return (
-                      <ListGroup.Item key={productId}>
-                        <Row
+                {renderProducts.map((p) => {
+                  return (
+                    <ListGroup.Item key={p.productId}>
+                      <Row
+                        style={{
+                          alignItems: "center",
+                        }}
+                      >
+                        <CloseButton
+                          onClick={() =>
+                            p.lineItemId
+                              ? handleDelete(p.lineItemId)
+                              : handleDelete(p.productId)
+                          }
+                        />
+                        <Col xs={3}>
+                          <img src={`/images/${p.imageName}`} width="120px" />
+                        </Col>
+                        <Col
                           style={{
-                            alignItems: "center",
+                            display: "flex",
+                            justifyContent: "space-between",
                           }}
                         >
-                          <CloseButton
-                            onClick={() => handleDelete(lineItemId)}
-                          />
-                          <Col xs={3}>
-                            <img src={`/images/${imageName}`} width="120px" />
-                          </Col>
-                          <Col
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
+                          {p.name}
+                          <span style={{ color: "red" }}>
+                            ${Number.parseInt(p.price).toFixed(2)}
+                          </span>
+                        </Col>
+                        <Col xs={3}>
+                          <Form.Control
+                            as="select"
+                            defaultValue={p.quantity}
+                            style={{ marginBottom: "10px" }}
+                            onChange={(e) => {
+                              handleUpdateQuantity(
+                                p.lineItemId,
+                                e.target.value
+                              );
                             }}
                           >
-                            {name}
-                            <span style={{ color: "red" }}>
-                              ${Number.parseInt(price).toFixed(2)}
-                            </span>
-                          </Col>
-                          <Col xs={3}>
-                            <Form.Control
-                              as="select"
-                              defaultValue={quantity}
-                              style={{ marginBottom: "10px" }}
-                              onChange={(e) =>
-                                setUpdateQuantity(e.target.value)
-                              }
-                              onClick={() => handleUpdateQuantity(lineItemId)}
-                            >
-                              {[...Array(50)].map((_, idx) => (
-                                <option key={idx}>{idx + 1}</option>
-                              ))}
-                            </Form.Control>
-                          </Col>
-                        </Row>
-                      </ListGroup.Item>
-                    );
-                  }
-                )}
+                            {[...Array(50)].map((_, idx) => (
+                              <option key={idx}>{idx + 1}</option>
+                            ))}
+                          </Form.Control>
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  );
+                })}
               </ListGroup>
             )}
           </Col>
@@ -149,18 +162,14 @@ const Cart = () => {
                 <Card.Title
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  Total:
+                  Total: 
                   <span style={{ color: "red" }}>${total.toFixed(2)}</span>
                 </Card.Title>
                 <Button
                   variant="primary"
                   block
                   onClick={handleCheckout}
-                  disabled={
-                    myOrder === null || myOrder.products.length === 0
-                      ? true
-                      : false
-                  }
+                  disabled={renderProducts.length === 0 ? true : false}
                 >
                   Checkout
                 </Button>
@@ -168,28 +177,7 @@ const Cart = () => {
             </Card>
           </Col>
         </Row>
-      ) : (
-        <Row>
-          <Col md={8}>
-            <p>Login required!</p>
-          </Col>
-          <Col md={4}>
-            <Card>
-              <Card.Body style={{ width: "100%" }}>
-                <Card.Title
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  Total:
-                  <span style={{ color: "red" }}>${total.toFixed(2)}</span>
-                </Card.Title>
-                <Button variant="primary" disabled={true} block>
-                  Checkout
-                </Button>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      )}
+      }
     </>
   );
 };
