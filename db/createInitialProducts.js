@@ -8,228 +8,237 @@ const createInitialProducts = async () => {
     console.log("Starting to create products");
     const productsToCreate = [
       {
-        name: "Red Collar",
+        name: "Cat Paw Tower",
         description:
-          "Lorem ipsum dolor sit amet, consecetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        price: 15,
+          "Covered in cat paws so your little stinker can scritch-scratch away while also practicing their high-five skills!",
+        price: 49.99,
         quantity: 20,
-        imageName: "cat.jpeg",
-        categoryId: 4,
+        imageName: "cat-paw-tower.jpg",
+        categoryId: 2,
       },
       {
-        name: "Yellow Collar",
+        name: "Pink Skull Collar",
         description:
-          "Lorem ipsum dolor sit amet incididunt ut labore et doloe magna aliqua.",
-        price: 15,
+          "Let everyone know that you have the baddest cat on the block. This collar makes a statement. Treat your kitty with this designer fashion piece today. You won't find it for this price anywhere else!",
+        price: 14.99,
         quantity: 24,
-        imageName: "cat.jpeg",
+        imageName: "pink-skulls.jpg",
         categoryId: 4,
       },
       {
-        name: "Orange Collar",
+        name: "Swimmy Fish Toy",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing labore edolore magna elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        price: 15,
+          "Looks like we're having seafood for dinner. Your cat will love this!",
+        price: 1.99,
+        quantity: 200,
+        imageName: "fish.jpg",
+        categoryId: 2,
+      },
+      {
+        name: "Rainbow Ball Set",
+        description:
+          "Let your cat play like the queen he is. Scratch-ay away!",
+        price: 7.49,
         quantity: 30,
-        imageName: "cat.jpeg",
-        categoryId: 4,
+        imageName: "rainbow-ball.jpg",
+        categoryId: 2,
       },
       {
-        name: "Green Collar",
+        name: "Springy Boing Toy!",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing labore et olore magna elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        price: 10,
-        quantity: 30,
-        imageName: "cat.jpeg",
-        categoryId: 4,
-      },
-      {
-        name: "Blue Collar",
-        description:
-          "Lorem ipsum dol eiusmod tempor incididunt ut labore et dolore maa aliqua.",
-        price: 10,
+          "Designed and crafted by world-class engineers, these springs got some serious BOING.",
+        price: 8.99,
         quantity: 36,
-        imageName: "cat.jpeg",
+        imageName: "spring.jpg",
+        categoryId: 2,
+      },
+      {
+        name: "Fruit Toy Set",
+        description:
+          "Get your cat one step closer to completing their food pyramid.",
+        quantity: 4.99,
+        imageName: "fruit.jpg",
         categoryId: 4,
       },
       {
-        name: "Purple Collar",
+        name: "Crunchy Treats!",
         description:
-          "Lorem ipsum dolor sit amet, consctetur.",
-        quantity: 30,
-        imageName: "cat.jpeg",
-        categoryId: 4,
-      },
-      {
-        name: "Kitten Toy #1",
-        description:
-          "Lorem ipsum dolor sit amet, constetur adipiscing labore et dolore magna elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "Organic. Handcrafted in small batches. Made with Love. Give your cat the gift of tasty treats that are also great for their health.",
         price: 5,
-        quantity: 42,
-        imageName: "cat.jpeg",
-        categoryId: 2,
-      },
-      {
-        name: "Kitten Toy #2",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiing labore et dolore magna elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        price: 5,
-        quantity: 12,
-        imageName: "cat.jpeg",
-        categoryId: 2,
-      },
-      {
-        name: "Kitten Toy #3",
-        description:
-          "Lorem ipsum dolor sit amet, consect, sed do eiuod tempor incididunt ut labore et dolore magna aliqua.",
-        price: 5,
-        quantity: 20,
-        imageName: "cat.jpeg",
-        categoryId: 2,
-      },
-      {
-        name: "Kitten Toy #4",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adiscing labore et dolore magna elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        price: 5,
-        quantity: 42,
-        imageName: "cat.jpeg",
-        categoryId: 2,
-      },
-      {
-        name: "Kitten Toy #5",
-        description:
-          "Lorem  do eiusmod tempor incididunt ut laboe et dolore magna aliqua.",
-        price: 5,
-        quantity: 10,
-        imageName: "cat.jpeg",
-        categoryId: 2,
-      },
-      {
-        name: "Kitten Food",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adiscing labore et dolore magna elit, sadipiscing laboreadipiscing labore et dolore magna elit et dolore magna elited do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        price: 10,
-        quantity: 42,
-        imageName: "cat.jpeg",
+        quantity: 50,
+        imageName: "treat-1.jpg",
         categoryId: 1,
       },
       {
-        name: "Organic Kitten Food",
+        name: "Mouse Toy Set",
+        description:
+          "Barn cat too good at its job and gettin' a little bored? Try these fluffy mice in 4 colors.",
+        price: 5.99,
+        quantity: 300,
+        imageName: "mouse.jpg",
+        categoryId: 2,
+      },
+      {
+        name: "Cactus Tower",
+        description:
+          "Take your cat on a trip to the Wild West!",
+        price: 84.99,
+        quantity: 20,
+        imageName: "cactus-tower.jpg",
+        categoryId: 2,
+      },
+      {
+        name: "Chicken Feast",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adiscing labore et dolore magna elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        price: .49,
+        quantity: 42,
+        imageName: "wet-food-2.jpg",
+        categoryId: 1,
+      },
+      {
+        name: "Chicken Feast in Gravy",
+        description:
+          "Lorem  do eiusmod tempor incididunt ut laboe et dolore magna aliqua.",
+        price: 0.49,
+        quantity: 57,
+        imageName: "wet-food-1.jpg",
+        categoryId: 1,
+      },
+      {
+        name: "Small Tower",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adiscing labore et dolore magna elit, sadipiscing laboreadipiscing labore et dolore magna elit et dolore magna elited do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        price: 24.99,
+        quantity: 42,
+        imageName: "small-tower.jpg",
+        categoryId: 2,
+      },
+      {
+        name: "Treat Box",
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing labore et dolore mgna elit, sadipiscing laboreadipiscing labore et dolore magna elit et dolore magna elited do dolore magna elited do eiusmod tempor eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        price: 20,
+        price: 9.99,
         quantity: 42,
-        imageName: "cat.jpeg",
+        imageName: "treat-2.jpg",
         categoryId: 1,
       },
       {
         name: "Adult Cat Food",
         description:
           "boread ipiscing labore et dolore magna elit et dolore magna elited do dolore magna elid do eiusmod tempor eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        price: 15,
+        price: 14.99,
         quantity: 17,
-        imageName: "cat.jpeg",
+        imageName: "food-1.jpg",
         categoryId: 1,
       },
       {
-        name: "Organic Adult Cat Food",
+        name: "Neon Toy Set",
         description:
           "eadipiscing labore et dolore magna elit et dolore magmod tempor incididunt ut labore et dore magna aliqua.",
-        price: 30,
+        price: 4.99,
         quantity: 15,
-        imageName: "cat.jpeg",
-        categoryId: 1,
-      },
-      {
-        name: "Grain Free Kitten Food",
-        description:
-          "ed do dolore magna elited do eiusmodr incididunt ut labore et dolore agna aliqua.",
-        price: 20,
-        quantity: 42,
-        imageName: "cat.jpeg",
-        categoryId: 1,
-      },
-      {
-        name: "Cat Tower",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing labore et dolore magna it.",
-        price: 120,
-        quantity: 5,
-        imageName: "cat.jpeg",
+        imageName: "neon.jpg",
         categoryId: 2,
       },
       {
-        name: "Cat Bed",
+        name: "Unicorn Bed",
+        description:
+          "ed do dolore magna elited do eiusmodr incididunt ut labore et dolore agna aliqua.",
+        price: 20.99,
+        quantity: 42,
+        imageName: "unicorn.jpg",
+        categoryId: 4,
+      },
+      {
+        name: "Holiday Scarf",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing labore et dolore magna it.",
+        price: 27.49,
+        quantity: 5,
+        imageName: "holiday-1.jpg",
+        categoryId: 4,
+      },
+      {
+        name: "Large Cat Tower",
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing labore et dolore magna elit, sadiscing laboreadipiscing labore et dolore magna elit et dolore magna elited do dolore magna elited do eiusmod tempor eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        price: 20,
+        price: 99.99,
         quantity: 10,
-        imageName: "cat.jpeg",
-        categoryId: 4,
+        imageName: "large-tower.jpg",
+        categoryId: 2,
       },
       {
-        name: "Small Litter Box",
+        name: "Fluffy Bed",
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing laboreaipiscing labore et dolre magna elit et dolore magna elited do dolore magna elited do eiusmod tempor eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        price: 15,
+        price: 15.00,
         quantity: 54,
-        imageName: "cat.jpeg",
+        imageName: "bed.jpg",
         categoryId: 4,
       },
       {
-        name: "Large Litter Box",
+        name: "Food Multipack",
         description:
           "Lorem ipsum dolor boread iscing labore et dolore magna elt et dolore magna elited do dolore magna elited do eiusmod tempor eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        price: 25,
+        price: 25.49,
         quantity: 25,
-        imageName: "cat.jpeg",
-        categoryId: 4,
+        imageName: "wet-food-3.jpg",
+        categoryId: 1,
       },
       {
         name: "Catnip",
         description:
           "labore et dolore magna elit et dolore magna elited do dole magna elited do eiusmod tempor eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        price: 5,
+        price: 3.99,
         quantity: 42,
-        imageName: "cat.jpeg",
+        imageName: "catnip.jpg",
         categoryId: 1,
       },
       {
-        name: "Catnip Treats",
+        name: "Chicken & Cheese Feast",
         description:
           "eiusmod tempor incididunt ut labore et dolore mana aliqua.",
-        price: 5,
+        price: 3.99,
         quantity: 22,
-        imageName: "cat.jpeg",
+        imageName: "wet-food-4.jpg",
         categoryId: 1,
       },
       {
-        name: "Salmon Treats",
+        name: "Color Mouse Set",
         description:
           "eiusmod tempor incididunt ut labore et dolore magna aiqua.",
-        price: 5,
+        price: 5.99,
         quantity: 35,
-        imageName: "cat.jpeg",
-        categoryId: 1,
+        imageName: "color-mouse.jpg",
+        categoryId: 2,
       },
       {
-        name: "Chicken Treats",
+        name: "Dry Food",
         description:
           "eiusmod tempor incididunt ut labore et dolore magna ala.",
-        price: 5,
+        price: 12.99,
         quantity: 26,
-        imageName: "cat.jpeg",
+        imageName: "food-2.jpg",
         categoryId: 1,
       },
       {
-        name: "Tuna Treats",
+        name: "Yellow Collar",
         description:
           "eiusmod tempor incididunt ut labor et dolore magna aua.",
-        price: 5,
+        price: 12.99,
         quantity: 35,
-        imageName: "cat.jpeg",
-        categoryId: 1,
+        imageName: "yellow-collar.jpg",
+        categoryId: 4,
+      },
+      {
+        name: "Fluffy Stuffy Cat",
+        description:
+          "Get this BIG guy before he goes out-of-stock! Limited Edition Fluffy Stuffy Cat. The fluffiest guy in town. Can't beat this price!!",
+        price: 199.99,
+        quantity: 5,
+        imageName: "stuffed.jpg",
+        categoryId: 2,
       }
     ];
     const products = await Promise.all(productsToCreate.map(createProduct));
