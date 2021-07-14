@@ -12,8 +12,9 @@ const Products = () => {
 
   useEffect(async () => {
     const allProducts = await fetchAllProducts();
-    setProducts(allProducts);
-  }, []);
+    const availableProducts = allProducts.filter(product => product.quantity >= 0)
+    setProducts(availableProducts);
+  }, [products]);
 
   return (
     <Switch>

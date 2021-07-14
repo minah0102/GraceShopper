@@ -88,6 +88,7 @@ productsRouter.patch("/:productId", requireAdmin, async (req, res, next) => {
   if (quantity !== undefined) fields.quantity = quantity;
   try {
     const updatedProduct = await updateProduct(productId, fields);
+    if(categoryId) {
     const updatedCategory = await updateCategoryProduct({
       productId,
       categoryId,
@@ -95,7 +96,7 @@ productsRouter.patch("/:productId", requireAdmin, async (req, res, next) => {
     const { name } = await getCategoryById(updatedCategory.categoryId);
     updatedProduct.category = name;
     updatedProduct.categoryId = categoryId;
-    console.log("UPDATED PRODUCT", updatedProduct);
+  }
     res.send(updatedProduct);
   } catch (error) {
     next(error);

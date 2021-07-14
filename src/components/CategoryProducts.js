@@ -10,7 +10,8 @@ const CategoryProducts = () => {
 
   useEffect(async () => {
     const allProducts = await fetchCategoryProducts(name);
-    setProducts(allProducts);
+    const availableProducts = allProducts.filter(product => product.quantity >= 0)
+    setProducts(availableProducts);
   }, [name]);
   
   return (
