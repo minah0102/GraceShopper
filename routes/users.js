@@ -4,8 +4,7 @@ const usersRouter = express.Router();
 const {
   createUser,
   getUserByUsername,
-  getUser,
-  getUserById,
+  getAllUsers,
   deleteUser,
   updateUser,
   makeAdmin
@@ -26,6 +25,17 @@ usersRouter.get("/me", requireUser, async (req, res, next) => {
     console.error("Error on user/me")
     res.status(404);
     next(error);
+  }
+});
+
+usersRouter.get("/users", requireAdmin, async (req, res, next) => {
+  try {
+    const users = await getAllUsers();
+    res.send(users);
+  } catch (error) {
+    console.error("Error on user/users")
+    res.status(404);
+    next(error)
   }
 });
 
@@ -96,28 +106,6 @@ usersRouter.post('/register', async (req, res, next) => {
     next(error);
   }
 });
-
-// usersRouter.post("/register", async (req, res, next) => {
-//   const { username, email, password } = req.body;
-
-//   if (!username || !email || !password) {
-//     next(new Error("Missing login credentials!"));
-//   }
-//   const _user = await getUserByUsername(username);
-
-//   if (_user) {
-//     const error = new Error("Username is taken");
-//     next(error);
-//   }
-
-//   const user = await createUser({ username, email, password });
-//   const token = jwt.sign(user, JWT_SECRET);
-//   res.send({
-//     user,
-//     message: "You are signed in!",
-//     token
-//   });
-// });
 
 //PATCH /users/:userId
 usersRouter.patch('/:userId', requireUser, async (req, res, next) => {

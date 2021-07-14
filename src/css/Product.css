@@ -98,4 +98,9 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin: 15px 0;
+}
+
+#basic-navbar-nav {
+  justify-content: space-between;
 }
