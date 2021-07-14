@@ -26,6 +26,11 @@ export const setUsername = (username) => {
   return username;
 };
 
+export const setEmail = (email) => {
+  localStorage.setItem("email", email);
+  return email;
+}
+
 export function getTokenConfig() {
   const token = getToken();
   const headers = token

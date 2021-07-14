@@ -5,12 +5,7 @@ import { Form, Row, Col, Button } from "react-bootstrap";
 
 const Profile = () => {
   const history = useHistory();
-  const { user, currentUsername } = useContext(UserContext);
- 
-  // const handleAdminPage = (event) => {
-  //   // event.preventDefault();
-  //   history.push("/admin");
-  // }
+  const { user } = useContext(UserContext);
 
   return (
     <>
@@ -19,14 +14,14 @@ const Profile = () => {
         <Form.Group as={Row} controlId="formUserProfileUsername">
           <Form.Label column sm="4">Username</Form.Label>
           <Col sm="8">
-            <Form.Control plaintext readOnly defaultValue={currentUsername} />
+            <Form.Control plaintext readOnly value={user.username} />
           </Col>
         </Form.Group>
 
         <Form.Group as={Row} controlId="formUserProfileEmail">
           <Form.Label column sm="4">Email</Form.Label>
           <Col sm="8">
-            <Form.Control plaintext readOnly defaultValue="email@example.com" />
+            <Form.Control plaintext readOnly value={user.email} />
           </Col>
         </Form.Group>
 

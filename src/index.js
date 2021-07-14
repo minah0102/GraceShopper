@@ -32,6 +32,7 @@ export const UserContext = React.createContext();
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [users, setUsers] = useState([]);
   const [myOrder, setMyOrder] = useState(null);
   const [currentUsername, setCurrentUsername] = useState("");
   const [total, setTotal] = useState(0);
@@ -48,6 +49,15 @@ const App = () => {
           setCurrentUsername(u.username);
         }
       });
+  }, []);
+
+  useEffect(() => {
+    const { config } = getTokenConfig();
+    fetch(`/api/users/users`, config)
+    .then((response) => response.json())
+    .then(u => {
+      setUsers(u)
+    });
   }, []);
 
   useEffect(() => {
@@ -84,6 +94,8 @@ const App = () => {
           value={{
             user,
             setUser,
+            users, 
+            setUsers,
             currentUsername,
             setCurrentUsername,
             myOrder,

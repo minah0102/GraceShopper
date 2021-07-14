@@ -1,6 +1,6 @@
 import React from "react";
 import { Tabs, Tab } from "react-bootstrap";
-import { Products } from "./index";
+import { Products, AdminUserInfoPage } from "./index";
 import { Link } from "react-router-dom";
 
 const Admin = () => {
@@ -9,7 +9,7 @@ const Admin = () => {
       <h1>Admin Tools</h1>
       <Tabs defaultActiveKey="users">
         <Tab eventKey="users" title="Users">
-          <p>User info here</p>
+          <AdminUserInfoPage />
         </Tab>
           <Tab eventKey="products" title="Products">
             <Products />

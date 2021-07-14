@@ -4,8 +4,7 @@ const usersRouter = express.Router();
 const {
   createUser,
   getUserByUsername,
-  getUser,
-  getUserById,
+  getAllUsers,
   deleteUser,
   updateUser,
   makeAdmin
@@ -26,6 +25,17 @@ usersRouter.get("/me", requireUser, async (req, res, next) => {
     console.error("Error on user/me")
     res.status(404);
     next(error);
+  }
+});
+
+usersRouter.get("/users", requireAdmin, async (req, res, next) => {
+  try {
+    const users = await getAllUsers();
+    res.send(users);
+  } catch (error) {
+    console.error("Error on user/users")
+    res.status(404);
+    next(error)
   }
 });
 

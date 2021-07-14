@@ -13,7 +13,7 @@ const mystyle = {
 
 const Login = () => {
   const history = useHistory();
-  const { setUser, setCurrentUsername } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
@@ -42,7 +42,6 @@ const Login = () => {
       }
       if (user) {
         setUser(user);
-        setCurrentUsername(user.username);
         history.push("/authenticated");
       }
     });
