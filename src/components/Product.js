@@ -42,16 +42,16 @@ const Product = () => {
   const { name, description, imageName, price, reviews, quantity } =
     currentProduct;
 
-  // const productReviews = currentProduct.reviews;
-  // console.log(productReviews);
-  // const ratings = productReviews.map((review) => {
-  //   const { rating } = review;
-  //   return rating;
-  // });
-  // console.log(ratings);
-  // const r = (acc, value) => acc + value;
-  // const averageRating = ratings.reduce(r) / ratings.length;
-  // console.log(averageRating);
+  const productReviews = currentProduct.reviews;
+  console.log(productReviews);
+  const ratings = productReviews.map((review) => {
+    const { rating } = review;
+    return rating;
+  });
+  console.log(ratings);
+  const r = (acc, value) => acc + value;
+  const averageRating = ratings.reduce(r) / ratings.length;
+  console.log(averageRating);
 
   let selectQuantity = [];
   for (let i = 1; selectQuantity.length < quantity; i++) {
@@ -60,10 +60,7 @@ const Product = () => {
 
   const handleAddToCart = async () => {
     if (currentUsername) {
-      console.log("show me product from useParams id", id);
-      console.log("show me myOrder", myOrder);
       const sameProduct = myOrder.products.find((p) => p.productId === id);
-      console.log("show me sameProduct", sameProduct);
 
       if (sameProduct) {
         const idx = myOrder.products.findIndex((p) => p.productId === id);
@@ -72,7 +69,6 @@ const Product = () => {
           sameProduct.quantity + addQuantity
         );
 
-        console.log("show me updated", updated);
         myOrder.products[idx].quantity += addQuantity;
       } else {
         const added = await addProductToCart(
@@ -96,7 +92,7 @@ const Product = () => {
 
       setMyOrder(myOrder);
     } else {
-      //no currentUsername - local cart
+      //no currentUsername - localStorage cart
       const existing = localCart.find((lc) => lc.productId === id);
 
       if (existing) {
@@ -168,7 +164,7 @@ const Product = () => {
       <Row>
         <Accordion>
           <Card>
-            {/* <Card.Header>
+            <Card.Header>
               <h5>Average rating: {averageRating}</h5>
               <Accordion.Toggle as={Button} variant="link" eventKey="0">
                 Click to see reviews
@@ -178,7 +174,7 @@ const Product = () => {
               <Card.Body>
                 <Reviews currentProduct={currentProduct} />
               </Card.Body>
-            </Accordion.Collapse> */}
+            </Accordion.Collapse>
           </Card>
         </Accordion>
       </Row>
