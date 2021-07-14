@@ -29,8 +29,9 @@ ordersRouter.get("/history", requireUser, async (req, res, next) => {
 ordersRouter.get("/cart", requireUser, async (req, res, next) => {
   try { 
     const { id: userId } = req.user;
+    console.log("inside api route!!!!!!!userId", userId);
     const cart = await getOrderByUserId(userId);
-
+console.log("show me cart!!!!!!!!!!!!!", cart);
     res.send(cart[0]);
   } catch (error) {
     console.log("Error in GET orders/cart");

@@ -42,16 +42,16 @@ const Product = () => {
   const { name, description, imageName, price, reviews, quantity } =
     currentProduct;
 
-  const productReviews = currentProduct.reviews;
-  console.log(productReviews);
-  const ratings = productReviews.map((review) => {
-    const { rating } = review;
-    return rating;
-  });
-  console.log(ratings);
-  const r = (acc, value) => acc + value;
-  const averageRating = ratings.reduce(r) / ratings.length;
-  console.log(averageRating);
+  // const productReviews = currentProduct.reviews;
+  // console.log(productReviews);
+  // const ratings = productReviews.map((review) => {
+  //   const { rating } = review;
+  //   return rating;
+  // });
+  // console.log(ratings);
+  // const r = (acc, value) => acc + value;
+  // const averageRating = ratings.reduce(r) / ratings.length;
+  // console.log(averageRating);
 
   let selectQuantity = [];
   for (let i = 1; selectQuantity.length < quantity; i++) {
@@ -100,7 +100,7 @@ const Product = () => {
           (lc) => existing.productId === lc.productId
         );
 
-        localCart[idx].quantity += addQuantity;
+        localCart[idx].quantity = +localCart[idx].quantity + +addQuantity;
       } else {
         //no exsiting product
         const lineItem = {
@@ -164,7 +164,7 @@ const Product = () => {
       <Row>
         <Accordion>
           <Card>
-            <Card.Header>
+            {/* <Card.Header>
               <h5>Average rating: {averageRating}</h5>
               <Accordion.Toggle as={Button} variant="link" eventKey="0">
                 Click to see reviews
@@ -174,7 +174,7 @@ const Product = () => {
               <Card.Body>
                 <Reviews currentProduct={currentProduct} />
               </Card.Body>
-            </Accordion.Collapse>
+            </Accordion.Collapse> */}
           </Card>
         </Accordion>
       </Row>

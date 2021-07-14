@@ -60,7 +60,7 @@ const Cart = () => {
       ); //productId
       newTotal = total - updateProduct.quantity * updateProduct.price;
 
-      updateProduct.quantity = updateQuantity;
+      updateProduct.quantity = +updateQuantity;
       newTotal = newTotal + updateProduct.quantity * updateProduct.price;
 
       setLocalCart(newLocalCart);
@@ -183,7 +183,7 @@ const Cart = () => {
                   variant="primary"
                   block
                   onClick={handleCheckout}
-                  disabled={renderProducts.length === 0 ? true : false}
+                  disabled={!renderProducts || renderProducts.length === 0 ? true : false}
                 >
                   Checkout
                 </Button>
