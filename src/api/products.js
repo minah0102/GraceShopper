@@ -70,7 +70,7 @@ export const updateProduct = async (product) => {
         },
       }
     );
-    return updatedProduct[0];
+    return updatedProduct;
   } catch (error) {
     console.error(error);
   }

@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 import {
   Header,
@@ -31,6 +31,7 @@ export const UserContext = React.createContext();
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [users, setUsers] = useState([]);
   const [myOrder, setMyOrder] = useState(null);
   const [currentUsername, setCurrentUsername] = useState("");
   const [total, setTotal] = useState(0);
@@ -47,6 +48,15 @@ const App = () => {
           setCurrentUsername(u.username);
         }
       });
+  }, []);
+
+  useEffect(() => {
+    const { config } = getTokenConfig();
+    fetch(`/api/users/users`, config)
+    .then((response) => response.json())
+    .then(u => {
+      setUsers(u)
+    });
   }, []);
 
   useEffect(() => {
@@ -83,6 +93,8 @@ const App = () => {
           value={{
             user,
             setUser,
+            users, 
+            setUsers,
             currentUsername,
             setCurrentUsername,
             myOrder,
@@ -94,11 +106,11 @@ const App = () => {
           }}
         >
           <Header />
-          <ProductNav />
           <Container>
             {/* <Donate /> */}
             <Switch>
               <Route exact path="/">
+                <ProductNav />
                 <Home />
               </Route>
               <Route path="/register">
@@ -111,16 +123,16 @@ const App = () => {
                 <Cart />
               </Route>
               <Route exact path="/products">
+                {/* <ProductNav /> */}
                 <Products />
               </Route>
               <Route exact path="/products/:id">
+                <ProductNav />
                 <Product />
               </Route>
               <Route path="/products/category/:name">
+                <ProductNav />
                 <CategoryProducts />
-              </Route>
-              <Route path="/admin/products">
-                <Products />
               </Route>
               <Route path="/checkout">
                 <Checkout />
@@ -129,7 +141,11 @@ const App = () => {
                 {currentUsername ? <LoggedInPage /> : <Login />}
               </Route>
               <Route path="/admin">
-                <Admin />
+                {user && user.isAdmin ? (
+                  <Admin/>
+                ) : (
+                  <Redirect to="/" />
+                )}
               </Route>
             </Switch>
           </Container>
