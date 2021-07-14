@@ -112,7 +112,7 @@ const App = () => {
                 <Cart />
               </Route>
               <Route exact path="/products">
-                <ProductNav />
+                {/* <ProductNav /> */}
                 <Products />
               </Route>
               <Route exact path="/products/:id">

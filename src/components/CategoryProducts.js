@@ -10,16 +10,25 @@ const CategoryProducts = () => {
 
   useEffect(async () => {
     const allProducts = await fetchCategoryProducts(name);
-    const availableProducts = allProducts.filter(product => product.quantity >= 0)
+    const availableProducts = allProducts.filter(
+      (product) => product.quantity >= 0
+    );
     setProducts(availableProducts);
   }, [name]);
-  
+
   return (
     <Container>
+      <h3>{name.charAt(0).toUpperCase() + name.slice(1)}</h3>
       <Row>
-        {products && products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        {products.length > 0 ? (
+          products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))
+        ) : (
+          <Container>
+            <p>No results</p>
+          </Container>
+        )}
       </Row>
     </Container>
   );

@@ -6,6 +6,7 @@ import { updateProduct } from "../api/products";
 const AdminProductCard = ({
   product,
   setProducts,
+  setAvailableProducts,
   setShowEditModal,
   setProductToEdit,
 }) => {
@@ -45,7 +46,7 @@ const AdminProductCard = ({
     const deletedProduct = await updateProduct({ id, quantity: -1 });
     deletedProduct.category = category;
     deletedProduct.categoryId = categoryId;
-    setProducts((products) => {
+    setAvailableProducts((products) => {
       return products.map((_product) => {
         if (_product.id !== id) return _product;
         return deletedProduct;
