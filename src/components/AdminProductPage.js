@@ -3,8 +3,6 @@ import { UpdateProduct, AdminProductCard, AddProduct } from "./index";
 import { Container, Button, Row, Form, FormControl } from "react-bootstrap";
 import "../css/Product.css";
 
-//need access to categories
-
 const AdminProductPage = ({ products, setProducts }) => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -87,6 +85,7 @@ const AdminProductPage = ({ products, setProducts }) => {
                   <AdminProductCard
                     key={product.id}
                     product={product}
+                    setProducts={setProducts}
                     setShowEditModal={setShowEditModal}
                     setProductToEdit={setProductToEdit}
                   />
