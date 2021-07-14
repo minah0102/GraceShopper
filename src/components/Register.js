@@ -13,7 +13,7 @@ const mystyle = {
 
 const Register = () => {
   const history = useHistory();
-  const { user, setUser, setCurrentUsername } = useContext(UserContext);
+  const { setUser, setCurrentUsername } = useContext(UserContext);
 
   const [usernameInput, setUsernameInput] = useState("");
   const [emailInput, setEmailInput] = useState("")
