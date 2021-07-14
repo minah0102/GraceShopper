@@ -3,11 +3,12 @@ import { UpdateProduct, AdminProductCard, AddProduct } from "./index";
 import { Container, Button, Row, Form, FormControl } from "react-bootstrap";
 import "../css/Product.css";
 
-const AdminProductPage = ({ products, setProducts }) => {
+const AdminProductPage = ({ products, setProducts, setAvailableProducts }) => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [productToEdit, setProductToEdit] = useState({});
   const [categoryInput, setCategoryInput] = useState("");
+
 
   const categories = products.map((product) => product.category);
   const filteredCategories = [...new Set(categories)];
@@ -86,6 +87,7 @@ const AdminProductPage = ({ products, setProducts }) => {
                     key={product.id}
                     product={product}
                     setProducts={setProducts}
+                    setAvailableProducts={setAvailableProducts}
                     setShowEditModal={setShowEditModal}
                     setProductToEdit={setProductToEdit}
                   />

@@ -49,7 +49,6 @@ const getProductsByCategory = async (category) => {
     `,
       [category]
     );
-    console.log("PRODUCTS WITH CATEGORIES", products);
     return products;
   } catch (error) {
     console.log("Error getting products");
