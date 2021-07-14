@@ -34,16 +34,16 @@ const Product = () => {
   const { name, description, imageName, price, reviews, quantity } =
     currentProduct;
 
-  const productReviews = currentProduct.reviews;
-  console.log(productReviews);
-  const ratings = productReviews.map((review) => {
-    const { rating } = review;
-    return rating;
-  });
-  console.log(ratings);
-  const r = (acc, value) => acc + value;
-  const averageRating = ratings.reduce(r) / ratings.length;
-  console.log(averageRating);
+  // const productReviews = currentProduct.reviews;
+  // console.log(productReviews);
+  // const ratings = productReviews.map((review) => {
+  //   const { rating } = review;
+  //   return rating;
+  // });
+  // console.log(ratings);
+  // const r = (acc, value) => acc + value;
+  // const averageRating = ratings.reduce(r) / ratings.length;
+  // console.log(averageRating);
 
   let selectQuantity = [];
   for (let i = 1; selectQuantity.length < quantity; i++) {
@@ -123,7 +123,7 @@ const Product = () => {
           </Row>
         </Col>
       </Row>
-      <Row>
+      {/* <Row>
         <Accordion>
           <Card>
             <Card.Header>
@@ -139,7 +139,7 @@ const Product = () => {
             </Accordion.Collapse>
           </Card>
         </Accordion>
-      </Row>
+      </Row> */}
     </Container>
   );
 };

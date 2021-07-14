@@ -17,8 +17,8 @@ const CategoryProducts = () => {
   }, [name]);
 
   return (
-    <Container>
-      <h3>{name.charAt(0).toUpperCase() + name.slice(1)}</h3>
+    <Container className="product-container">
+      <h3 className="category-header">{name.charAt(0).toUpperCase() + name.slice(1)}</h3>
       <Row>
         {products.length > 0 ? (
           products.map((product) => (
