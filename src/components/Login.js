@@ -51,9 +51,10 @@ const Login = () => {
   return (
     <div style={mystyle}>
       <Form style={{ width: "30rem" }}>
-        <h2>Please Login</h2>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <Form.Group controlId="formLoginUsername">
+        <h2 style={{ margin: "0.7rem" }}>Please Login</h2>
+        {error && <p style={{ color: "red", margin: "0.7rem" }}>{error}</p>}
+
+        <Form.Group style={{ margin: "0.7rem" }} controlId="formLoginUsername">
           <Form.Label>Username</Form.Label>
           <Form.Control
             type="username"
@@ -63,7 +64,7 @@ const Login = () => {
           />
         </Form.Group>
 
-        <Form.Group controlId="formLoginPassword">
+        <Form.Group style={{ margin: "0.7rem" }} controlId="formLoginPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -73,10 +74,12 @@ const Login = () => {
           />
         </Form.Group>
 
-        <Form.Group controlId="formLoginCheckbox">
+        <Form.Group style={{ margin: "0.7rem" }} controlId="formLoginCheckbox">
           <Form.Check type="checkbox" label="Remember me" />
         </Form.Group>
+
         <Button
+          style={{ margin: "0.7rem" }}
           variant="primary"
           type="submit"
           onClick={submitHandler}
