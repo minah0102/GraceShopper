@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { UserContext } from "..";
 import { Form, Button } from "react-bootstrap";
 import { loginUser } from "../api/users";
+import { addProductToCart, getOrderByUser } from "../api";
 
 const mystyle = {
   padding: "1rem",
@@ -13,7 +14,8 @@ const mystyle = {
 
 const Login = () => {
   const history = useHistory();
-  const { setUser, setCurrentUsername } = useContext(UserContext);
+  const { setUser, setCurrentUsername, setMyOrder, setTotal } =
+    useContext(UserContext);
 
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
@@ -43,9 +45,81 @@ const Login = () => {
       if (user) {
         setUser(user);
         setCurrentUsername(user.username);
+
+        if (localStorage.getItem("cart")) {
+          handleLocalCart();
+        }
+
         history.push("/authenticated");
       }
     });
+  };
+
+  const handleLocalCart = async () => {
+    const orderForUser = await getOrderByUser();
+    const cart = JSON.parse(localStorage.getItem("cart"));
+
+    let existing = [];
+
+    if (orderForUser.products.length !== 0) {
+      //there are products in order
+      existing = orderForUser.products.filter((p) => {
+        return cart.find((c) => +c.productId === p.productId);
+      });
+
+      if (existing.length !== 0) {
+        //products already exist
+        existing.forEach((e) => {
+          cart.forEach((c) => {
+            if (e.productId === c.productId) {
+              c.quantity = +c.quantity + +e.quantity;
+            }
+          });
+        });
+
+        const filteredProducts = orderForUser.products.filter((p) => {
+          return existing.find((c) => +c.productId !== p.productId);
+        });
+
+        orderForUser.products = filteredProducts; //remove exsiting products to add later from added/cart
+      }
+    }
+
+    const added = await Promise.all(
+      cart.map((c) =>
+        addProductToCart(orderForUser.id, c.productId, c.price, c.quantity)
+      )
+    );
+
+    const shapedProducts = cart.map((c) => {
+      const same = added.find((a) => a.productId === c.productId);
+
+      const obj = {
+        lineItemId: same.id,
+        orderId: same.orderId,
+        price: +same.price,
+        productId: same.productId,
+        quantity: +same.quantity,
+        name: c.name,
+        imageName: c.imageName,
+      };
+
+      return obj;
+    });
+
+    shapedProducts.forEach((s) => {
+      console.log("show me s", s);
+      orderForUser.products.push(s);
+    });
+
+    setMyOrder(orderForUser);
+    setTotal(() => {
+      return orderForUser.products.reduce((acc, p) => {
+        return acc + p.quantity * p.price;
+      }, 0);
+    });
+
+    localStorage.removeItem("cart");
   };
 
   return (
