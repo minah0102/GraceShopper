@@ -18,8 +18,8 @@
 }
 
 .product__info {
-  box-shadow: 2px 2px 20px #f8f9f9;
-  border-radius: 5px;
+  /* box-shadow: 2px 2px 20px #f8f9f9;
+  border-radius: 5px; */
   display: flex;
   flex-direction: column;
 }
