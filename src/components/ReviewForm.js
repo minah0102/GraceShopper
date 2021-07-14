@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import StarRating from "./StarRating";
 import { createReview } from "../api/reviews";
-import { useParams } from "react-router-dom";
+import { UserContext } from "..";
 
+const ReviewForm = ({ currentProduct, setCurrentProduct }) => {
+  // console.log("THIS ID", id);
 
-const ReviewForm = ({ productReviews, setProductReviews, id }) => {
-  console.log("THIS ID", id)
+  const { reviews, id } = currentProduct;
+  console.log(currentProduct);
+  console.log(reviews);
   const [rating, setRating] = useState(null);
   const [comment, setComment] = useState("");
-  console.log(comment);
-
-  // const {id} = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,14 +21,16 @@ const ReviewForm = ({ productReviews, setProductReviews, id }) => {
       return;
     }
     try {
-      const newReview = await createReview(
-       {comment,
-        rating,
-        productId: id
-      }
-      );
+      const newReview = await createReview({ comment, rating, productId: id });
       console.log("this", newReview);
-      setProductReviews([...productReviews, newReview]);
+      const newProduct = { ...currentProduct };
+      newProduct.reviews = [...newProduct.reviews, newReview];
+      setCurrentProduct(newProduct);
+      // setProductReviews((productReviews) => {
+      //   const newArray = [...productReviews, newReview];
+      //   return newArray;
+      // });
+      console.log("newReview array", newProduct.reviews);
       setRating(null);
       setComment("");
     } catch (error) {

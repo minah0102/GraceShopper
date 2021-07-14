@@ -23,49 +23,19 @@ const {
 const { requireUser } = require("./utils");
 const { getHistory } = require("../db/orders");
 
-// reviewsRouter.post("/:productId", requireUser, async (req, res, next) => {
-//   const { comment, rating } = req.body;
-//   const { productId } = req.params;
-//   const userId = req.user.id;
-
-//   const pastOrders = await getHistory(userId);
-//   const products = pastOrders.map((order) => {
-//     return order.products.filter((product) => {
-//       return product.productId === productId;
-//     });
-//   });
-//   console.log(products);
-//   if (products.length > 0) {
-//     try {
-//       const newReview = await createReview({
-//         comment,
-//         rating,
-//         userId,
-//         productId,
-//       });
-//       res.send(newReview);
-//     } catch (error) {
-//       console.log("postReview", error);
-//       next(error);
-//     }
-//   } else {
-//     console.error("You did not purchase this product and can not leave a review");
-//   }
-// });
-
 reviewsRouter.post("/:productId", requireUser, async (req, res, next) => {
   const { comment, rating } = req.body;
   const { productId } = req.params;
   const userId = req.user.id;
-  console.log("USER", req.user)
 
-  // const pastOrders = await getHistory(userId);
-  // const products = pastOrders.map((order) => {
-  //   return order.products.filter((product) => {
-  //     return product.productId === productId;
-  //   });
-  // });
-  // console.log(products);
+  const pastOrders = await getHistory(userId);
+  const products = pastOrders.map((order) => {
+    return order.products.filter((product) => {
+      return product.productId === productId;
+    });
+  });
+  console.log(products);
+  if (products.length > 0) {
     try {
       const newReview = await createReview({
         comment,
@@ -73,13 +43,43 @@ reviewsRouter.post("/:productId", requireUser, async (req, res, next) => {
         userId,
         productId,
       });
-      console.log(newReview)
       res.send(newReview);
     } catch (error) {
       console.log("postReview", error);
       next(error);
     }
+  } else {
+    console.error("You did not purchase this product and can not leave a review");
+  }
 });
+
+// reviewsRouter.post("/:productId", requireUser, async (req, res, next) => {
+//   const { comment, rating } = req.body;
+//   const { productId } = req.params;
+//   const userId = req.user.id;
+//   console.log("USER", req.user)
+
+//   // const pastOrders = await getHistory(userId);
+//   // const products = pastOrders.map((order) => {
+//   //   return order.products.filter((product) => {
+//   //     return product.productId === productId;
+//   //   });
+//   // });
+//   // console.log(products);
+//     try {
+//       const newReview = await createReview({
+//         comment,
+//         rating,
+//         userId,
+//         productId,
+//       });
+//       console.log(newReview)
+//       res.send(newReview);
+//     } catch (error) {
+//       console.log("postReview", error);
+//       next(error);
+//     }
+// });
 
 reviewsRouter.patch("/:reviewId", requireUser, async (req, res, next) => {
   const { reviewId } = req.params;
