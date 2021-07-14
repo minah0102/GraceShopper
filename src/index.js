@@ -1,7 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
 import {
   Header,
@@ -69,10 +74,10 @@ const App = () => {
   useEffect(() => {
     const { config } = getTokenConfig();
     fetch(`/api/users/users`, config)
-    .then((response) => response.json())
-    .then(u => {
-      setUsers(u)
-    });
+      .then((response) => response.json())
+      .then((u) => {
+        setUsers(u);
+      });
   }, []);
 
   useEffect(() => {
@@ -109,7 +114,7 @@ const App = () => {
           value={{
             user,
             setUser,
-            users, 
+            users,
             setUsers,
             currentUsername,
             setCurrentUsername,
@@ -123,13 +128,13 @@ const App = () => {
             setLocalCart,
           }}
         >
-          <Header />
           <Container>
+            <Header />
+            <ProductNav />
             {/* <Donate /> */}
             <Switch>
               <Route exact path="/">
-                <ProductNav />
-                <Home />
+                {/* <Home /> */}
               </Route>
               <Route path="/register">
                 <Register />
@@ -141,15 +146,12 @@ const App = () => {
                 <Cart />
               </Route>
               <Route exact path="/products">
-                {/* <ProductNav /> */}
                 <Products />
               </Route>
               <Route exact path="/products/:id">
-                <ProductNav />
                 <Product />
               </Route>
               <Route path="/products/category/:name">
-                <ProductNav />
                 <CategoryProducts />
               </Route>
               <Route path="/checkout">
@@ -159,11 +161,7 @@ const App = () => {
                 {currentUsername ? <LoggedInPage /> : <Login />}
               </Route>
               <Route path="/admin">
-                {user && user.isAdmin ? (
-                  <Admin/>
-                ) : (
-                  <Redirect to="/" />
-                )}
+                {user && user.isAdmin ? <Admin /> : <Redirect to="/" />}
               </Route>
             </Switch>
             {/* <ReviewForm /> */}
