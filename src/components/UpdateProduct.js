@@ -5,12 +5,20 @@ import { updateProduct } from "../api/products";
 import "../css/UpdateProduct.css";
 
 const UpdateProduct = ({ product, setShowEditModal, setProducts }) => {
-  const { id, name, description, price, category, quantity } = product;
+  const {
+    id,
+    name,
+    description,
+    price,
+    category,
+    categoryId,
+    quantity,
+  } = product;
   const [categories, setCategories] = useState([]);
   const [nameInput, setNameInput] = useState(name);
   const [descInput, setDescInput] = useState(description);
   const [priceInput, setPriceInput] = useState(price);
-  const [categoryInput, setCategoryInput] = useState(category);
+  const [categoryInput, setCategoryInput] = useState(categoryId);
   const [quantityInput, setQuantityInput] = useState(quantity);
 
   useEffect(async () => {
@@ -35,7 +43,8 @@ const UpdateProduct = ({ product, setShowEditModal, setProducts }) => {
   };
 
   const categoryHandler = (event) => {
-    setCategoryInput(event.target.value);
+    const value = parseInt(event.target.value);
+    setCategoryInput(value);
   };
 
   const handleCancelEdit = () => {
@@ -45,16 +54,15 @@ const UpdateProduct = ({ product, setShowEditModal, setProducts }) => {
   const handleUpdateProduct = async (event) => {
     event.preventDefault();
     setShowEditModal(false);
-    console.log({categoryInput});
+    console.log({ categoryInput });
     const updatedProduct = await updateProduct({
       id,
       name: nameInput,
       description: descInput,
       price: priceInput,
       quantity: quantityInput,
-      category: categoryInput
+      categoryId: categoryInput,
     });
-    console.log("updated", updatedProduct);
     setProducts((products) => {
       return products.map((_product) => {
         if (_product.id !== id) return _product;
@@ -92,16 +100,17 @@ const UpdateProduct = ({ product, setShowEditModal, setProducts }) => {
         </Form.Group>
         <Form.Group controlId="exampleForm.ControlSelect1">
           <Form.Label>Category</Form.Label>
-          <Form.Control
-            as="select"
-            value={categoryInput}
-            onChange={categoryHandler}
-          >
-            <option key={0}>{category}</option>
+          <Form.Control as="select" onChange={categoryHandler}>
+            <option key={0}>Select Category</option>
             {categories.map((category) => {
               let { id, name } = category;
+              id = parseInt(id);
               name = name.charAt(0).toUpperCase() + name.slice(1);
-              return <option key={id} >{name}</option>;
+              return (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              );
             })}
           </Form.Control>
         </Form.Group>

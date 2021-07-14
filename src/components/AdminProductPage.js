@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { UpdateProduct, AdminProductCard, AddProduct } from "./index";
 import { Container, Button, Row, Form, FormControl } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import "../css/Product.css";
 
 //need access to categories
@@ -11,14 +10,9 @@ const AdminProductPage = ({ products, setProducts }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [productToEdit, setProductToEdit] = useState({});
   const [categoryInput, setCategoryInput] = useState("");
-  // const [filteredCategories, setFilteredCategories] = useState();
 
-  // console.log("products", products);
-  // console.log("cat input", categoryInput);
-  
   const categories = products.map((product) => product.category);
   const filteredCategories = [...new Set(categories)];
-  console.log("filtered", filteredCategories);
 
   const handleAddProductButton = () => {
     setShowAddModal(true);
@@ -34,6 +28,7 @@ const AdminProductPage = ({ products, setProducts }) => {
       return product.category === selection;
     });
   };
+
   return (
     <>
       {showEditModal ? (
@@ -85,7 +80,10 @@ const AdminProductPage = ({ products, setProducts }) => {
           <Container>
             <Row>
               {products &&
-                filterProductsByCategory(categoryInput, products).map((product) => (
+                filterProductsByCategory(
+                  categoryInput,
+                  products
+                ).map((product) => (
                   <AdminProductCard
                     key={product.id}
                     product={product}

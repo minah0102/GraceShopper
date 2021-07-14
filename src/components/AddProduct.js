@@ -7,7 +7,7 @@ const AddProduct = ({ setShowAddModal, setProducts }) => {
   const [nameInput, setNameInput] = useState("");
   const [descInput, setDescInput] = useState("");
   const [priceInput, setPriceInput] = useState("");
-  const [categoryInput, setCategoryInput] = useState("Select Category");
+  const [categoryInput, setCategoryInput] = useState("");
   const [quantityInput, setQuantityInput] = useState("");
   const [categories, setCategories] = useState([]);
 
@@ -33,7 +33,8 @@ const AddProduct = ({ setShowAddModal, setProducts }) => {
   };
 
   const categoryHandler = (event) => {
-    setCategoryInput(event.target.value);
+    const value = parseInt(event.target.value);
+    setCategoryInput(value);
   };
 
   const handleCancelEdit = () => {
@@ -50,7 +51,7 @@ const AddProduct = ({ setShowAddModal, setProducts }) => {
       quantity: quantityInput,
       categoryId: categoryInput,
     });
-    setProducts(products => {
+    setProducts((products) => {
       const newProducts = [...products, newProduct];
       return newProducts;
     });
@@ -90,10 +91,15 @@ const AddProduct = ({ setShowAddModal, setProducts }) => {
             value={categoryInput}
             onChange={categoryHandler}
           >
+            <option key={0}>Select Category</option>
             {categories.map((category) => {
               let { id, name } = category;
               name = name.charAt(0).toUpperCase() + name.slice(1);
-              return <option key={id} value={id}>{name}</option>;
+              return (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              );
             })}
           </Form.Control>
         </Form.Group>

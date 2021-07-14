@@ -6,7 +6,7 @@ const getAllProducts = async () => {
   try {
     const {
       rows: products,
-    } = await client.query(`SELECT p.*, c.name AS category
+    } = await client.query(`SELECT p.*, c.name AS category, c.id AS "categoryId"
     FROM products p
     LEFT JOIN category_products cp ON p.id = cp."productId"
     LEFT JOIN categories c ON c.id = cp."categoryId";`);
@@ -107,7 +107,7 @@ const updateProduct = async (productId, fields = {}) => {
         `,
         Object.values(fields)
       );
-      return updatedProduct;
+      return updatedProduct[0];
     }
   } catch (error) {
     console.log("updateProduct", error);

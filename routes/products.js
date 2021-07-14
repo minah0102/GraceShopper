@@ -1,6 +1,6 @@
 const express = require("express");
 const productsRouter = express.Router();
-const { requireUser, requireAdmin } = require('./utils');
+const { requireUser, requireAdmin } = require("./utils");
 
 const {
   getAllProducts,
@@ -10,9 +10,12 @@ const {
   deleteProduct,
   getProductsByCategory,
 } = require("../db/products");
-const { deleteCategoryProduct } = require("../db/categories");
+const {
+  deleteCategoryProduct,
+  updateCategoryProduct,
+  getCategoryById,
+} = require("../db/categories");
 const { deleteProductReviews } = require("../db/reviews");
-
 
 productsRouter.get("/", async (req, res, next) => {
   try {
@@ -42,7 +45,7 @@ productsRouter.get("/:productId", async (req, res, next) => {
 
 productsRouter.get("/category/:categoryName", async (req, res, next) => {
   try {
-    const {categoryName} = req.params
+    const { categoryName } = req.params;
     const products = await getProductsByCategory(categoryName);
     res.send(products);
   } catch (error) {
@@ -62,8 +65,12 @@ productsRouter.post("/", requireAdmin, async (req, res, next) => {
       price,
       quantity,
       imageName,
-      categoryId
+      categoryId,
     });
+    const category = await getCategoryById(categoryId);
+    product.category = category.name;
+    product.categoryId = categoryId;
+    console.log("NEW PRODUCT ROUTE", product);
     res.send(product);
   } catch (error) {
     console.error("GET /products/:productId error");
@@ -71,23 +78,29 @@ productsRouter.post("/", requireAdmin, async (req, res, next) => {
   }
 });
 
-// add category product
-productsRouter.patch('/:productId', requireAdmin, async (req, res, next) => {
-  const {productId} = req.params;
-  const {name, description, price, quantity} = req.body;
+productsRouter.patch("/:productId", requireAdmin, async (req, res, next) => {
+  const { productId } = req.params;
+  const { name, description, price, quantity, categoryId } = req.body;
   const fields = {};
   if (name) fields.name = name;
   if (description) fields.description = description;
   if (price) fields.price = price;
   if (quantity !== undefined) fields.quantity = quantity;
   try {
-    // add new query for cat product
     const updatedProduct = await updateProduct(productId, fields);
+    const updatedCategory = await updateCategoryProduct({
+      productId,
+      categoryId,
+    });
+    const { name } = await getCategoryById(updatedCategory.categoryId);
+    updatedProduct.category = name;
+    updatedProduct.categoryId = categoryId;
+    console.log("UPDATED PRODUCT", updatedProduct);
     res.send(updatedProduct);
   } catch (error) {
     next(error);
   }
-})
+});
 
 productsRouter.delete("/:productId", requireAdmin, async (req, res, next) => {
   try {
