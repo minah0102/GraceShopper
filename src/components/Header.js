@@ -35,7 +35,7 @@ const Header = () => {
       <Navbar expand="md">
         {/* <Container> */}
           <div onClick={() => history.push("/")}>
-            <h2 id="site-title" style={{ color: "black" }}>Catnip Corp.</h2>
+            <h2 id="site-title">Catnip Corp.</h2>
           </div>
           <Navbar.Toggle aria-controls="main-nav" />
           <Navbar.Collapse id="main-nav" className="justify-content-end">

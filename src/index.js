@@ -22,14 +22,15 @@ import {
   CategoryProducts,
   Checkout,
   LoggedInPage,
-  Admin
+  Admin,
 } from "./components";
 
 import { Container } from "react-bootstrap";
 
 import { getOrderByUser, getOrderHistory } from "./api";
-
 import { getTokenConfig } from "./api/token";
+
+import "./css/Header.css";
 
 export const UserContext = React.createContext();
 
@@ -165,11 +166,11 @@ const App = () => {
                 {user && user.isAdmin ? <Admin /> : <Redirect to="/" />}
               </Route>
             </Switch>
+
         </UserContext.Provider>
       </div>
     </Router>
   );
 };
-
 
 render(<App />, document.getElementById("main"));
