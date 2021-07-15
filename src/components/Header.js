@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "..";
+import "../css/Header.css";
 
 const Header = () => {
   const history = useHistory();
@@ -19,10 +20,10 @@ const Header = () => {
   return (
     <>
       <Navbar expand="md">
-        <Container>
-          <Nav.Link onClick={() => history.push("/")}>
-            <h2 style={{ color: "black" }}>Catnip Corp.</h2>
-          </Nav.Link>
+        {/* <Container> */}
+          <div onClick={() => history.push("/")}>
+            <h2 id="site-title" style={{ color: "black" }}>Catnip Corp.</h2>
+          </div>
           <Navbar.Toggle aria-controls="main-nav" />
           <Navbar.Collapse id="main-nav" className="justify-content-end">
             <Nav>
@@ -47,7 +48,7 @@ const Header = () => {
               <Nav.Link onClick={() => history.push("/cart")}>Cart</Nav.Link>
             </Nav>
           </Navbar.Collapse>
-        </Container>
+        {/* </Container> */}
       </Navbar>
     </>
   );

@@ -7,10 +7,12 @@ import {
   Button,
   Card,
   CloseButton,
+  Container
 } from "react-bootstrap";
 import { patchQuantity, deleteProductFromCart, patchInactive } from "../api";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "..";
+import "../css/Cart.css"
 
 const Cart = () => {
   const {
@@ -79,7 +81,7 @@ const Cart = () => {
   };
 
   return (
-    <>
+    <Container id="cart-container">
       <h2>Your shopping cart</h2>
       {currentUsername ? (
         <Row>
@@ -98,7 +100,7 @@ const Cart = () => {
                     lineItemId,
                   }) => {
                     return (
-                      <ListGroup.Item key={productId}>
+                      <ListGroup.Item className="cart-product" key={productId}>
                         <Row
                           style={{
                             alignItems: "center",
@@ -189,7 +191,7 @@ const Cart = () => {
           </Col>
         </Row>
       )}
-    </>
+    </Container>
   );
 };
 

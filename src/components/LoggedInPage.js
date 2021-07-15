@@ -2,13 +2,14 @@ import React, { useContext } from "react";
 import { UserContext } from "..";
 import RecentOrders from "./RecentOrders";
 import Profile from "./Profile";
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import '../css/User.css'
 
 const LoggedInPage = () => {
   const { user } = useContext(UserContext);
 
   return (
-    <div>
+    <div id="welcome-user">
       <h1>Welcome {user.username}</h1>
       <Container>
         <Row>

@@ -1,12 +1,13 @@
 import React from "react";
-import { Carousel } from "react-bootstrap";
+import { Container, Carousel } from "react-bootstrap";
 import "./Home.css";
 import aver from "../images/aver2.jpg";
 
 const Home = () => {
   return (
-    <div>
-      <h1 style={{textAlign: "center"}}>Welcome to Catnip Corp.</h1>
+    <Container className="home-container">
+      <h1>Welcome to Catnip Corp.</h1>
+      <h3>This is our home page.</h3>
       <Carousel>
         <Carousel.Item interval={2000}>
           <img
@@ -37,7 +38,7 @@ const Home = () => {
           />
         </Carousel.Item>
       </Carousel>
-    </div>
+    </Container>
   )
 };
 

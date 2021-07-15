@@ -29,7 +29,7 @@ const AdminProductPage = ({ products, setProducts, setAvailableProducts }) => {
   };
 
   return (
-    <>
+    <Container>
       {showEditModal ? (
         <UpdateProduct
           product={productToEdit}
@@ -96,7 +96,7 @@ const AdminProductPage = ({ products, setProducts, setAvailableProducts }) => {
           </Container>
         </>
       )}
-    </>
+    </Container>
   );
 };
 
