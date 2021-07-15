@@ -20,7 +20,7 @@ const RecentOrders = () => {
   console.log("show me orderHIstory", orderHistory);
   return (
     <>
-      <h2>Recent Orders</h2>
+      <h2 style={{fontSize: "1.5rem", marginBottom: "1rem"}}>Recent Orders</h2>
 
       <Accordion defaultActiveKey="0" flush>
         {orderHistory.length > 0 &&
