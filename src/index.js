@@ -37,6 +37,7 @@ const App = () => {
   const [currentUsername, setCurrentUsername] = useState("");
   const [total, setTotal] = useState(0);
   const [orderHistory, setOrderHistory] = useState([]);
+  const [searchProducts, setSearchProducts] = useState([]);
 
   useEffect(() => {
     const { config } = getTokenConfig();
@@ -111,7 +112,7 @@ const App = () => {
             {/* <Donate /> */}
             <Switch>
               <Route exact path="/">
-                <ProductNav />
+                <ProductNav setSearchProducts={setSearchProducts}/>
                 <Home />
               </Route>
               <Route path="/register">
@@ -125,15 +126,15 @@ const App = () => {
               </Route>
               <Route exact path="/products">
                 {/* <ProductNav /> */}
-                <Products />
+                <Products searchProducts={searchProducts} setSearchProducts={setSearchProducts}/>
               </Route>
               <Route exact path="/products/:id">
-                <ProductNav />
+                <ProductNav setSearchProducts={setSearchProducts} />
                 <Product />
               </Route>
               <Route path="/products/category/:name">
-                <ProductNav />
-                <CategoryProducts />
+                <ProductNav setSearchProducts={setSearchProducts} />
+                <CategoryProducts searchProducts={searchProducts}/>
               </Route>
               <Route path="/checkout">
                 <Checkout />

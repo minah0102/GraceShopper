@@ -5,10 +5,10 @@ import { fetchAllProducts } from "../api/products";
 import { Container, Row } from "react-bootstrap";
 import { UserContext } from "..";
 
-const Products = () => {
+const Products = ({ setSearchProducts, searchProducts }) => {
   const [products, setProducts] = useState([]);
   const [availableProducts, setAvailableProducts] = useState([]);
-  const [searchProducts, setSearchProducts] = useState([]);
+  // const [searchProducts, setSearchProducts] = useState([]);
 
   const { user } = useContext(UserContext);
 
@@ -21,22 +21,26 @@ const Products = () => {
   }, [availableProducts]);
 
   useEffect(async () => {
-    setAvailableProducts(searchProducts);
+    setProducts(searchProducts);
   }, [searchProducts]);
 
-console.log("SEARCH", searchProducts);
+  console.log("SEARCH", searchProducts);
   return (
     <>
       <Switch>
         <Route path="/products">
-        <ProductNav products={products} setSearchProducts={setSearchProducts} />
+          <ProductNav setSearchProducts={setSearchProducts} />
           <Container className="product-container">
-          <h3 className="category-header">All Products</h3>
+            <h3 className="category-header">{searchProducts && searchProducts.length > 0 ? `Search Results` : `All Products`}</h3>
             <Row>
-              {products &&
-                products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
+              { searchProducts && searchProducts.length > 0
+                ? searchProducts.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))
+                : products &&
+                  products.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
             </Row>
           </Container>
         </Route>
@@ -44,7 +48,11 @@ console.log("SEARCH", searchProducts);
           {user && user.isAdmin === false ? (
             <Redirect to="/" />
           ) : (
-            <AdminProductPage products={products} setProducts={setProducts} setAvailableProducts={setAvailableProducts}/>
+            <AdminProductPage
+              products={products}
+              setProducts={setProducts}
+              setAvailableProducts={setAvailableProducts}
+            />
           )}
         </Route>
       </Switch>

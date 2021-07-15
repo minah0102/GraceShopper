@@ -72,11 +72,9 @@ const Cart = () => {
 
   const handleCheckout = async () => {
     const newOrder = await patchInactive(myOrder.id);
-
     setOrderHistory([...orderHistory, myOrder]);
     setMyOrder(newOrder);
     setTotal(0);
-
     history.push("/checkout");
   };
 
@@ -120,7 +118,7 @@ const Cart = () => {
                           >
                             {name}
                             <span style={{ color: "red" }}>
-                              ${Number.parseInt(price).toFixed(2)}
+                              ${Number.parseFloat(price)}
                             </span>
                           </Col>
                           <Col xs={3}>

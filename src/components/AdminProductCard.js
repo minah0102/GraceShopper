@@ -59,7 +59,7 @@ const AdminProductCard = ({
       <Card className="admin__product__card">
         <Card.Img variant="top" src={`/images/${imageName}`} />
         <Col>
-          <Card.Body>
+          <Card.Body className="product-card-body">
             <Card.Title>{name}</Card.Title>
             <Card.Text>{description}</Card.Text>
             <Card.Text>${price}</Card.Text>

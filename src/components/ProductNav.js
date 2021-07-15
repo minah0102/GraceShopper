@@ -27,6 +27,7 @@ const ProductNav = ({ setSearchProducts }) => {
     const filteredProducts = allProducts.filter(
       (product) => product.quantity >= 0
     );
+    // setSearchProducts([])
     setProducts(filteredProducts);
   }, []);
 
