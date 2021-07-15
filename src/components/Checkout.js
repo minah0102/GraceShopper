@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ListGroup, Row, Col } from "react-bootstrap";
+import { ListGroup, Row, Col, Container } from "react-bootstrap";
 import { UserContext } from "..";
 
 const Checkout = () => {
@@ -22,7 +22,7 @@ const Checkout = () => {
     : ``;
 
   return (
-    <>
+    <Container>
       <h2>Thank you for shopping!</h2>
       <ListGroup>
         <h3>{orderHeader}</h3>
@@ -62,7 +62,7 @@ const Checkout = () => {
           </span>
         </h3>
       </ListGroup>
-    </>
+    </Container>
   );
 };
 
