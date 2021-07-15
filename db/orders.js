@@ -84,9 +84,10 @@ async function getOrderByUserId(userId) {
     );
 
     if (cart.length === 0) {
+      console.log("inside db/ getorderbyuserId!!! cart.lenght is zero!!!");
       return await createOrder(userId);
     }
-
+console.log("inside db/ getorderbyuserId!!! cart.lenght is not zero!!!");
     return await attachProductsToOrder(cart);
   } catch (error) {
     console.log("Error in getOrderByUserId");

@@ -7,7 +7,9 @@ export async function getOrderByUser() {
   const { config } = getTokenConfig();
 
   try {
-    const { data } = await axios.get(`${URL}/orders/cart`, config);
+    const result = await axios.get(`${URL}/orders/cart`, config);
+    debugger;
+    const data = result.data;
 
     return data;
   } catch (error) {

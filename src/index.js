@@ -134,7 +134,7 @@ const App = () => {
             {/* <Donate /> */}
             <Switch>
               <Route exact path="/">
-                {/* <Home /> */}
+                <Home />
               </Route>
               <Route path="/register">
                 <Register />
