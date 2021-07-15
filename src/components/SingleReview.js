@@ -4,8 +4,6 @@ import { Card, Button } from "react-bootstrap";
 import { deleteReview } from "../api/reviews";
 import SingleRating from "./SingleRating";
 
-
-
 const SingleReview = ({ singleReview, currentProduct, setCurrentProduct }) => {
   const { currentUsername, user } = useContext(UserContext);
   const { id, comment, rating, username } = singleReview;
@@ -23,21 +21,27 @@ const SingleReview = ({ singleReview, currentProduct, setCurrentProduct }) => {
   };
 
   return (
-    <Card key={id} style={{ width: "55em", height: "10em" }}>
-      <Card.Title>
-        <SingleRating singleReview={singleReview}/>
-        {currentUsername === username || user.isAdmin === true ? (
-          <Button variant="danger" onClick={handleDelete}>
+    <Card key={id} style={{ width: "55em", height: "10em", margin: "0px" }}>
+      <Card.Title style={{ display: "flex", justifyContent: "space-between" }}>
+        <SingleRating singleReview={singleReview} />
+        {currentUsername === username || (user && user.isAdmin === true) ? (
+          <Button
+            variant="danger"
+            onClick={handleDelete}
+            style={{ height: "2.5em" }}
+          >
             delete
           </Button>
         ) : (
           ""
         )}
       </Card.Title>
-      <Card.Body>
+      <Card.Body style={{ padding: "0 0.75em 0", margin: "0px" }}>
         <blockquote className="blockquote mb-0">
           <p>{comment}</p>
-          <footer className="blockquote-footer">from {username}</footer>{" "}
+          <footer className="blockquote-footer" style={{ display: "flex" }}>
+            from {username}{" "}
+          </footer>{" "}
         </blockquote>
       </Card.Body>
     </Card>

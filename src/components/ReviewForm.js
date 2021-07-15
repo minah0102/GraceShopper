@@ -1,36 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
 import StarRating from "./StarRating";
 import { createReview } from "../api/reviews";
 import { UserContext } from "..";
 
 const ReviewForm = ({ currentProduct, setCurrentProduct }) => {
-  // console.log("THIS ID", id);
-
   const { reviews, id } = currentProduct;
-  console.log(currentProduct);
-  console.log(reviews);
+  const { user } = useContext(UserContext);
   const [rating, setRating] = useState(null);
   const [comment, setComment] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("OUR RATING", rating);
+
     if (rating === null) {
       alert("rate this!");
       return;
     }
     try {
       const newReview = await createReview({ comment, rating, productId: id });
-      console.log("this", newReview);
+      console.log(newReview);
+      newReview.username = user.username;
       const newProduct = { ...currentProduct };
       newProduct.reviews = [...newProduct.reviews, newReview];
       setCurrentProduct(newProduct);
-      // setProductReviews((productReviews) => {
-      //   const newArray = [...productReviews, newReview];
-      //   return newArray;
-      // });
-      console.log("newReview array", newProduct.reviews);
       setRating(null);
       setComment("");
     } catch (error) {
@@ -42,6 +35,7 @@ const ReviewForm = ({ currentProduct, setCurrentProduct }) => {
     <Form onSubmit={handleSubmit}>
       <Form.Group>
         <StarRating rating={rating} setRating={setRating} />
+        <h6>Rate this product</h6>
       </Form.Group>
       <Form.Group controlId="reviewComment">
         <Form.Control

@@ -27,46 +27,34 @@ const Product = () => {
     currentUsername,
     orderHistory,
     user,
+    setUser,
   } = useContext(UserContext);
   const [currentProduct, setCurrentProduct] = useState({});
   const [addQuantity, setAddQuantity] = useState(1);
   const history = useHistory();
-  // const [averageRating, setAverageRating] = useState(0);
 
   let { id } = useParams();
 
   useEffect(async () => {
     const product = await fetchProductById(id);
     console.log("product from fetch", product);
-    console.log("USER", user);
     setCurrentProduct(product);
   }, []);
 
   const { name, description, imageName, price, reviews, quantity } =
     currentProduct;
-
+  console.log(currentProduct);
   let averageRating;
   if ("reviews" in currentProduct) {
     const ratings = currentProduct.reviews.map((review) => {
       const { rating } = review;
       return rating;
     });
-  // const productReviews = currentProduct.reviews;
-  // console.log(productReviews);
-  // const ratings = productReviews.map((review) => {
-  //   const { rating } = review;
-  //   return rating;
-  // });
-  // console.log(ratings);
-  // const r = (acc, value) => acc + value;
-  // const averageRating = ratings.reduce(r) / ratings.length;
-  // console.log(averageRating);
 
     const r = (acc, value) => acc + value;
     if (ratings.length > 0) {
       averageRating = Math.round(ratings.reduce(r) / ratings.length);
     }
-    // setAverageRating(averageRating)
   }
   let selectQuantity = [];
   for (let i = 1; selectQuantity.length < quantity; i++) {
@@ -127,7 +115,6 @@ const Product = () => {
           <h1>{name}</h1>
           {averageRating !== undefined && (
             <div>
-
               {[...Array(averageRating)].map((star, i) => {
                 const value = i + 1;
                 return (
@@ -164,8 +151,7 @@ const Product = () => {
           </Row>
         </Col>
       </Row>
-      {currentUsername ? (
-        // && matchProducts.length > 0
+      {currentUsername && matchProducts.length > 0 ? (
         <ReviewForm
           id={id}
           currentProduct={currentProduct}
@@ -174,25 +160,29 @@ const Product = () => {
       ) : (
         ""
       )}
-      <Row>
-        <Accordion>
-          <Card>
-            <Card.Header>
-              <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                Click to see reviews
-              </Accordion.Toggle>
-            </Card.Header>
-            <Accordion.Collapse eventKey="0">
-              <Card.Body>
-                <Reviews
-                  currentProduct={currentProduct}
-                  setCurrentProduct={setCurrentProduct}
-                />
-              </Card.Body>
-            </Accordion.Collapse>
-          </Card>
-        </Accordion>
-      </Row>
+      {"reviews" in currentProduct && reviews.length > 0 ? (
+        <Row>
+          <Accordion>
+            <Card>
+              <Card.Header>
+                <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                  Click to see reviews
+                </Accordion.Toggle>
+              </Card.Header>
+              <Accordion.Collapse eventKey="0">
+                <Card.Body>
+                  <Reviews
+                    currentProduct={currentProduct}
+                    setCurrentProduct={setCurrentProduct}
+                  />
+                </Card.Body>
+              </Accordion.Collapse>
+            </Card>
+          </Accordion>
+        </Row>
+      ) : (
+        <p style={{color: "#1A34F1"}}>No reviews have been left yet</p>
+      )}
     </Container>
   );
 };
