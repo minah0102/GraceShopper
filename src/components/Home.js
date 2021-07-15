@@ -2,6 +2,9 @@ import React from "react";
 import { Container, Carousel } from "react-bootstrap";
 import "./Home.css";
 import aver from "../images/aver2.jpg";
+import hotdog from "../images/hotdog.jpg";
+import nix from "../images/nix.jpg";
+import sunny from "../images/sunny.jpg";
 
 const Home = () => {
   return (
@@ -18,21 +21,21 @@ const Home = () => {
 
         <Carousel.Item interval={2000}>
           <img className="d-block w-100"
-            src={aver}
+            src={hotdog}
             alt="Second Slide"
           />
         </Carousel.Item>
 
         <Carousel.Item interval={2000}>
           <img className="d-block w-100"
-            src={aver}
+            src={nix}
             alt="Third Slide"
           />
         </Carousel.Item>
 
         <Carousel.Item interval={2000}>
           <img className="d-block w-100"
-            src={aver}
+            src={sunny}
             alt="Fourth Slide"
           />
         </Carousel.Item>
