@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { UserContext } from "..";
 import { Form, Button } from "react-bootstrap";
 import { loginUser } from "../api/users";
+import '../css/User.css'
 
 const mystyle = {
   padding: "1rem",
@@ -49,7 +50,7 @@ const Login = () => {
   };
 
   return (
-    <div style={mystyle}>
+    <div style={mystyle} className="auth-form">
       <Form style={{ width: "30rem" }}>
         <h2>Please Login</h2>
         {error && <p style={{ color: "red" }}>{error}</p>}

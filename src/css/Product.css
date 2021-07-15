@@ -4,8 +4,21 @@
   box-sizing: border-box;
 }
 
+.home-container {
+  height: 100vh;
+}
+
 .product-container {
   justify-content: center;
+  height: 100%;
+}
+
+.product-container .container {
+  height: 100vh;
+}
+
+.single-product-container {
+  height: 100vh;
 }
 
 .category-header {
@@ -28,6 +41,14 @@
 .product-card-body {
   width: 80%;
   padding: 8px 8px 12px;
+}
+
+.card-title {
+  color: black;
+}
+
+.card-text {
+  color: black;
 }
 
 .product__image {
@@ -92,6 +113,10 @@
 .admin__product__card button {
   margin-bottom: 15px;
   margin-right: -12px;
+}
+
+.card-body {
+  width: 80%;
 }
 
 .update__product__buttons {

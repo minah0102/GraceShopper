@@ -86,8 +86,8 @@ const Product = () => {
   };
 
   return (
-    <Container>
-      <Row className="product__container">
+    <Container className="single-product-container">
+      <Row>
         <Col>
           <Image
             className="product__image"
