@@ -40,13 +40,7 @@ const App = () => {
   const [currentUsername, setCurrentUsername] = useState("");
   const [total, setTotal] = useState(0);
   const [orderHistory, setOrderHistory] = useState([]);
-<<<<<<< HEAD
   const [searchProducts, setSearchProducts] = useState([]);
-=======
-
-  const [searchProducts, setSearchProducts] = useState([]);
-
->>>>>>> 6cfe0d4a14c51c734ae60f5155b0ed69fe7b920b
   const [localCart, setLocalCart] = useState([]);
 
   useEffect(() => {
@@ -133,11 +127,6 @@ const App = () => {
             setLocalCart,
           }}
         >
-<<<<<<< HEAD
-=======
-          
-        {/* <Container> */}
->>>>>>> 6cfe0d4a14c51c734ae60f5155b0ed69fe7b920b
           <Header />
           <ProductNav setSearchProducts={setSearchProducts} />
             {/* <Donate /> */}
@@ -165,10 +154,6 @@ const App = () => {
               </Route>
               <Route path="/search">
                 <SearchResults searchProducts={searchProducts}/>
-<<<<<<< HEAD
-=======
-
->>>>>>> 6cfe0d4a14c51c734ae60f5155b0ed69fe7b920b
               </Route>
               <Route path="/checkout">
                 <Checkout />
