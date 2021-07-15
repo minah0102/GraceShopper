@@ -40,9 +40,7 @@ const App = () => {
   const [currentUsername, setCurrentUsername] = useState("");
   const [total, setTotal] = useState(0);
   const [orderHistory, setOrderHistory] = useState([]);
-
   const [searchProducts, setSearchProducts] = useState([]);
-
   const [localCart, setLocalCart] = useState([]);
 
   useEffect(() => {
@@ -129,8 +127,6 @@ const App = () => {
             setLocalCart,
           }}
         >
-          
-        {/* <Container> */}
           <Header />
           <ProductNav setSearchProducts={setSearchProducts} />
             {/* <Donate /> */}
@@ -158,7 +154,6 @@ const App = () => {
               </Route>
               <Route path="/search">
                 <SearchResults searchProducts={searchProducts}/>
-
               </Route>
               <Route path="/checkout">
                 <Checkout />

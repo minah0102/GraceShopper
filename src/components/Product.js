@@ -32,7 +32,6 @@ const Product = () => {
 
     localCart,
     setLocalCart,
-
   } = useContext(UserContext);
   const [currentProduct, setCurrentProduct] = useState({});
   const [addQuantity, setAddQuantity] = useState(1);
@@ -42,13 +41,18 @@ const Product = () => {
 
   useEffect(async () => {
     const product = await fetchProductById(id);
-    console.log("product from fetch", product);
     setCurrentProduct(product);
   }, []);
 
-  const { name, description, imageName, price, reviews, quantity } =
-    currentProduct;
-  console.log(currentProduct);
+  const {
+    name,
+    description,
+    imageName,
+    price,
+    reviews,
+    quantity,
+  } = currentProduct;
+
   let averageRating;
   if ("reviews" in currentProduct) {
     const ratings = currentProduct.reviews.map((review) => {
@@ -149,7 +153,7 @@ const Product = () => {
         <Col className="product__info">
           <h1>{name}</h1>
           {averageRating !== undefined && (
-            <div>
+            <div className="product-rating">
               {[...Array(averageRating)].map((star, i) => {
                 const value = i + 1;
                 return (
@@ -160,7 +164,7 @@ const Product = () => {
               })}
             </div>
           )}
-          <div>{description}</div>
+          <div className="product-description">{description}</div>
           <Row className="product__footer">
             <div className="button__container">
               <Button
@@ -182,13 +186,14 @@ const Product = () => {
                 </Form.Control>
               </Form.Group>
             </div>
-            <div className="product__price">${price}</div>
+            <div className="product-price">${price}</div>
           </Row>
         </Col>
       </Row>
 
       {currentUsername && matchProducts.length > 0 ? (
         <ReviewForm
+          className="review-form"
           id={id}
           currentProduct={currentProduct}
           setCurrentProduct={setCurrentProduct}
@@ -197,7 +202,7 @@ const Product = () => {
         ""
       )}
       {"reviews" in currentProduct && reviews.length > 0 ? (
-        <Row>
+        <Row className="product-reviews">
           <Accordion>
             <Card>
               <Card.Header>
@@ -217,9 +222,8 @@ const Product = () => {
           </Accordion>
         </Row>
       ) : (
-        <p style={{color: "#1A34F1"}}>No reviews have been left yet</p>
+        <p style={{ color: "#1A34F1" }}>No reviews have been left yet</p>
       )}
-
     </Container>
   );
 };

@@ -4,7 +4,7 @@ import { ProductCard } from "./index";
 
 const SearchResults = ({ searchProducts }) => {
   return (
-    <Container className="search-container">
+    <Container className="product-container">
       <h3 className="category-header">Search Results</h3>
       <Row>
         {searchProducts && searchProducts.length > 0 ? (
