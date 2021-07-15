@@ -14,7 +14,7 @@ const mystyle = {
 
 const Register = () => {
   const history = useHistory();
-  const { setUser, setCurrentUsername, setMyOrder, setTotal } =
+  const { setUser, setCurrentUsername, setMyOrder, setTotal, setLocalCart } =
     useContext(UserContext);
 
   const [usernameInput, setUsernameInput] = useState("");
@@ -43,8 +43,7 @@ const Register = () => {
       if (user) {
         setUser(user);
         setCurrentUsername(user.username);
-        console.log("show me user", user);
-        
+
         if (localStorage.getItem("cart")) {
           handleLocalCart();
         }
@@ -76,34 +75,7 @@ const Register = () => {
 
   const handleLocalCart = async () => {
     const orderForUser = await getOrderByUser();
-    console.log("show me order!!!", orderForUser);
     const cart = JSON.parse(localStorage.getItem("cart"));
-    console.log("orderForUser", orderForUser);
-    let existing = [];
-
-    if (orderForUser.products.length !== 0) {
-      //there are products in order
-      existing = orderForUser.products.filter((p) => {
-        return cart.find((c) => +c.productId === p.productId);
-      });
-
-      if (existing.length !== 0) {
-        //products already exist
-        existing.forEach((e) => {
-          cart.forEach((c) => {
-            if (e.productId === c.productId) {
-              c.quantity = +c.quantity + +e.quantity;
-            }
-          });
-        });
-
-        const filteredProducts = orderForUser.products.filter((p) => {
-          return existing.find((c) => +c.productId !== p.productId);
-        });
-
-        orderForUser.products = filteredProducts; //remove exsiting products to add later from added/cart
-      }
-    }
 
     const added = await Promise.all(
       cart.map((c) =>
@@ -127,8 +99,8 @@ const Register = () => {
       return obj;
     });
 
+    orderForUser.products = [];
     shapedProducts.forEach((s) => {
-      console.log("show me s", s);
       orderForUser.products.push(s);
     });
 
@@ -139,6 +111,7 @@ const Register = () => {
       }, 0);
     });
 
+    setLocalCart([]);
     localStorage.removeItem("cart");
   };
 

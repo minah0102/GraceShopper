@@ -8,7 +8,6 @@ export async function getOrderByUser() {
 
   try {
     const result = await axios.get(`${URL}/orders/cart`, config);
-    debugger;
     const data = result.data;
 
     return data;

@@ -14,7 +14,7 @@ const mystyle = {
 
 const Login = () => {
   const history = useHistory();
-  const { setUser, setCurrentUsername, setMyOrder, setTotal } =
+  const { setUser, setCurrentUsername, setMyOrder, setTotal, setLocalCart } =
     useContext(UserContext);
 
   const [usernameInput, setUsernameInput] = useState("");
@@ -108,7 +108,6 @@ const Login = () => {
     });
 
     shapedProducts.forEach((s) => {
-      console.log("show me s", s);
       orderForUser.products.push(s);
     });
 
@@ -118,7 +117,7 @@ const Login = () => {
         return acc + p.quantity * p.price;
       }, 0);
     });
-
+    setLocalCart([]);
     localStorage.removeItem("cart");
   };
 

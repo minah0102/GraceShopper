@@ -3,7 +3,7 @@ const client = require("./client");
 async function createOrder(userId) {
   try {
     const {
-      rows: [order],
+      rows: order,
     } = await client.query(
       /*sql*/ `
         INSERT INTO orders ("userId")
@@ -84,10 +84,9 @@ async function getOrderByUserId(userId) {
     );
 
     if (cart.length === 0) {
-      console.log("inside db/ getorderbyuserId!!! cart.lenght is zero!!!");
       return await createOrder(userId);
     }
-console.log("inside db/ getorderbyuserId!!! cart.lenght is not zero!!!");
+
     return await attachProductsToOrder(cart);
   } catch (error) {
     console.log("Error in getOrderByUserId");
