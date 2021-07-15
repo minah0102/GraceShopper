@@ -1,48 +1,78 @@
 import React, { useContext } from "react";
-import { Container, Table, Row, Col } from "react-bootstrap";
+import {
+  Container,
+  Table,
+  Row,
+  Col,
+  Accordion,
+  Card,
+  ListGroup,
+} from "react-bootstrap";
 import { UserContext } from "..";
 
 const RecentOrders = () => {
   const { orderHistory } = useContext(UserContext);
-
-
+  console.log("show me orderHIstory", orderHistory);
   return (
-    <div>
+    <>
       <h2>Recent Orders</h2>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Date Purchased</th>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        
-            {orderHistory.map(pastedOrder =>
-              <tbody>
-                <tr key={pastedOrder.id}>
-                  <td>{pastedOrder.id}</td>
-                  <td>{pastedOrder.purchasedDate}</td>
-                  
-                  {pastedOrder.products.map(({ name, quantity, price }) =>
-                    <>
-                      <td>{name}</td>
-                      <td>{quantity}</td>
-                      <td>{price}</td>
+
+      <Accordion defaultActiveKey="0" flush>
+        {orderHistory.length > 0 &&
+          orderHistory.map((o, idx) => {
+            return (
+              <>
+                <Card.Header>
+                  <Accordion.Toggle
+                    as={ListGroup}
+                    eventKey={(idx + 1).toString()}
+                  >
+                    <Row>
+                      <Col md={4}>Order #{o.id}</Col>
+                      <Col>
+                        purchased on {new Date(o.purchasedDate).toLocaleDateString()}
+                      </Col>
+                    </Row>
+                  </Accordion.Toggle>
+                </Card.Header>
+                <Accordion.Collapse eventKey={(idx + 1).toString()}>
+                  <>
+                  {o.products.length > 0 &&
+                    o.products.map(({ name, price, quantity, imageName }, idx) => {
+                      return (
+                        <Row
+                        style={{
+                          alignItems: "center",
+                        }} key={idx}
+                      >
+                        <Col xs={3}>
+                          <img src={`/images/${imageName}`} width="120px" />
+                        </Col>
+                        <Col
+                          style={{ display: "flex", justifyContent: "space-between" }}
+                        >
+                          {name}
+                          <span style={{ color: "red" }}>
+                            ${Number.parseFloat(price).toFixed(2)}
+                          </span>
+                        </Col>
+                        <Col
+                          xs={3}
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          {quantity}
+                        </Col>
+                      </Row>
+                      );
+                    })}
                     </>
-                  )}
-
-                </tr>
-              </tbody>
-            )}
-        
-
-      </Table>
-
-    </div>
-  )
-}
+                </Accordion.Collapse>
+              </>
+            );
+          })}
+      </Accordion>
+    </>
+  );
+};
 
 export default RecentOrders;

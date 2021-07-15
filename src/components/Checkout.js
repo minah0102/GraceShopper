@@ -42,7 +42,7 @@ const Checkout = () => {
                 >
                   {name}
                   <span style={{ color: "red" }}>
-                    ${Number.parseInt(price).toFixed(2)}
+                    ${Number.parseFloat(price).toFixed(2)}
                   </span>
                 </Col>
                 <Col

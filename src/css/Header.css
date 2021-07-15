@@ -1,7 +1,7 @@
 
 #app {
   background: #EDDFBC;
-  height: 100%;
+  height: 100vh;
 }
 .navbar {
   /* margin-bottom: 15px; */
@@ -21,3 +21,7 @@
   font-size: 1.1rem;
 }
 
+#site-title{
+  color: black;
+  cursor: pointer;
+}

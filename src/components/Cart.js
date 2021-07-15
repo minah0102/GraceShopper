@@ -7,10 +7,12 @@ import {
   Button,
   Card,
   CloseButton,
+  Container,
 } from "react-bootstrap";
 import { patchQuantity, deleteProductFromCart, patchInactive } from "../api";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "..";
+import "../css/Cart.css";
 
 const Cart = () => {
   const {
@@ -105,8 +107,8 @@ const Cart = () => {
   };
 
   return (
-    <>
-      <h2>Your shopping cart</h2>
+    <Container>
+      <h2 id="cart-header">Your shopping cart</h2>
       {
         <Row>
           <Col md={8}>
@@ -192,7 +194,7 @@ const Cart = () => {
           </Col>
         </Row>
       }
-    </>
+    </Container>
   );
 };
 
