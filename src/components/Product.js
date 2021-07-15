@@ -35,14 +35,10 @@ const Product = () => {
   } = useContext(UserContext);
   const [currentProduct, setCurrentProduct] = useState({});
   const [addQuantity, setAddQuantity] = useState(1);
+  const [disableAddToCart, setDisableAddToCart] = useState(false);
   const history = useHistory();
 
   let id = +useParams().id;
-
-  useEffect(async () => {
-    const product = await fetchProductById(id);
-    setCurrentProduct(product);
-  }, []);
 
   const {
     name,
@@ -52,6 +48,15 @@ const Product = () => {
     reviews,
     quantity,
   } = currentProduct;
+
+  useEffect(async () => {
+    const product = await fetchProductById(id);
+    setCurrentProduct(product);
+  }, []);
+
+  useEffect(() => {
+    if (quantity === 0) setDisableAddToCart(true);
+  });
 
   let averageRating;
   if ("reviews" in currentProduct) {
@@ -168,6 +173,7 @@ const Product = () => {
           <Row className="product__footer">
             <div className="button__container">
               <Button
+                disabled={disableAddToCart}
                 id="add__product"
                 variant="primary"
                 onClick={handleAddToCart}
@@ -186,6 +192,9 @@ const Product = () => {
                 </Form.Control>
               </Form.Group>
             </div>
+            {disableAddToCart && <div>Out of Stock!</div>}
+
+            {quantity <= 10 && <div>Only {quantity} left!</div>}
             <div className="product-price">${price}</div>
           </Row>
         </Col>
