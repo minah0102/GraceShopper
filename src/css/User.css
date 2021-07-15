@@ -1,0 +1,11 @@
+#welcome-user h1 {
+  text-align: center;
+}
+
+#welcome-user .container {
+  height: 100vh;
+}
+
+.auth-form {
+  height: 100vh;
+}

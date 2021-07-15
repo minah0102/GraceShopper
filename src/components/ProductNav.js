@@ -9,7 +9,8 @@ import {
   Container,
 } from "react-bootstrap";
 import { fetchCategories, fetchAllProducts } from "../api/products";
-import "../css/Product.css";
+import "../css/ProductNav.css";
+
 
 const ProductNav = ({ setSearchProducts }) => {
   const [products, setProducts] = useState([]);
@@ -42,12 +43,12 @@ const ProductNav = ({ setSearchProducts }) => {
   };
 
   return (
-    <Container>
-      <Navbar bg="light" expand="lg">
+    // <Container>
+      <Navbar expand="lg" id="product-nav">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav>
-            <Nav.Link href="/products">All Products</Nav.Link>
+            <Link className="category__link" to="/products">All Products</Link>
             {categories.map((category) => {
               let { id, name } = category;
               name = name.charAt(0).toUpperCase() + name.slice(1);
@@ -76,7 +77,7 @@ const ProductNav = ({ setSearchProducts }) => {
           </Form>
         </Navbar.Collapse>
       </Navbar>
-    </Container>
+    // </Container>
   );
 };
 

@@ -51,6 +51,16 @@ const Product = () => {
       const { rating } = review;
       return rating;
     });
+  // const productReviews = currentProduct.reviews;
+  // console.log(productReviews);
+  // const ratings = productReviews.map((review) => {
+  //   const { rating } = review;
+  //   return rating;
+  // });
+  // console.log(ratings);
+  // const r = (acc, value) => acc + value;
+  // const averageRating = ratings.reduce(r) / ratings.length;
+  // console.log(averageRating);
 
     const r = (acc, value) => acc + value;
     if (ratings.length > 0) {
@@ -104,8 +114,8 @@ const Product = () => {
   };
 
   return (
-    <Container>
-      <Row className="product__container">
+    <Container className="single-product-container">
+      <Row>
         <Col>
           <Image
             className="product__image"

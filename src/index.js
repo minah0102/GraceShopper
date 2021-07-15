@@ -106,7 +106,7 @@ const App = () => {
           }}
         >
           <Header />
-          <Container>
+          {/* <Container> */}
             {/* <Donate /> */}
             <Switch>
               <Route exact path="/">

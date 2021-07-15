@@ -11,21 +11,21 @@ const Profile = () => {
     <>
       <h2>Profile</h2>
       <Form>
-        <Form.Group as={Row} controlId="formUserProfileUsername">
+        <Form.Group style={{margin: "0.5rem"}} as={Row} controlId="formUserProfileUsername">
           <Form.Label column sm="4">Username</Form.Label>
           <Col sm="8">
             <Form.Control plaintext readOnly value={user.username} />
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row} controlId="formUserProfileEmail">
+        <Form.Group style={{margin: "0.5rem"}} as={Row} controlId="formUserProfileEmail">
           <Form.Label column sm="4">Email</Form.Label>
           <Col sm="8">
             <Form.Control plaintext readOnly value={user.email} />
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row} controlId="formUserProfilePassword">
+        <Form.Group style={{margin: "0.5rem"}} as={Row} controlId="formUserProfilePassword">
           <Form.Label column sm="4">
             Password
           </Form.Label>
@@ -34,7 +34,7 @@ const Profile = () => {
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row} controlId="formUserProfileConfirmPassword">
+        <Form.Group style={{margin: "0.5rem"}} as={Row} controlId="formUserProfileConfirmPassword">
           <Form.Label column sm="4">
             Confirm Password
           </Form.Label>
@@ -43,7 +43,7 @@ const Profile = () => {
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row}>
+        <Form.Group style={{margin: "0.5rem"}} as={Row}>
           <Col sm={{ span: 8, offset: 4 }}>
             <Button type="submit">Reset Password</Button>
           </Col>

@@ -30,7 +30,8 @@ console.log("SEARCH", searchProducts);
       <Switch>
         <Route path="/products">
         <ProductNav products={products} setSearchProducts={setSearchProducts} />
-          <Container>
+          <Container className="product-container">
+          <h3 className="category-header">All Products</h3>
             <Row>
               {products &&
                 products.map((product) => (
