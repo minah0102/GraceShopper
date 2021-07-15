@@ -62,7 +62,12 @@ export async function deleteProductFromCart(lineItemId) {
   }
 }
 
-export async function addProductToCart(orderId, productId, price, quantity) {
+export async function addProductToCart(
+  orderId,
+  productId,
+  price,
+  quantity,
+) {
   const { config } = getTokenConfig();
 
   try {
@@ -71,7 +76,6 @@ export async function addProductToCart(orderId, productId, price, quantity) {
       { productId, price, quantity },
       config
     );
-
     return data;
   } catch (error) {
     console.log("Error in api/postProductToCart");
