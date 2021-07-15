@@ -9,7 +9,7 @@ const Profile = () => {
 
   return (
     <>
-      <h2>Profile</h2>
+      <h2 style={{fontSize: "1.5rem", marginBottom: "1rem"}}>Profile</h2>
       <Form>
         <Form.Group style={{margin: "0.5rem"}} as={Row} controlId="formUserProfileUsername">
           <Form.Label column sm="4">Username</Form.Label>
