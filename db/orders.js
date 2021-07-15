@@ -3,7 +3,7 @@ const client = require("./client");
 async function createOrder(userId) {
   try {
     const {
-      rows: [order],
+      rows: order,
     } = await client.query(
       /*sql*/ `
         INSERT INTO orders ("userId")
@@ -141,7 +141,7 @@ async function attachProductsToOrder(orders) {
     const orderIds = orders.map((o) => o.id).join(", "); //3, 11
 
     const { rows: products } = await client.query(/*sql*/ `
-      SELECT p.id AS "productId", p.name, p.description, p."imageName", li.quantity, li.price, li."orderId", li.id as "lineItemId"
+      SELECT p.id AS "productId", p.name, p."imageName", li.quantity, li.price, li."orderId", li.id as "lineItemId"
       FROM line_items AS li
       JOIN products AS p ON p.id=li."productId"
       WHERE "orderId" IN (${orderIds});

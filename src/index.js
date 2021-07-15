@@ -1,7 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
 import {
   Header,
@@ -36,7 +41,25 @@ const App = () => {
   const [currentUsername, setCurrentUsername] = useState("");
   const [total, setTotal] = useState(0);
   const [orderHistory, setOrderHistory] = useState([]);
+<<<<<<< HEAD
   const [searchProducts, setSearchProducts] = useState([]);
+=======
+  const [localCart, setLocalCart] = useState([]);
+
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    if (cart) {
+      setLocalCart(cart);
+      setTotal(() => {
+        return cart.length !== 0
+          ? cart.reduce((acc, c) => {
+              return acc + c.quantity * c.price;
+            }, 0)
+          : 0;
+      });
+    }
+  }, []);
+>>>>>>> 9cddaa3ef536ec0bbf7509999dbd5ba6a586c24e
 
   useEffect(() => {
     const { config } = getTokenConfig();
@@ -54,10 +77,10 @@ const App = () => {
   useEffect(() => {
     const { config } = getTokenConfig();
     fetch(`/api/users/users`, config)
-    .then((response) => response.json())
-    .then(u => {
-      setUsers(u)
-    });
+      .then((response) => response.json())
+      .then((u) => {
+        setUsers(u);
+      });
   }, []);
 
   useEffect(() => {
@@ -94,7 +117,7 @@ const App = () => {
           value={{
             user,
             setUser,
-            users, 
+            users,
             setUsers,
             currentUsername,
             setCurrentUsername,
@@ -104,10 +127,19 @@ const App = () => {
             setTotal,
             orderHistory,
             setOrderHistory,
+            localCart,
+            setLocalCart,
           }}
         >
+<<<<<<< HEAD
           <Header />
           <ProductNav setSearchProducts={setSearchProducts} />
+=======
+         {/* <Container> */}
+            <Header />
+            <ProductNav />
+
+>>>>>>> 9cddaa3ef536ec0bbf7509999dbd5ba6a586c24e
             {/* <Donate /> */}
             <Switch>
               <Route exact path="/">
@@ -123,16 +155,24 @@ const App = () => {
                 <Cart />
               </Route>
               <Route exact path="/products">
+<<<<<<< HEAD
                 <Products setSearchProducts={setSearchProducts}/>
+=======
+                <Products />
+>>>>>>> 9cddaa3ef536ec0bbf7509999dbd5ba6a586c24e
               </Route>
               <Route exact path="/products/:id">
                 <Product />
               </Route>
               <Route path="/products/category/:name">
+<<<<<<< HEAD
                 <CategoryProducts setSearchProducts={setSearchProducts}/>
               </Route>
               <Route path="/search">
                 <SearchResults searchProducts={searchProducts}/>
+=======
+                <CategoryProducts />
+>>>>>>> 9cddaa3ef536ec0bbf7509999dbd5ba6a586c24e
               </Route>
               <Route path="/checkout">
                 <Checkout />
@@ -141,11 +181,7 @@ const App = () => {
                 {currentUsername ? <LoggedInPage /> : <Login />}
               </Route>
               <Route path="/admin">
-                {user && user.isAdmin ? (
-                  <Admin/>
-                ) : (
-                  <Redirect to="/" />
-                )}
+                {user && user.isAdmin ? <Admin /> : <Redirect to="/" />}
               </Route>
             </Switch>
         </UserContext.Provider>
