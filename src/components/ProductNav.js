@@ -42,6 +42,7 @@ const ProductNav = ({ setSearchProducts }) => {
       return product.name.toLowerCase().includes(searchInput.toLowerCase());
     });
     setSearchProducts(filteredProducts);
+    setSearchInput("");
     history.push("/search")
   };
 
