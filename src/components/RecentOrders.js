@@ -1,34 +1,46 @@
 import React, { useContext } from "react";
-import { Table } from "react-bootstrap";
+import { Container, Table, Row, Col } from "react-bootstrap";
 import { UserContext } from "..";
 
 const RecentOrders = () => {
   const { orderHistory } = useContext(UserContext);
 
+
   return (
     <div>
       <h2>Recent Orders</h2>
-      <Table>
+      <Table striped bordered hover>
         <thead>
           <tr>
+            <th>#</th>
             <th>Date Purchased</th>
             <th>Product</th>
             <th>Quantity</th>
             <th>Price</th>
           </tr>
-
-          <tbody>
-            {orderHistory.map(pastedOrder =>
-              <tr key={pastedOrder.id}>
-                <td>{pastedOrder.purchasedDate}</td>
-                <td>{pastedOrder.name}</td>
-                <td>{pastedOrder.quantity}</td>
-                <td>{pastedOrder.price}</td>
-              </tr>
-            )}
-          </tbody>
         </thead>
+        
+            {orderHistory.map(pastedOrder =>
+              <tbody>
+                <tr key={pastedOrder.id}>
+                  <td>{pastedOrder.id}</td>
+                  <td>{pastedOrder.purchasedDate}</td>
+                  
+                  {pastedOrder.products.map(({ name, quantity, price }) =>
+                    <>
+                      <td>{name}</td>
+                      <td>{quantity}</td>
+                      <td>{price}</td>
+                    </>
+                  )}
+
+                </tr>
+              </tbody>
+            )}
+        
+
       </Table>
+
     </div>
   )
 }
