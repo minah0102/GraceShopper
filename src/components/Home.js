@@ -12,14 +12,14 @@ const Home = () => {
           <img
             className="d-block w-100"
             src={aver}
-            alt="First Slide"
+            alt="First Slide" width="600px"
           />
         </Carousel.Item>
 
         <Carousel.Item interval={2000}>
           <img className="d-block w-100"
             src={aver}
-            alt="Second Slide"
+            alt="Second Slide" width="600px"
           />
         </Carousel.Item>
 
