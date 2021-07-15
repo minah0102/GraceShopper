@@ -29,12 +29,16 @@ const Products = ({ setSearchProducts, searchProducts }) => {
       <Switch>
         <Route path="/products">
           <Container className="product-container">
-            <h3 className="category-header">{searchProducts && searchProducts.length > 0 ? `Search Results` : `All Products`}</h3>
+            <h3 className="category-header">
+              {searchProducts && searchProducts.length > 0
+                ? `Search Results`
+                : `All Products`}
+            </h3>
             <Row>
-              { products &&
-                  products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
+              {products &&
+                products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
             </Row>
           </Container>
         </Route>

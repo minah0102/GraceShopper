@@ -138,7 +138,7 @@ const Cart = () => {
                         >
                           {p.name}
                           <span style={{ color: "red" }}>
-                            ${Number.parseInt(p.price).toFixed(2)}
+                            ${Number.parseFloat(p.price)}
                           </span>
                         </Col>
                         <Col xs={3}>
