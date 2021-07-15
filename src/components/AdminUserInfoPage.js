@@ -20,7 +20,7 @@ const AdminUserInfoPage = () => {
 
         <tbody>
           {
-            users.map(user =>
+            users && users.map(user =>
               <tr key={user.id}>
                 <td>{user.id}</td>
                 <td>{user.username}</td>
