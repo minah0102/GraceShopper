@@ -192,9 +192,13 @@ const Product = () => {
                 </Form.Control>
               </Form.Group>
             </div>
-            {disableAddToCart && <div>Out of Stock!</div>}
-
-            {quantity <= 10 && <div>Only {quantity} left!</div>}
+            {disableAddToCart ? (
+              <div>Out of Stock!</div>
+            ) : quantity <= 10 ? (
+              <div>Only {quantity} left!</div>
+            ) : (
+              ""
+            )}
             <div className="product-price">${price}</div>
           </Row>
         </Col>
