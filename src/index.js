@@ -128,9 +128,10 @@ const App = () => {
             setLocalCart,
           }}
         >
-          <Container>
+         {/* <Container> */}
             <Header />
             <ProductNav />
+
             {/* <Donate /> */}
             <Switch>
               <Route exact path="/">
@@ -165,7 +166,7 @@ const App = () => {
               </Route>
             </Switch>
             {/* <ReviewForm /> */}
-          </Container>
+          {/* </Container> */}
         </UserContext.Provider>
       </div>
     </Router>

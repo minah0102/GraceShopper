@@ -124,8 +124,8 @@ const Product = () => {
   };
 
   return (
-    <Container>
-      <Row className="product__container">
+    <Container className="single-product-container">
+      <Row>
         <Col>
           <Image
             className="product__image"
@@ -161,7 +161,7 @@ const Product = () => {
           </Row>
         </Col>
       </Row>
-      <Row>
+      {/* <Row>
         <Accordion>
           <Card>
             {/* <Card.Header>
@@ -177,7 +177,7 @@ const Product = () => {
             </Accordion.Collapse> */}
           </Card>
         </Accordion>
-      </Row>
+      </Row> */}
     </Container>
   );
 };
