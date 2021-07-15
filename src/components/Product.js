@@ -12,6 +12,7 @@ import {
 import { fetchProductById } from "../api/products";
 import { addProductToCart } from "../api";
 import "../css/Product.css";
+import { FaStar } from "react-icons/fa";
 
 import { useParams, useHistory } from "react-router-dom";
 import { Reviews, ReviewForm, SingleRating } from "./index.js";
@@ -52,7 +53,9 @@ const Product = () => {
     });
 
     const r = (acc, value) => acc + value;
-    averageRating = Math.round(ratings.reduce(r) / ratings.length);
+    if (ratings.length > 0) {
+      averageRating = Math.round(ratings.reduce(r) / ratings.length);
+    }
     // setAverageRating(averageRating)
   }
   let selectQuantity = [];
@@ -112,6 +115,19 @@ const Product = () => {
         </Col>
         <Col className="product__info">
           <h1>{name}</h1>
+          {averageRating !== undefined && (
+            <div>
+
+              {[...Array(averageRating)].map((star, i) => {
+                const value = i + 1;
+                return (
+                  <label key={value}>
+                    <FaStar color={"#ffc107"} />
+                  </label>
+                );
+              })}
+            </div>
+          )}
           <div>{description}</div>
           <Row className="product__footer">
             <div className="button__container">
@@ -138,7 +154,8 @@ const Product = () => {
           </Row>
         </Col>
       </Row>
-      {currentUsername && matchProducts.length > 0 ? (
+      {currentUsername ? (
+        // && matchProducts.length > 0
         <ReviewForm
           id={id}
           currentProduct={currentProduct}
@@ -151,10 +168,6 @@ const Product = () => {
         <Accordion>
           <Card>
             <Card.Header>
-              {averageRating !== undefined && (
-                <h5>Average rating: {averageRating}</h5>
-                // <SingleRating averageRating={averageRating}/>
-              )}
               <Accordion.Toggle as={Button} variant="link" eventKey="0">
                 Click to see reviews
               </Accordion.Toggle>

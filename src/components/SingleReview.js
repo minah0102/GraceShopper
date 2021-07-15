@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { FaStar } from "react-icons/fa";
 import { UserContext } from "..";
 import { Card, Button } from "react-bootstrap";
 import { deleteReview } from "../api/reviews";

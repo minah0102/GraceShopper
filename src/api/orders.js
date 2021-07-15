@@ -8,7 +8,6 @@ export async function getOrderByUser() {
 
   try {
     const { data } = await axios.get(`${URL}/orders/cart`, config);
-
     return data;
   } catch (error) {
     console.log("Error in api/getOrderByUser");
