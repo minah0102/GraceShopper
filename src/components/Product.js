@@ -10,7 +10,7 @@ import {
   Card,
 } from "react-bootstrap";
 import { fetchProductById } from "../api/products";
-import { addProductToCart } from "../api";
+import { addProductToCart, patchQuantity } from "../api";
 import "../css/Product.css";
 
 import { useParams, useHistory } from "react-router-dom";
@@ -18,13 +18,21 @@ import { Reviews } from "./index.js";
 import { UserContext } from "..";
 
 const Product = () => {
-  const { myOrder, setMyOrder, total, setTotal } = useContext(UserContext);
+  const {
+    myOrder,
+    setMyOrder,
+    total,
+    setTotal,
+    currentUsername,
+    localCart,
+    setLocalCart,
+  } = useContext(UserContext);
   const [currentProduct, setCurrentProduct] = useState({});
   const [addQuantity, setAddQuantity] = useState(1);
 
   const history = useHistory();
 
-  let { id } = useParams();
+  let id = +useParams().id;
 
   useEffect(async () => {
     const product = await fetchProductById(id);
@@ -51,37 +59,67 @@ const Product = () => {
   }
 
   const handleAddToCart = async () => {
-    const added = await addProductToCart(myOrder.id, id, price, addQuantity);
+    if (currentUsername) {
+      const sameProduct = myOrder.products.find((p) => p.productId === id);
 
-    const sameProduct = myOrder.products.filter(
-      (p) => Number.parseInt(p.productId) === added.productId
-    );
+      if (sameProduct) {
+        const idx = myOrder.products.findIndex((p) => p.productId === id);
+        const updated = await patchQuantity(
+          sameProduct.lineItemId,
+          sameProduct.quantity + addQuantity
+        );
 
-    if (sameProduct.length !== 0) {
-      const idx = myOrder.products.findIndex(
-        (p) => Number.parseInt(p.productId) === added.productId
-      );
-      myOrder.products[idx].quantity = added.quantity;
+        myOrder.products[idx].quantity += addQuantity;
+      } else {
+        const added = await addProductToCart(
+          myOrder.id,
+          id,
+          price,
+          addQuantity
+        );
+
+        const addedProduct = {
+          lineItemId: added.id,
+          orderId: added.orderId,
+          price: added.price,
+          productId: id,
+          quantity: added.quantity,
+          name,
+          imageName,
+        };
+        myOrder.products.push(addedProduct);
+      }
+
+      setMyOrder(myOrder);
     } else {
-      const addedProduct = {
-        lineItemId: added.id,
-        orderId: added.orderId,
-        price: added.price,
-        productId: id,
-        quantity: added.quantity,
-        name,
-        description,
-        imageName,
-      };
-      myOrder.products.push(addedProduct);
-    }
+      //no currentUsername - localStorage cart
+      const existing = localCart.find((lc) => lc.productId === id);
 
-    setMyOrder(myOrder);
-    setTotal(() => {
-      return myOrder.products.reduce((acc, p) => {
-        return acc + p.quantity * p.price;
-      }, 0);
-    });
+      if (existing) {
+        const idx = localCart.findIndex(
+          (lc) => existing.productId === lc.productId
+        );
+
+        localCart[idx].quantity = +localCart[idx].quantity + +addQuantity;
+      } else {
+        //no exsiting product
+        const lineItem = {
+          productId: id,
+          name,
+          price,
+          quantity: addQuantity,
+          imageName,
+        };
+
+        localCart.push(lineItem);
+      }
+      setLocalCart(localCart);
+
+      localStorage.setItem("cart", JSON.stringify(localCart));
+    }
+    const newTotal = total + addQuantity * price;
+    setTotal(newTotal);
+
     history.push("/cart");
   };
 
@@ -126,7 +164,7 @@ const Product = () => {
       {/* <Row>
         <Accordion>
           <Card>
-            <Card.Header>
+            {/* <Card.Header>
               <h5>Average rating: {averageRating}</h5>
               <Accordion.Toggle as={Button} variant="link" eventKey="0">
                 Click to see reviews
@@ -136,7 +174,7 @@ const Product = () => {
               <Card.Body>
                 <Reviews currentProduct={currentProduct} />
               </Card.Body>
-            </Accordion.Collapse>
+            </Accordion.Collapse> */}
           </Card>
         </Accordion>
       </Row> */}

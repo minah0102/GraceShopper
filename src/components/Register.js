@@ -3,21 +3,24 @@ import { useHistory } from "react-router-dom";
 import { UserContext } from "..";
 import { Form, Button } from "react-bootstrap";
 import { registerUser } from "../api/users";
+import { addProductToCart, getOrderByUser } from "../api";
 import '../css/User.css'
+
 
 const mystyle = {
   padding: "1rem",
   margin: "1rem",
   display: "flex",
-  justifyContent: "center"
+  justifyContent: "center",
 };
 
 const Register = () => {
   const history = useHistory();
-  const { setUser, setCurrentUsername } = useContext(UserContext);
+  const { setUser, setCurrentUsername, setMyOrder, setTotal, setLocalCart } =
+    useContext(UserContext);
 
   const [usernameInput, setUsernameInput] = useState("");
-  const [emailInput, setEmailInput] = useState("")
+  const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [confirmPasswordInput, setConfirmPasswordInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -41,6 +44,11 @@ const Register = () => {
       if (user) {
         setUser(user);
         setCurrentUsername(user.username);
+
+        if (localStorage.getItem("cart")) {
+          handleLocalCart();
+        }
+
         history.push("/authenticated");
       }
     });
@@ -64,6 +72,48 @@ const Register = () => {
   const confirmPasswordChangeHandler = (event) => {
     event.preventDefault();
     setConfirmPasswordInput(event.target.value);
+  };
+
+  const handleLocalCart = async () => {
+    const orderForUser = await getOrderByUser();
+    const cart = JSON.parse(localStorage.getItem("cart"));
+
+    const added = await Promise.all(
+      cart.map((c) =>
+        addProductToCart(orderForUser.id, c.productId, c.price, c.quantity)
+      )
+    );
+
+    const shapedProducts = cart.map((c) => {
+      const same = added.find((a) => a.productId === c.productId);
+
+      const obj = {
+        lineItemId: same.id,
+        orderId: same.orderId,
+        price: +same.price,
+        productId: same.productId,
+        quantity: +same.quantity,
+        name: c.name,
+        imageName: c.imageName,
+      };
+
+      return obj;
+    });
+
+    orderForUser.products = [];
+    shapedProducts.forEach((s) => {
+      orderForUser.products.push(s);
+    });
+
+    setMyOrder(orderForUser);
+    setTotal(() => {
+      return orderForUser.products.reduce((acc, p) => {
+        return acc + p.quantity * p.price;
+      }, 0);
+    });
+
+    setLocalCart([]);
+    localStorage.removeItem("cart");
   };
 
   return (
@@ -127,6 +177,6 @@ const Register = () => {
       </Form>
     </div>
   );
-}
+};
 
 export default Register;
