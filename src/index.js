@@ -1,7 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
 import {
   Header,
@@ -13,12 +18,11 @@ import {
   Products,
   Product,
   ProductNav,
+  SearchResults,
   CategoryProducts,
   Checkout,
   LoggedInPage,
-  Admin,
-  AdminProductPage,
-  AdminUserInfoPage,
+  Admin
 } from "./components";
 
 import { Container } from "react-bootstrap";
@@ -37,6 +41,24 @@ const App = () => {
   const [total, setTotal] = useState(0);
   const [orderHistory, setOrderHistory] = useState([]);
 
+  const [searchProducts, setSearchProducts] = useState([]);
+
+  const [localCart, setLocalCart] = useState([]);
+
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    if (cart) {
+      setLocalCart(cart);
+      setTotal(() => {
+        return cart.length !== 0
+          ? cart.reduce((acc, c) => {
+              return acc + c.quantity * c.price;
+            }, 0)
+          : 0;
+      });
+    }
+  }, []);
+
   useEffect(() => {
     const { config } = getTokenConfig();
 
@@ -53,10 +75,10 @@ const App = () => {
   useEffect(() => {
     const { config } = getTokenConfig();
     fetch(`/api/users/users`, config)
-    .then((response) => response.json())
-    .then(u => {
-      setUsers(u)
-    });
+      .then((response) => response.json())
+      .then((u) => {
+        setUsers(u);
+      });
   }, []);
 
   useEffect(() => {
@@ -93,7 +115,7 @@ const App = () => {
           value={{
             user,
             setUser,
-            users, 
+            users,
             setUsers,
             currentUsername,
             setCurrentUsername,
@@ -103,14 +125,17 @@ const App = () => {
             setTotal,
             orderHistory,
             setOrderHistory,
+            localCart,
+            setLocalCart,
           }}
         >
+          
+        {/* <Container> */}
           <Header />
-          {/* <Container> */}
+          <ProductNav setSearchProducts={setSearchProducts} />
             {/* <Donate /> */}
             <Switch>
               <Route exact path="/">
-                <ProductNav />
                 <Home />
               </Route>
               <Route path="/register">
@@ -123,16 +148,17 @@ const App = () => {
                 <Cart />
               </Route>
               <Route exact path="/products">
-                {/* <ProductNav /> */}
-                <Products />
+                <Products setSearchProducts={setSearchProducts}/>
               </Route>
               <Route exact path="/products/:id">
-                <ProductNav />
                 <Product />
               </Route>
               <Route path="/products/category/:name">
-                <ProductNav />
-                <CategoryProducts />
+                <CategoryProducts setSearchProducts={setSearchProducts}/>
+              </Route>
+              <Route path="/search">
+                <SearchResults searchProducts={searchProducts}/>
+
               </Route>
               <Route path="/checkout">
                 <Checkout />
@@ -141,15 +167,9 @@ const App = () => {
                 {currentUsername ? <LoggedInPage /> : <Login />}
               </Route>
               <Route path="/admin">
-                {user && user.isAdmin ? (
-                  <Admin/>
-                ) : (
-                  <Redirect to="/" />
-                )}
+                {user && user.isAdmin ? <Admin /> : <Redirect to="/" />}
               </Route>
             </Switch>
-            {/* <ReviewForm /> */}
-          {/* </Container> */}
         </UserContext.Provider>
       </div>
     </Router>
