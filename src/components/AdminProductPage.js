@@ -8,10 +8,15 @@ const AdminProductPage = ({ products, setProducts, setAvailableProducts }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [productToEdit, setProductToEdit] = useState({});
   const [categoryInput, setCategoryInput] = useState("");
+  const [filteredCategories, setFilteredCategories] = useState([])
 
-
-  const categories = products.map((product) => product.category);
-  const filteredCategories = [...new Set(categories)];
+useEffect(() => {
+  if (products) {
+    const categories = products.map((product) => product.category);
+    const filtered = [...new Set(categories)];
+    setFilteredCategories(filtered);
+  }
+}, [products])
 
   const handleAddProductButton = () => {
     setShowAddModal(true);
@@ -27,6 +32,8 @@ const AdminProductPage = ({ products, setProducts, setAvailableProducts }) => {
       return product.category === selection;
     });
   };
+
+  console.log("admin products", products);
 
   return (
     <Container>

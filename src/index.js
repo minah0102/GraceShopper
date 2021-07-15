@@ -19,12 +19,11 @@ import {
   Products,
   Product,
   ProductNav,
+  SearchResults,
   CategoryProducts,
   Checkout,
   LoggedInPage,
-  Admin,
-  AdminProductPage,
-  AdminUserInfoPage,
+  Admin
 } from "./components";
 
 import { Container } from "react-bootstrap";
@@ -42,6 +41,9 @@ const App = () => {
   const [currentUsername, setCurrentUsername] = useState("");
   const [total, setTotal] = useState(0);
   const [orderHistory, setOrderHistory] = useState([]);
+
+  const [searchProducts, setSearchProducts] = useState([]);
+
   const [localCart, setLocalCart] = useState([]);
 
   useEffect(() => {
@@ -128,10 +130,10 @@ const App = () => {
             setLocalCart,
           }}
         >
-         {/* <Container> */}
-            <Header />
-            <ProductNav />
-
+          
+        {/* <Container> */}
+          <Header />
+          <ProductNav setSearchProducts={setSearchProducts} />
             {/* <Donate /> */}
             <Switch>
               <Route exact path="/">
@@ -147,13 +149,17 @@ const App = () => {
                 <Cart />
               </Route>
               <Route exact path="/products">
-                <Products />
+                <Products setSearchProducts={setSearchProducts}/>
               </Route>
               <Route exact path="/products/:id">
                 <Product />
               </Route>
               <Route path="/products/category/:name">
-                <CategoryProducts />
+                <CategoryProducts setSearchProducts={setSearchProducts}/>
+              </Route>
+              <Route path="/search">
+                <SearchResults searchProducts={searchProducts}/>
+
               </Route>
               <Route path="/checkout">
                 <Checkout />
@@ -165,8 +171,6 @@ const App = () => {
                 {user && user.isAdmin ? <Admin /> : <Redirect to="/" />}
               </Route>
             </Switch>
-            {/* <ReviewForm /> */}
-          {/* </Container> */}
         </UserContext.Provider>
       </div>
     </Router>
