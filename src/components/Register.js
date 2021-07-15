@@ -32,9 +32,8 @@ const Register = () => {
     setIsLoading(true);
 
     registerUser(usernameInput, emailInput, passwordInput).then((result) => {
-      setIsLoading(false);
-
       const { user, error } = result;
+      setIsLoading(false);
 
       if (error) {
         setError(error);
@@ -70,9 +69,10 @@ const Register = () => {
   return (
     <div style={mystyle} className="auth-form">
       <Form style={{ width: "30rem" }}>
-        <h2>Please Register</h2>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <Form.Group controlId="formRegisterUsername">
+        <h2 style={{ margin: "0.7rem" }}>Please Register</h2>
+        {error && <p style={{ color: "red", margin: "0.7rem" }}>{error}</p>}
+
+        <Form.Group style={{ margin: "0.7rem" }} controlId="formRegisterUsername">
           <Form.Label>Username</Form.Label>
           <Form.Control
             type="username"
@@ -82,7 +82,7 @@ const Register = () => {
           />
         </Form.Group>
 
-        <Form.Group controlId="formRegisterEmail">
+        <Form.Group style={{ margin: "0.7rem" }} controlId="formRegisterEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
@@ -92,7 +92,7 @@ const Register = () => {
           />
         </Form.Group>
 
-        <Form.Group>
+        <Form.Group style={{ margin: "0.7rem" }} controlId="formRegisterPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -105,7 +105,7 @@ const Register = () => {
           </Form.Text>
         </Form.Group>
 
-        <Form.Group>
+        <Form.Group style={{ margin: "0.7rem" }} controlId="formRegisterConfirmPassword">
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
             type="password"
@@ -116,6 +116,7 @@ const Register = () => {
         </Form.Group>
 
         <Button
+          style={{ margin: "0.7rem" }}
           variant="primary"
           type="submit"
           onClick={submitHandler}

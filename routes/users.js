@@ -86,7 +86,10 @@ usersRouter.post('/register', async (req, res, next) => {
 
     if (user) {
       const error = new Error("username is taken");
-      return next(error);
+      return res.send({
+        error: "username already taken!",
+        message: "username is already taken!"
+      })
     }
 
     if (password.length < 8) {

@@ -6,14 +6,14 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import '../css/User.css'
 
 const LoggedInPage = () => {
-  const { user, setUser, currentUsername } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   return (
     <div id="welcome-user">
-      <h1>Welcome {currentUsername}</h1>
+      <h1>Welcome {user.username}</h1>
       <Container>
         <Row>
-          <Col><RecentOrders /></Col>
+          <Col xs={8}><RecentOrders /></Col>
           <Col><Profile /></Col>
         </Row>
       </Container>
