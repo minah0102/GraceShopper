@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   Navbar,
   Nav,
@@ -16,6 +16,8 @@ const ProductNav = ({ setSearchProducts }) => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+
+  const history = useHistory();
 
   useEffect(async () => {
     const categories = await fetchCategories();
@@ -40,11 +42,10 @@ const ProductNav = ({ setSearchProducts }) => {
       return product.name.toLowerCase().includes(searchInput.toLowerCase());
     });
     setSearchProducts(filteredProducts);
-    console.log("filtered", filteredProducts);
+    history.push("/search")
   };
 
   return (
-    // <Container>
       <Navbar expand="lg" id="product-nav">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -77,9 +78,7 @@ const ProductNav = ({ setSearchProducts }) => {
             </Button>
           </Form>
         </Navbar.Collapse>
-      </Navbar>
-    // </Container>
-  );
+      </Navbar>  );
 };
 
 export default ProductNav;

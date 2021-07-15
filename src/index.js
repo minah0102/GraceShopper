@@ -14,12 +14,11 @@ import {
   Products,
   Product,
   ProductNav,
+  SearchResults,
   CategoryProducts,
   Checkout,
   LoggedInPage,
-  Admin,
-  AdminProductPage,
-  AdminUserInfoPage,
+  Admin
 } from "./components";
 
 import { Container } from "react-bootstrap";
@@ -108,11 +107,10 @@ const App = () => {
           }}
         >
           <Header />
-          {/* <Container> */}
+          <ProductNav setSearchProducts={setSearchProducts} />
             {/* <Donate /> */}
             <Switch>
               <Route exact path="/">
-                <ProductNav setSearchProducts={setSearchProducts}/>
                 <Home />
               </Route>
               <Route path="/register">
@@ -125,16 +123,16 @@ const App = () => {
                 <Cart />
               </Route>
               <Route exact path="/products">
-                {/* <ProductNav /> */}
-                <Products searchProducts={searchProducts} setSearchProducts={setSearchProducts}/>
+                <Products setSearchProducts={setSearchProducts}/>
               </Route>
               <Route exact path="/products/:id">
-                <ProductNav setSearchProducts={setSearchProducts} />
                 <Product />
               </Route>
               <Route path="/products/category/:name">
-                <ProductNav setSearchProducts={setSearchProducts} />
-                <CategoryProducts searchProducts={searchProducts}/>
+                <CategoryProducts setSearchProducts={setSearchProducts}/>
+              </Route>
+              <Route path="/search">
+                <SearchResults searchProducts={searchProducts}/>
               </Route>
               <Route path="/checkout">
                 <Checkout />
@@ -150,8 +148,6 @@ const App = () => {
                 )}
               </Route>
             </Switch>
-            {/* <ReviewForm /> */}
-          {/* </Container> */}
         </UserContext.Provider>
       </div>
     </Router>

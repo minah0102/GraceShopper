@@ -24,20 +24,14 @@ const Products = ({ setSearchProducts, searchProducts }) => {
     setProducts(searchProducts);
   }, [searchProducts]);
 
-  console.log("SEARCH", searchProducts);
   return (
     <>
       <Switch>
         <Route path="/products">
-          <ProductNav setSearchProducts={setSearchProducts} />
           <Container className="product-container">
             <h3 className="category-header">{searchProducts && searchProducts.length > 0 ? `Search Results` : `All Products`}</h3>
             <Row>
-              { searchProducts && searchProducts.length > 0
-                ? searchProducts.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))
-                : products &&
+              { products &&
                   products.map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))}

@@ -4,7 +4,7 @@ import { fetchCategoryProducts } from "../api/products";
 import { Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
-const CategoryProducts = () => {
+const CategoryProducts = ({searchProducts, setSearchProducts}) => {
   const [products, setProducts] = useState([]);
   const { name } = useParams();
 
@@ -18,7 +18,9 @@ const CategoryProducts = () => {
 
   return (
     <Container className="product-container">
-      <h3 className="category-header">{name.charAt(0).toUpperCase() + name.slice(1)}</h3>
+      <h3 className="category-header">
+        {name.charAt(0).toUpperCase() + name.slice(1)}
+      </h3>
       <Row>
         {products.length > 0 ? (
           products.map((product) => (
