@@ -41,9 +41,7 @@ const App = () => {
   const [currentUsername, setCurrentUsername] = useState("");
   const [total, setTotal] = useState(0);
   const [orderHistory, setOrderHistory] = useState([]);
-<<<<<<< HEAD
   const [searchProducts, setSearchProducts] = useState([]);
-=======
   const [localCart, setLocalCart] = useState([]);
 
   useEffect(() => {
@@ -59,7 +57,6 @@ const App = () => {
       });
     }
   }, []);
->>>>>>> 9cddaa3ef536ec0bbf7509999dbd5ba6a586c24e
 
   useEffect(() => {
     const { config } = getTokenConfig();
@@ -131,15 +128,8 @@ const App = () => {
             setLocalCart,
           }}
         >
-<<<<<<< HEAD
           <Header />
           <ProductNav setSearchProducts={setSearchProducts} />
-=======
-         {/* <Container> */}
-            <Header />
-            <ProductNav />
-
->>>>>>> 9cddaa3ef536ec0bbf7509999dbd5ba6a586c24e
             {/* <Donate /> */}
             <Switch>
               <Route exact path="/">
@@ -155,24 +145,16 @@ const App = () => {
                 <Cart />
               </Route>
               <Route exact path="/products">
-<<<<<<< HEAD
                 <Products setSearchProducts={setSearchProducts}/>
-=======
-                <Products />
->>>>>>> 9cddaa3ef536ec0bbf7509999dbd5ba6a586c24e
               </Route>
               <Route exact path="/products/:id">
                 <Product />
               </Route>
               <Route path="/products/category/:name">
-<<<<<<< HEAD
                 <CategoryProducts setSearchProducts={setSearchProducts}/>
               </Route>
               <Route path="/search">
                 <SearchResults searchProducts={searchProducts}/>
-=======
-                <CategoryProducts />
->>>>>>> 9cddaa3ef536ec0bbf7509999dbd5ba6a586c24e
               </Route>
               <Route path="/checkout">
                 <Checkout />

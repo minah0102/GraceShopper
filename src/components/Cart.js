@@ -93,12 +93,6 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
-<<<<<<< HEAD
-    const newOrder = await patchInactive(myOrder.id);
-    setOrderHistory([...orderHistory, myOrder]);
-    setMyOrder(newOrder);
-    setTotal(0);
-=======
     if (currentUsername) {
       const newOrder = await patchInactive(myOrder.id);
 
@@ -107,7 +101,6 @@ const Cart = () => {
     }
     setTotal(0);
     
->>>>>>> 9cddaa3ef536ec0bbf7509999dbd5ba6a586c24e
     history.push("/checkout");
   };
 
@@ -165,31 +158,6 @@ const Cart = () => {
                                   );
                             }}
                           >
-<<<<<<< HEAD
-                            {name}
-                            <span style={{ color: "red" }}>
-                              ${Number.parseFloat(price)}
-                            </span>
-                          </Col>
-                          <Col xs={3}>
-                            <Form.Control
-                              as="select"
-                              defaultValue={quantity}
-                              style={{ marginBottom: "10px" }}
-                              onChange={(e) => setQuantity(e.target.value)}
-                              onClick={() => handleUpdateQuantity(lineItemId)}
-                            >
-                              {[...Array(50)].map((_, idx) => (
-                                <option key={idx}>{idx + 1}</option>
-                              ))}
-                            </Form.Control>
-                          </Col>
-                        </Row>
-                      </ListGroup.Item>
-                    );
-                  }
-                )}
-=======
                             {[...Array(50)].map((_, idx) => (
                               <option key={idx}>{idx + 1}</option>
                             ))}
@@ -199,7 +167,6 @@ const Cart = () => {
                     </ListGroup.Item>
                   );
                 })}
->>>>>>> 9cddaa3ef536ec0bbf7509999dbd5ba6a586c24e
               </ListGroup>
             )}
           </Col>
