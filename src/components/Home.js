@@ -5,6 +5,7 @@ import aver from "../images/aver2.jpg";
 import hotdog from "../images/hotdog.jpg";
 import nix from "../images/nix.jpg";
 import sunny from "../images/sunny.jpg";
+import max from "../images/Image from iOS.jpg"
 
 const Home = () => {
   return (
@@ -36,6 +37,13 @@ const Home = () => {
         <Carousel.Item interval={2000}>
           <img className="d-block w-100"
             src={sunny}
+            alt="Fourth Slide"
+          />
+        </Carousel.Item>
+
+        <Carousel.Item interval={2000}>
+          <img className="d-block w-100"
+            src={max}
             alt="Fourth Slide"
           />
         </Carousel.Item>
