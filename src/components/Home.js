@@ -6,8 +6,7 @@ import aver from "../images/aver2.jpg";
 const Home = () => {
   return (
     <Container className="home-container">
-      <h1>Welcome to Catnip Corp.</h1>
-      <h3>This is our home page.</h3>
+      <h1 style={{textAlign: "center"}}>Welcome to Catnip Corp.</h1>
       <Carousel>
         <Carousel.Item interval={2000}>
           <img
