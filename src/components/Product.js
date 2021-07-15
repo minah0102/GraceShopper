@@ -40,14 +40,8 @@ const Product = () => {
 
   let id = +useParams().id;
 
-  const {
-    name,
-    description,
-    imageName,
-    price,
-    reviews,
-    quantity,
-  } = currentProduct;
+  const { name, description, imageName, price, reviews, quantity } =
+    currentProduct;
 
   useEffect(async () => {
     const product = await fetchProductById(id);
@@ -82,6 +76,10 @@ const Product = () => {
   });
   const handleAddToCart = async () => {
     if (currentUsername) {
+      if (!myOrder.hasOwnProperty("products")) {
+        myOrder.products = [];
+      }
+
       const sameProduct = myOrder.products.find((p) => p.productId === id);
 
       if (sameProduct) {
@@ -106,6 +104,7 @@ const Product = () => {
           price: added.price,
           productId: id,
           quantity: added.quantity,
+          productQuantity: quantity,
           name,
           imageName,
         };
@@ -131,6 +130,7 @@ const Product = () => {
           price,
           quantity: addQuantity,
           imageName,
+          productQuantity: quantity,
         };
 
         localCart.push(lineItem);

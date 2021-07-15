@@ -10,6 +10,7 @@ import {
   Container,
 } from "react-bootstrap";
 import { patchQuantity, deleteProductFromCart, patchInactive } from "../api";
+import { updateProduct } from "../api/products";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "..";
 import "../css/Cart.css";
@@ -55,7 +56,8 @@ const Cart = () => {
       setMyOrder(myOrder);
 
       newTotal = newTotal + newProducts[idx].quantity * newProducts[idx].price;
-    } else { //no currentUsername - localStorage cart
+    } else {
+      //no currentUsername - localStorage cart
       const newLocalCart = localCart;
       const updateProduct = newLocalCart.find(
         (lc) => lc.productId === updateId
@@ -96,13 +98,24 @@ const Cart = () => {
 
   const handleCheckout = async () => {
     if (currentUsername) {
+      myOrder.products.map(async (p) => {
+        const updatedQ = p.productQuantity - p.quantity;
+        console.log("updatedQ", updatedQ);
+        const updated = await updateProduct({
+          id: p.productId,
+          quantity: +updatedQ,
+        });
+        console.log("show me updated!!!!", updated);
+      });
+
       const newOrder = await patchInactive(myOrder.id);
+      console.log("show me myOrder", myOrder);
 
       setOrderHistory([...orderHistory, myOrder]);
       setMyOrder(newOrder);
     }
     setTotal(0);
-    
+
     history.push("/checkout");
   };
 
@@ -185,7 +198,11 @@ const Cart = () => {
                   variant="primary"
                   block
                   onClick={handleCheckout}
-                  disabled={!renderProducts || renderProducts.length === 0 ? true : false}
+                  disabled={
+                    !renderProducts || renderProducts.length === 0
+                      ? true
+                      : false
+                  }
                 >
                   Checkout
                 </Button>

@@ -58,6 +58,7 @@ export const addProduct = async (product) => {
 }
 
 export const updateProduct = async (product) => {
+  console.log("inside updateProdut!! top", product);
   const { id } = product;
   const { token } = getTokenConfig();
   try {
@@ -70,6 +71,7 @@ export const updateProduct = async (product) => {
         },
       }
     );
+    console.log("inside updateProdut!! bottom", updatedProduct);
     return updatedProduct;
   } catch (error) {
     console.error(error);
