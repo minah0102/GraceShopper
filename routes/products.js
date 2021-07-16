@@ -70,7 +70,7 @@ productsRouter.post("/", requireAdmin, async (req, res, next) => {
     const category = await getCategoryById(categoryId);
     product.category = category.name;
     product.categoryId = categoryId;
-    console.log("NEW PRODUCT ROUTE", product);
+    
     res.send(product);
   } catch (error) {
     console.error("GET /products/:productId error");
@@ -88,17 +88,31 @@ productsRouter.patch("/:productId", requireAdmin, async (req, res, next) => {
   if (quantity !== undefined) fields.quantity = quantity;
   try {
     const updatedProduct = await updateProduct(productId, fields);
-    if(categoryId) {
-    const updatedCategory = await updateCategoryProduct({
-      productId,
-      categoryId,
-    });
-    const { name } = await getCategoryById(updatedCategory.categoryId);
-    updatedProduct.category = name;
-    updatedProduct.categoryId = categoryId;
-  }
+    if (categoryId) {
+      const updatedCategory = await updateCategoryProduct({
+        productId,
+        categoryId,
+      });
+      const { name } = await getCategoryById(updatedCategory.categoryId);
+      updatedProduct.category = name;
+      updatedProduct.categoryId = categoryId;
+    }
     res.send(updatedProduct);
   } catch (error) {
+    next(error);
+  }
+});
+
+productsRouter.patch("/:productId/quantity", async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const { quantity } = req.body;
+
+    const updatedQuantity = await updateProduct(productId, { quantity });
+
+    res.send(updatedQuantity);
+  } catch (error) {
+    console.error("PATCH /products/:productId/quantity error");
     next(error);
   }
 });
