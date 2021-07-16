@@ -65,11 +65,12 @@ const Product = () => {
     selectQuantity.push(i);
   }
 
-  const matchProducts = orderHistory.map((order) => {
-    return order.products.filter((product) => {
+  const matchProduct = orderHistory.filter((order) => {
+    return order.products.find((product) => {
       return product.productId === id;
     });
   });
+
   const handleAddToCart = async () => {
     if (currentUsername) {
       if (!myOrder.hasOwnProperty("products")) {
@@ -198,7 +199,7 @@ const Product = () => {
         </Col>
       </Row>
 
-      {currentUsername && matchProducts.length > 0 ? (
+      {currentUsername && matchProduct.length > 0 ? (
         <ReviewForm
           className="review-form"
           id={id}
@@ -208,6 +209,7 @@ const Product = () => {
       ) : (
         ""
       )}
+
       {"reviews" in currentProduct && reviews.length > 0 ? (
         <Row className="product-reviews">
           <Accordion>
