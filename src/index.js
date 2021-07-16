@@ -25,8 +25,6 @@ import {
   Admin,
 } from "./components";
 
-import { Container } from "react-bootstrap";
-
 import { getOrderByUser, getOrderHistory } from "./api";
 import { getTokenConfig } from "./api/token";
 
@@ -130,43 +128,42 @@ const App = () => {
         >
           <Header />
           <ProductNav setSearchProducts={setSearchProducts} />
-            {/* <Donate /> */}
-            <Switch>
-              <Route exact path="/">
-                <Home />
-              </Route>
-              <Route path="/register">
-                <Register />
-              </Route>
-              <Route path="/login">
-                <Login />
-              </Route>
-              <Route path="/cart">
-                <Cart />
-              </Route>
-              <Route exact path="/products">
-                <Products setSearchProducts={setSearchProducts}/>
-              </Route>
-              <Route exact path="/products/:id">
-                <Product />
-              </Route>
-              <Route path="/products/category/:name">
-                <CategoryProducts setSearchProducts={setSearchProducts}/>
-              </Route>
-              <Route path="/search">
-                <SearchResults searchProducts={searchProducts}/>
-              </Route>
-              <Route path="/checkout">
-                <Checkout />
-              </Route>
-              <Route path="/authenticated">
-                {currentUsername ? <LoggedInPage /> : <Login />}
-              </Route>
-              <Route path="/admin">
-                {user && user.isAdmin ? <Admin /> : <Redirect to="/" />}
-              </Route>
-            </Switch>
-
+          <Donate />
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/cart">
+              <Cart />
+            </Route>
+            <Route exact path="/products">
+              <Products setSearchProducts={setSearchProducts} />
+            </Route>
+            <Route exact path="/products/:id">
+              <Product />
+            </Route>
+            <Route path="/products/category/:name">
+              <CategoryProducts setSearchProducts={setSearchProducts} />
+            </Route>
+            <Route path="/search">
+              <SearchResults searchProducts={searchProducts} />
+            </Route>
+            <Route path="/checkout">
+              <Checkout />
+            </Route>
+            <Route path="/authenticated">
+              {currentUsername ? <LoggedInPage /> : <Login />}
+            </Route>
+            <Route path="/admin">
+              {user && user.isAdmin ? <Admin /> : <Redirect to="/" />}
+            </Route>
+          </Switch>
         </UserContext.Provider>
       </div>
     </Router>

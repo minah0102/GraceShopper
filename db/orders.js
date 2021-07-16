@@ -23,7 +23,7 @@ async function createOrder(userId) {
 async function removeOrder(orderId) {
   try {
     const {
-      rows: [removedCart],
+      rows: removedCart,
     } = await client.query(
       /*sql*/ `
         UPDATE orders
@@ -36,7 +36,7 @@ async function removeOrder(orderId) {
 
     const newOrder = await createOrder(removedCart.userId);
 
-    return attachProductsToOrder([newOrder]);
+    return attachProductsToOrder(newOrder);
   } catch (error) {
     console.log("Error in removeOrder");
     throw error;
@@ -141,7 +141,7 @@ async function attachProductsToOrder(orders) {
     const orderIds = orders.map((o) => o.id).join(", "); //3, 11
 
     const { rows: products } = await client.query(/*sql*/ `
-      SELECT p.id AS "productId", p.name, p."imageName", li.quantity, li.price, li."orderId", li.id as "lineItemId"
+      SELECT p.id AS "productId", p.name, p."imageName", li.quantity, li.price, li."orderId", li.id AS "lineItemId"
       FROM line_items AS li
       JOIN products AS p ON p.id=li."productId"
       WHERE "orderId" IN (${orderIds});
