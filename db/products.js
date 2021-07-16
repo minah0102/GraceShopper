@@ -106,6 +106,7 @@ const updateProduct = async (productId, fields = {}) => {
         `,
         Object.values(fields)
       );
+      
       return updatedProduct[0];
     }
   } catch (error) {
