@@ -15,7 +15,7 @@ import "../css/Product.css";
 import { FaStar } from "react-icons/fa";
 
 import { useParams, useHistory } from "react-router-dom";
-import { Reviews, ReviewForm, SingleRating } from "./index.js";
+import { Reviews, ReviewForm } from "./index.js";
 import { UserContext } from "..";
 
 const Product = () => {
@@ -25,11 +25,7 @@ const Product = () => {
     total,
     setTotal,
     currentUsername,
-
     orderHistory,
-    user,
-    setUser,
-
     localCart,
     setLocalCart,
   } = useContext(UserContext);
@@ -104,7 +100,6 @@ const Product = () => {
           price: added.price,
           productId: id,
           quantity: added.quantity,
-          productQuantity: quantity,
           name,
           imageName,
         };
@@ -130,7 +125,6 @@ const Product = () => {
           price,
           quantity: addQuantity,
           imageName,
-          productQuantity: quantity,
         };
 
         localCart.push(lineItem);
