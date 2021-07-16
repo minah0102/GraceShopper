@@ -4,7 +4,7 @@ import { UserContext } from "..";
 import { Form, Button } from "react-bootstrap";
 import { loginUser } from "../api/users";
 import { addProductToCart, getOrderByUser } from "../api";
-import '../css/User.css'
+import "../css/User.css";
 
 const mystyle = {
   padding: "1rem",
@@ -61,6 +61,10 @@ const Login = () => {
     const cart = JSON.parse(localStorage.getItem("cart"));
 
     let existing = [];
+
+    if (!orderForUser.hasOwnProperty("products")) {
+      orderForUser.products = [];
+    }
 
     if (orderForUser.products.length !== 0) {
       //there are products in order

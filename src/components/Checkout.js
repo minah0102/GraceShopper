@@ -23,9 +23,13 @@ const Checkout = () => {
 
   return (
     <Container>
-      <h2>Thank you for shopping!</h2>
+      <h2 style={{ fontSize: "2rem", marginBottom: "1rem" }}>
+        Thank you for shopping!
+      </h2>
       <ListGroup>
-        <h3>{orderHeader}</h3>
+        <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
+          {orderHeader}
+        </h3>
         {renderProducts.map(({ price, quantity, name, imageName }) => {
           return (
             <ListGroup.Item>
@@ -55,7 +59,13 @@ const Checkout = () => {
             </ListGroup.Item>
           );
         })}
-        <h3 style={{ display: "flex", justifyContent: "flex-end" }}>
+        <h3
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            padding: "1rem"
+          }}
+        >
           Total:{" "}
           <span style={{ color: "red", marginLeft: "20px" }}>
             ${total.toFixed(2)}

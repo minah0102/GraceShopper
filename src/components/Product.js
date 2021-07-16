@@ -15,7 +15,7 @@ import "../css/Product.css";
 import { FaStar } from "react-icons/fa";
 
 import { useParams, useHistory } from "react-router-dom";
-import { Reviews, ReviewForm, SingleRating } from "./index.js";
+import { Reviews, ReviewForm } from "./index.js";
 import { UserContext } from "..";
 
 const Product = () => {
@@ -25,11 +25,7 @@ const Product = () => {
     total,
     setTotal,
     currentUsername,
-
     orderHistory,
-    user,
-    setUser,
-
     localCart,
     setLocalCart,
   } = useContext(UserContext);
@@ -40,14 +36,8 @@ const Product = () => {
 
   let id = +useParams().id;
 
-  const {
-    name,
-    description,
-    imageName,
-    price,
-    reviews,
-    quantity,
-  } = currentProduct;
+  const { name, description, imageName, price, reviews, quantity } =
+    currentProduct;
 
   useEffect(async () => {
     const product = await fetchProductById(id);
@@ -75,13 +65,18 @@ const Product = () => {
     selectQuantity.push(i);
   }
 
-  const matchProducts = orderHistory.map((order) => {
-    return order.products.filter((product) => {
+  const matchProduct = orderHistory.filter((order) => {
+    return order.products.find((product) => {
       return product.productId === id;
     });
   });
+
   const handleAddToCart = async () => {
     if (currentUsername) {
+      if (!myOrder.hasOwnProperty("products")) {
+        myOrder.products = [];
+      }
+
       const sameProduct = myOrder.products.find((p) => p.productId === id);
 
       if (sameProduct) {
@@ -204,7 +199,7 @@ const Product = () => {
         </Col>
       </Row>
 
-      {currentUsername && matchProducts.length > 0 ? (
+      {currentUsername && matchProduct.length > 0 ? (
         <ReviewForm
           className="review-form"
           id={id}
@@ -214,6 +209,7 @@ const Product = () => {
       ) : (
         ""
       )}
+
       {"reviews" in currentProduct && reviews.length > 0 ? (
         <Row className="product-reviews">
           <Accordion>
