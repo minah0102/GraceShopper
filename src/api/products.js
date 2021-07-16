@@ -58,7 +58,6 @@ export const addProduct = async (product) => {
 }
 
 export const updateProduct = async (product) => {
-  console.log("inside updateProdut!! top", product);
   const { id } = product;
   const { token } = getTokenConfig();
   try {
@@ -71,8 +70,28 @@ export const updateProduct = async (product) => {
         },
       }
     );
-    console.log("inside updateProdut!! bottom", updatedProduct);
+ 
     return updatedProduct;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const updateQuantity = async (product) => {
+  const { id } = product;
+  const { token } = getTokenConfig();
+  try {
+    const { data: updatedQuantity } = await axios.patch(
+      `/api/products/${id}/quantity`,
+      product,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+ 
+    return updatedQuantity;
   } catch (error) {
     console.error(error);
   }
