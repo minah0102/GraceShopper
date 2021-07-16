@@ -10,7 +10,8 @@ import {
   Container,
 } from "react-bootstrap";
 import { patchQuantity, deleteProductFromCart, patchInactive } from "../api";
-import { updateProduct } from "../api/products";
+import { fetchProductById, updateQuantity } from "../api/products";
+
 import { useHistory } from "react-router-dom";
 import { UserContext } from "..";
 import "../css/Cart.css";
@@ -99,17 +100,17 @@ const Cart = () => {
   const handleCheckout = async () => {
     if (currentUsername) {
       myOrder.products.map(async (p) => {
-        const updatedQ = p.productQuantity - p.quantity;
-        console.log("updatedQ", updatedQ);
-        const updated = await updateProduct({
+        const { quantity: productQ } = await fetchProductById(p.productId);
+
+        const updatedQ = productQ - p.quantity;
+
+        const updated = await updateQuantity({
           id: p.productId,
-          quantity: +updatedQ,
+          quantity: updatedQ,
         });
-        console.log("show me updated!!!!", updated);
       });
 
       const newOrder = await patchInactive(myOrder.id);
-      console.log("show me myOrder", myOrder);
 
       setOrderHistory([...orderHistory, myOrder]);
       setMyOrder(newOrder);
